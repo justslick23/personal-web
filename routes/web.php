@@ -6,10 +6,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 
 // Public HomeController routes
 Route::get('/', [HomeController::class, 'index'])->name('home'); // optional if homepage is at /
-Route::get('/home', [HomeController::class, 'index']);
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
@@ -23,19 +27,19 @@ Route::get('music/play/{slug}', [MusicController::class, 'trackPlay'])->name('mu
 
 // Auth routes (login, register, etc.)
 // Public Authentication Routes
-Route::get('login', [Auth\LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [Auth\LoginController::class, 'login']);
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
 
-Route::get('register', [Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [Auth\RegisterController::class, 'register']);
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
 
-Route::post('logout', [Auth\LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Password Reset Routes
-Route::get('password/reset', [Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [Auth\ResetPasswordController::class, 'reset']);
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 // Dashboard - Requires Auth
 Route::get('/dashboard', function () {

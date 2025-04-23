@@ -3,13 +3,18 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="hero-section position-relative bg-black text-white" style="min-height: 100vh;">
+<<!-- Hero Section -->
+<section class="hero-section position-relative text-white" style="min-height: 100vh; background-image: url('{{ asset('images/671cf59ff59393be6e93326276503411.jpg') }}'); background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); ">
+    <!-- Background Image Container -->
+
+    
     <div class="container h-100 d-flex flex-column justify-content-center py-5">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <p class="text-uppercase mb-2">
                     <span id="typewriter" class="text-primary d-inline-block"></span>
                 </p>
+                <!-- Typewriter Effect Script -->
                 <script>
                     const roles = ["Web Designer", "Software Developer", "Graphic Designer"];
                     let part = 0;
@@ -61,7 +66,25 @@
                 </div>
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0 text-center">
-                <img src="{{ asset('images/me.jpg') }}" class="img-fluid " alt="Tokelo Foso" style="max-width: 400px;">
+                <style>
+                    @keyframes moveUpDown {
+                        0% {
+                            transform: translateY(0);
+                        }
+                        50% {
+                            transform: translateY(-20px); /* Adjust this value for the height of the movement */
+                        }
+                        100% {
+                            transform: translateY(0);
+                        }
+                    }
+                
+                    .moving-image {
+                        animation: moveUpDown 2s ease-in-out infinite; /* 2s duration, infinite loop */
+                    }
+                </style>
+                
+                <img src="{{ asset('images/me.jpg') }}" class="img-fluid moving-image" alt="Tokelo Foso" style="max-width: 500px;">
             </div>
         </div>
     </div>
@@ -72,14 +95,17 @@
     </div>
 </section>
 
+
 <!-- About Section -->
 <section id="about" class="py-5 bg-dark text-white">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-6 pe-lg-5">
                 <h2 class="fw-bold mb-4">About Me</h2>
-                <p class="lead text-primary mb-4">Creative Designer & Developer based in Johannesburg</p>
-                <p class="mb-4 text-light opacity-75">I'm a dedicated designer with over 5 years of experience creating memorable digital experiences. I believe in blending aesthetics with functionality to create designs that are not only beautiful but also intuitive and user-friendly.</p>
+                <p class="lead text-primary mb-4">Creative Designer & Developer based in Lesotho</p>
+                <p class="mb-4 text-light opacity-75">I’m Tokelo, a versatile creative with a flair for design, a knack for coding, and a love for music. As a Graphic Designer and Web Developer, I thrive on turning concepts into captivating visuals and seamless digital experiences. When I’m not immersed in pixels and code, you’ll find me shaping melodies as a Music Producer. Join me on this journey where creativity knows no bounds.
+
+                </p>
             
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
@@ -236,7 +262,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6 pe-lg-5 mb-5 mb-lg-0">
                 <h2 class="fw-bold mb-4">Let's Work Together</h2>
-                <p class="lead text-primary mb-4">Have a project in mind? Let's bring your vision to life.</p>
+                <p class="lead text-primary mb-4">Have a design project in mind? Let's bring your vision to life.</p>
                 <p class="mb-5 text-light opacity-75">I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.</p>
                 
                 <div class="contact-info">
@@ -274,20 +300,28 @@
                 <div class="mt-5">
                     <h5 class="mb-3">Follow Me</h5>
                     <div class="d-flex">
-                        <a href="#" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                            <i class="fab fa-dribbble text-primary"></i>
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/tokelo.foso" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <i class="fab fa-facebook-f text-primary"></i>
                         </a>
-                        <a href="#" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                            <i class="fab fa-behance text-primary"></i>
+                
+                        <!-- X (formerly Twitter) -->
+                        <a href="https://www.x.com/slkstr_" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <i class="fab fa-x text-primary"></i>
                         </a>
-                        <a href="#" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/tokelo-foso" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                             <i class="fab fa-linkedin-in text-primary"></i>
                         </a>
-                        <a href="#" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/slkstrgrm" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="fab fa-instagram text-primary"></i>
                         </a>
                     </div>
                 </div>
+                
             </div>
             
             <div class="col-lg-6">

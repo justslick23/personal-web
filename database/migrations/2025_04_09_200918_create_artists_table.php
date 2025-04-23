@@ -19,10 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Add artist_id to music table to link music with artist
-        Schema::table('music', function (Blueprint $table) {
-            $table->foreignId('artist_id')->constrained('artists')->onDelete('cascade');
-        });
+       
     }
 
     /**

@@ -9,15 +9,15 @@ class Artist extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'bio',
-        'genre',
-    ];
+    protected $fillable = ['name', 'bio'];
 
-    // One artist can have many songs/albums
-    public function music()
+    public function songs()
     {
-        return $this->hasMany(Music::class);
+        return $this->belongsToMany(Song::class);
+    }
+
+    public function albums()
+    {
+        return $this->belongsToMany(Album::class);
     }
 }

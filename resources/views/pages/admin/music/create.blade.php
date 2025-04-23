@@ -1,92 +1,79 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container">
-        <h2>Add New Music</h2>
-
-        <form action="{{ route('music.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <div class="form-group">
-                <label for="name">Music Name</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-
-            <div class="form-group">
-                <label for="artist">Artist</label>
-                <select id="artist" name="artist" class="form-control" required>
-                    <option value="">Select an artist</option>
-                    @foreach($artists as $artist)
-                        <option value="{{ $artist->id }}">{{ $artist->name }}</option>
-                    @endforeach
-                    <option value="new_artist">Add New Artist</option>
-                </select>
-            </div>
-
-            <!-- Option to add a new artist if needed -->
-            <div class="form-group" id="new-artist-group" style="display: none;">
-                <label for="new_artist_name">New Artist Name</label>
-                <input type="text" id="new_artist_name" name="new_artist_name" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="album">Album (Optional)</label>
-                <input type="text" id="album" name="album" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="type">Type</label>
-                <select id="type" name="type" class="form-control" required>
-                    <option value="song">Song</option>
-                    <option value="album">Album</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="cover_image">Cover Image (Optional)</label>
-                <input type="file" id="cover_image" name="cover_image" class="form-control" accept="image/*">
-            </div>
-
-            <div class="form-group" id="song-files" style="display: none;">
-                <label for="songs">Songs (Only for Albums)</label>
-                <input type="file" id="songs" name="songs[]" class="form-control" multiple accept=".mp3,.wav">
-            </div>
-
-            <div class="form-group" id="file-upload" style="display: none;">
-                <label for="file">Music File (Only for Songs)</label>
-                <input type="file" id="file" name="file" class="form-control" accept=".mp3,.wav">
-            </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Submit</button>
-        </form>
+<div class="container py-5">
+    <h2 class="mb-4">Add New Song or Album</h2>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Whoops!</strong> Please fix the following errors:
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+@endif
 
-    <script>
-        // Toggle fields based on the selected type (song or album)
-        document.getElementById('type').addEventListener('change', function() {
-            var coverImage = document.getElementById('cover-image');
-            var songFiles = document.getElementById('song-files');
-            var fileUpload = document.getElementById('file-upload');
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
-            if (this.value === 'album') {
-                coverImage.style.display = 'block';
-                songFiles.style.display = 'block';
-                fileUpload.style.display = 'none';
-            } else {
-                coverImage.style.display = 'block'; // Always show cover image for songs
-                songFiles.style.display = 'none';
-                fileUpload.style.display = 'block';
-            }
-        });
+    <form action="{{ route('music.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-        // Toggle new artist input field if "Add New Artist" is selected
-        document.getElementById('artist').addEventListener('change', function() {
-            var newArtistGroup = document.getElementById('new-artist-group');
-            if (this.value === 'new_artist') {
-                newArtistGroup.style.display = 'block';
-            } else {
-                newArtistGroup.style.display = 'none';
-            }
-        });
-    </script>
+        <!-- Title -->
+        <div class="mb-3">
+            <label for="title" class="form-label">Title<span class="text-danger">*</span></label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <!-- Type -->
+        <div class="mb-3">
+            <label for="type" class="form-label">Type<span class="text-danger">*</span></label>
+            <select name="type" class="form-select" required>
+                <option value="song">Song</option>
+                <option value="album">Album</option>
+            </select>
+        </div>
+
+        <!-- Artists -->
+        <div class="mb-3">
+            <label for="artists" class="form-label">Artists<span class="text-danger">*</span></label>
+            <select name="artist_ids[]" class="form-select" multiple required>
+                @foreach($artists as $artist)
+                    <option value="{{ $artist->id }}">{{ $artist->name }}</option>
+                @endforeach
+            </select>
+            <small class="text-muted">Hold Ctrl (or Command) to select multiple artists.</small>
+        </div>
+
+        <!-- Cover Art -->
+        <div class="mb-3">
+            <label for="cover_art" class="form-label">Cover Art</label>
+            <input type="file" name="cover_art" class="form-control" accept="image/*">
+        </div>
+
+        <!-- Audio or Zip File -->
+        <div class="mb-3">
+            <label for="audio_file" class="form-label">Upload File</label>
+            <input type="file" name="audio_file" class="form-control" accept="audio/*,application/zip">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4"></textarea>
+        </div>
+
+        <!-- Release Date -->
+        <div class="mb-3">
+            <label for="release_date" class="form-label">Release Date</label>
+            <input type="date" name="release_date" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
 @endsection

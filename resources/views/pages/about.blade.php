@@ -49,9 +49,10 @@
                             </div>
                         </div>
                         <div class="d-flex gap-3">
-                            <a href="#" class="btn btn-primary btn-lg rounded-pill">Get In Touch</a>
-                            <a href="#" class="btn btn-outline-dark btn-lg rounded-pill">Download CV</a>
+                          <a href="{{ route('contact') }}" class="btn btn-primary btn-lg rounded-pill">Get In Touch</a>
+                          <a href="{{ asset('storage/cv/Tokelo Foso CV (Revamp).pdf') }}" class="btn btn-outline-dark btn-lg rounded-pill" target="_blank" download>Download CV</a>
                         </div>
+                      
                     </div>
                 </div>
             </div>
@@ -403,92 +404,76 @@
         </div>
     </section>
 
-    <!-- Personal Details Section -->
-    <section id="personal" class="personal-section py-5">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8">
-                    <div class="section-heading text-center" data-aos="fade-up">
-                        <h6 class="text-primary fw-bold text-uppercase mb-2">Personal Side</h6>
-                        <h2 class="display-5 fw-bold mb-3">Beyond The <span class="text-primary">Profession</span></h2>
-                        <div class="section-line mx-auto bg-primary my-4" style="width: 80px; height: 3px;"></div>
-                        <p class="lead">Get to know me beyond my professional skills and experience.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up">
-                    <div class="personal-card bg-white p-4 rounded-lg shadow-sm text-center h-100">
-                        <div class="personal-icon mb-3">
-                            <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-primary-soft rounded-circle">
-                                <i class="fas fa-heart fs-3 text-primary"></i>
-                            </span>
-                        </div>
-                        <h4 class="mb-3">Things I Love</h4>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">Music Production & DJing</li>
-                            <li class="mb-2">Exploring New Technologies</li>
-                            <li class="mb-2">Photography & Visual Arts</li>
-                            <li class="mb-2">Travel & Cultural Experiences</li>
-                            <li>Reading Design & Tech Publications</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="personal-card bg-white p-4 rounded-lg shadow-sm text-center h-100">
-                        <div class="personal-icon mb-3">
-                            <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-success-soft rounded-circle">
-                                <i class="fas fa-user-graduate fs-3 text-success"></i>
-                            </span>
-                        </div>
-                        <h4 class="mb-3">Education & Learning</h4>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">Bachelor of Computer and Information Sciences</li>
-                            <li class="mb-2">Online Courses in Advanced Web Development</li>
-                            <li class="mb-2">Design Thinking Workshops</li>
-                            <li class="mb-2">Sound Engineering Certificate</li>
-                            <li>Self-taught in Various Creative Software</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="personal-card bg-white p-4 rounded-lg shadow-sm text-center h-100">
-                        <div class="personal-icon mb-3">
-                            <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-warning-soft rounded-circle">
-                                <i class="fas fa-flag fs-3 text-warning"></i>
-                            </span>
-                        </div>
-                        <h4 class="mb-3">Future Goals</h4>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">Launch a Creative Tech Studio</li>
-                            <li class="mb-2">Mentor Young Designers & Developers</li>
-                            <li class="mb-2">Release Original Music Productions</li>
-                            <li class="mb-2">Collaborate on International Projects</li>
-                            <li>Contribute to Open Source Communities</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+ <!-- Personal Details Section -->
+<section id="personal" class="personal-section py-5 bg-black text-light">
+  <div class="container">
+      <div class="row justify-content-center mb-5">
+          <div class="col-lg-8">
+              <div class="section-heading text-center" data-aos="fade-up">
+                  <h6 class="text-primary fw-bold text-uppercase mb-2">Personal Side</h6>
+                  <h2 class="display-5 fw-bold mb-3">Beyond The <span class="text-primary">Profession</span></h2>
+                  <div class="section-line mx-auto bg-primary my-4" style="width: 80px; height: 3px;"></div>
+                  <p class="lead text-light">Get to know me beyond my professional skills and experience.</p>
+              </div>
+          </div>
+      </div>
 
-    <!-- Call to Action -->
-    <section id="cta" class="cta-section py-5 bg-primary text-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8 mb-4 mb-lg-0" data-aos="fade-right">
-                    <h2 class="display-5 fw-bold mb-3">Let's Work Together</h2>
-                    <p class="lead mb-0">Have a project in mind? Let's discuss how I can help bring your vision to life.</p>
-                </div>
-                <div class="col-lg-4 text-lg-end" data-aos="fade-left">
-                    <a href="#" class="btn btn-light btn-lg rounded-pill">Get In Touch</a>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="row g-4">
+          <div class="col-md-4" data-aos="fade-up">
+              <div class="personal-card bg-dark p-4 rounded-lg shadow-sm text-center h-100">
+                  <div class="personal-icon mb-3">
+                      <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-primary rounded-circle" style="width: 60px; height: 60px;">
+                          <i class="fas fa-heart fs-3 text-white"></i>
+                      </span>
+                  </div>
+                  <h4 class="mb-3 text-white">Things I Love</h4>
+                  <ul class="list-unstyled text-light">
+                      <li class="mb-2">Music Production & DJing</li>
+                      <li class="mb-2">Exploring New Technologies</li>
+                      <li class="mb-2">Travel & Cultural Experiences</li>
+                      <li class="mb-2">Gaming</li>
+
+                  </ul>
+              </div>
+          </div>
+
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="personal-card bg-dark p-4 rounded-lg shadow-sm text-center h-100">
+                  <div class="personal-icon mb-3">
+                      <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-success rounded-circle" style="width: 60px; height: 60px;">
+                          <i class="fas fa-user-graduate fs-3 text-white"></i>
+                      </span>
+                  </div>
+                  <h4 class="mb-3 text-white">Education & Learning</h4>
+                  <ul class="list-unstyled text-light">
+                      <li class="mb-2">Bachelor of Computer and Information Sciences</li>
+                      <li class="mb-2">Online Courses in Advanced Web Development</li>
+                      <li>Self-taught in Various Creative Software</li>
+                  </ul>
+              </div>
+          </div>
+
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="personal-card bg-dark p-4 rounded-lg shadow-sm text-center h-100">
+                  <div class="personal-icon mb-3">
+                      <span class="icon-circle d-inline-flex align-items-center justify-content-center bg-warning rounded-circle" style="width: 60px; height: 60px;">
+                          <i class="fas fa-flag fs-3 text-white"></i>
+                      </span>
+                  </div>
+                  <h4 class="mb-3 text-white">Future Goals</h4>
+                  <ul class="list-unstyled text-light">
+                      <li class="mb-2">Launch a Creative Tech Studio</li>
+                      <li class="mb-2">Collaborate on International Projects</li>
+                      <li>Contribute to Open Source Communities</li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+
 @endsection
 
 <!-- Custom CSS to add in your stylesheet -->

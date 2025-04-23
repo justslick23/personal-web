@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Authentication')</title>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
+        <title>
+            Material Dashboard 3 by Creative Tim
+        </title>
+    
+        <!-- Fonts and icons -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" />
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.min.js"></script>
 
-    <!-- Custom fonts for this template-->
-<link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-<!-- Custom styles for this template-->
-<link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-
-</head>
-<body id = "page-top">
-        <div id="wrapper">
+<script>
+    // Initialize Plyr for all audio players on the page
+    document.addEventListener('DOMContentLoaded', function () {
+        const players = new Plyr('.plyr');
+    });
+</script>
+        <!-- Nucleo Icons -->
+        <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+        
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        
+        <!-- Material Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+        
+        <!-- CSS Files -->
+        <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css') }}" rel="stylesheet" />
+    </head>
+    
+<body class="g-sidenav-show  bg-gray-100">
+        
             @include('partials.sidebar')
-
-            <div id="content-wrapper" class="d-flex flex-column">
-                <div id="content">
-                    @include('partials.topbar')
+            <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" >
+              
 
                         @yield('content')
                  
+            </main>
 
-                </div>
 
-            </div>
+ <!-- Core JS Files -->
+<script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
 
-        </div>
- <!-- Scroll to Top Button-->
- <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-        <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
-    <!-- Bootstrap core JavaScript-->
-<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
 
-<!-- Custom scripts for all pages-->
-<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 
-<!-- Page level plugins -->
-<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{{ asset('assets/js/material-dashboard.min.js') }}"></script>
 
-<!-- Page level custom scripts -->
-<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
 @yield('scripts');
 </body>
 </html>

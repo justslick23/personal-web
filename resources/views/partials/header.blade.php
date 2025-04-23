@@ -38,10 +38,21 @@
 </header>
 
 <style>
+    .site-header {
+        background-color: transparent !important; /* Makes the header background transparent */
+        position: absolute; /* Allows section background to show through */
+        width: 100%;
+        z-index: 10; /* Keeps it above the other sections */
+    }
+
     .nav-link.active {
-    color: #fff !important;
-    background-color: #0d6efd; /* Bootstrap primary or your preferred color */
-    border-radius: 4px;
-    padding: 8px 12px;
-}
+        color: #fff !important;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-weight: bolder;
+    }
+
+    /* Optional: Add a slight box-shadow or border to make the navbar stand out against certain backgrounds */
+    .site-header .navbar {
+    }
 </style>

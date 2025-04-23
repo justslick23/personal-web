@@ -12,14 +12,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home'); // optional if 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::post('/contact', function () {
-    // Handle contact form submission here
-    return redirect()->back()->with('success', 'Your message has been sent!');
-})->name('contact.submit');
+Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
+
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
 
 Route::get('/music', [HomeController::class, 'music'])->name('music');
-Route::get('/music/{id}', [HomeController::class, 'musicShow'])->name('music.show');
+Route::get('music/{slug}', [HomeController::class, 'musicShow'])->name('music.show');
+Route::get('/download/{id}', [HomeController::class, 'downloadTrack'])->name('music.download');
+Route::get('music/play/{slug}', [MusicController::class, 'trackPlay'])->name('music.trackPlay');
 
 // Auth routes (login, register, etc.)
 Auth::routes();
@@ -44,4 +44,25 @@ Route::middleware('auth')->prefix('admin/portfolio')->name('portfolio.')->group(
     Route::get('{id}/edit', [PortfolioController::class, 'edit'])->name('edit');
     Route::put('{id}', [PortfolioController::class, 'update'])->name('update');
     Route::delete('{id}', [PortfolioController::class, 'destroy'])->name('destroy');
+});
+
+// Admin Music Routes - Requires Auth
+Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function () {
+    // Route to view all songs and albums
+    Route::get('/', [MusicController::class, 'index'])->name('index');
+
+    // Route to create a new song or album
+    Route::get('create', [MusicController::class, 'create'])->name('create');
+
+    // Route to store a new song or album
+    Route::post('store', [MusicController::class, 'store'])->name('store');
+
+    // Route to edit a song or album
+    Route::get('{id}/edit', [MusicController::class, 'edit'])->name('edit');
+
+    // Route to update a song or album
+    Route::put('{id}', [MusicController::class, 'update'])->name('update');
+
+    // Route to delete a song or album
+    Route::delete('{id}', [MusicController::class, 'destroy'])->name('destroy');
 });

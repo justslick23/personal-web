@@ -2,22 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Song extends Model
 {
-    use HasFactory;
+    protected $fillable = ['title', 'file_path', 'cover_art', 'album_id', 'views', 'downloads', 'slug', 'plays'];
 
-    protected $fillable = [
-        'name',
-        'file_path',
-        'album_id',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
 
-    // Relationship: Each song belongs to an album
+        static::creating(function ($song) {
+            if (!$song->slug) {
+                $song->slug = Str::slug($song->title);
+            }
+        });
+    }
+
     public function album()
     {
-        return $this->belongsTo(Music::class, 'album_id');
+        return $this->belongsTo(Album::class);
     }
+
+    public function artists()
+    {
+        return $this->belongsToMany(Artist::class);
+    }
+
+    public function statistics()
+{
+    return $this->hasOne(SongStatistics::class);
+}
 }

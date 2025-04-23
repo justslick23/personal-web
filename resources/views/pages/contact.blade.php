@@ -2,7 +2,7 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Contact Us',
+        'title' => 'Contact Me',
         'breadcrumbs' => [
             ['name' => 'Contact', 'url' => route('contact')],
         ]
@@ -13,7 +13,7 @@
             <div class="col-lg-8 col-md-10">
                 <div class="contact-info mb-4">
                     <h2 class="text-center mb-3 text-white">Get in Touch</h2>
-                    <p class="text-center text-white">We’d love to hear from you. Please fill out the form below, and we’ll get back to you as soon as possible.</p>
+                    <p class="text-center text-white">I'd love to hear from you. Please fill out the form below, and I'll get back to you as soon as possible.</p>
                     
                     <!-- Contact Form -->
                     <form action="#" method="POST" class="shadow p-4 bg-dark text-white rounded">
@@ -41,16 +41,15 @@
 
             <div class="col-lg-4 col-md-6">
                 <div class="location-info shadow p-4 bg-dark text-white rounded">
-                    <h3 class="mb-3">Our Location</h3>
+                    <h3 class="mb-3"> Location</h3>
                     <!-- Google Map Embed -->
                     <div class="embed-responsive embed-responsive-16by9 mb-4">
-                        <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.4564593178966!2d144.95373631521857!3d-37.81362797975148!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5d0e3a68f5%3A0xbfa2387e4b3b36b!2sFederation%20Square!5e0!3m2!1sen!2sus!4v1617804855028!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3476.750137157566!2d27.550330300000002!3d-29.3776044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e8c4b84d8424af3%3A0xdc887001ca323b8d!2sGraphics%20by%20Slkstr.!5e0!3m2!1sen!2sls!4v1745340306415!5m2!1sen!2sls" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                                        </div>
                     
                     <h4>Contact Details</h4>
-                    <p><strong>Phone:</strong> +123 456 789</p>
-                    <p><strong>Email:</strong> contact@yourdomain.com</p>
-                    <p><strong>Address:</strong> 123 Main Street, City, Country</p>
+                    <p><strong>Phone:</strong> (+266) 6823 1628</p>
+                    <p><strong>Email:</strong> hello@tokelofoso.online</p>
+                    <p><strong>Address:</strong> Ha Matala Phase 2, Maseru Lesotho</p>
                 </div>
             </div>
         </div>

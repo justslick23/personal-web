@@ -13,10 +13,14 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 // Public HomeController routes
-Route::get('/', [HomeController::class, 'index'])->name('home'); // optional if homepage is at /
-Route::get('/about', [HomeController::class, 'about'])->name('about');
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
+// These routes are accessible only for guests (not logged-in users)
+Route::middleware('guest')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home'); // homepage
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+    Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
+});
+
 
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
 

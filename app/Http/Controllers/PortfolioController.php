@@ -9,8 +9,8 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        $items = Portfolio::latest()->get();
-        return view('pages.admin.portfolio.index', compact('items'));
+        $portfolios = Portfolio::latest()->get();
+        return view('pages.admin.portfolio.index', compact('portfolios'));
     }
 
     public function create()

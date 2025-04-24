@@ -214,6 +214,27 @@
         audioBar.classList.remove('d-none');
     }
 </script>
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('theme-icon');
+        if (body.classList.contains('dark-theme')) {
+            body.classList.replace('dark-theme', 'light-theme');
+            localStorage.setItem('theme', 'light');
+            icon.textContent = '🌞';
+        } else {
+            body.classList.replace('light-theme', 'dark-theme');
+            localStorage.setItem('theme', 'dark');
+            icon.textContent = '🌙';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.classList.add(`${savedTheme}-theme`);
+        document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '🌞';
+    });
+</script>
 
 </body>
 </html>

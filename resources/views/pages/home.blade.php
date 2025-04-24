@@ -282,7 +282,7 @@
                         </div>
                         <div>
                             <h5 class="mb-1">Phone</h5>
-                            <p class="mb-0"><a href="tel:+1234567890" class="text-primary text-decoration-none">(+266) 6823 1628</a></p>
+                            <p class="mb-0"><a href="tel:+26668231628" class="text-primary text-decoration-none">(+266) 6823 1628</a></p>
                         </div>
                     </div>
                     
@@ -327,19 +327,31 @@
             <div class="col-lg-6">
                 <div class="contact-form bg-black p-4 p-lg-5 rounded-3">
                     <h3 class="mb-4">Send Me a Message</h3>
+                    
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    
                     <form action="{{ route('contact.submit') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Name" required>
+                            <label for="name" class="form-label text-white">Name</label>
+                            <input type="text" name="name" id="name" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Name" required>
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Email" required>
+                            <label for="email" class="form-label text-white">Email</label>
+                            <input type="email" name="email" id="email" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Email" required>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Subject">
+                            <label for="subject" class="form-label text-white">Subject</label>
+                            <input type="text" name="subject" id="subject" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Subject">
                         </div>
                         <div class="mb-4">
-                            <textarea class="form-control form-control-lg border-0 bg-dark text-white" rows="5" placeholder="Your Message" required></textarea>
+                            <label for="message" class="form-label text-white">Message</label>
+                            <textarea name="message" id="message" class="form-control form-control-lg border-0 bg-dark text-white" rows="5" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary px-4 py-3 w-100">Send Message</button>
                     </form>

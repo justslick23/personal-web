@@ -30,6 +30,8 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
                         </li>
+                     
+                        
                     </ul>
                 </div>
             </div>
@@ -39,10 +41,18 @@
 
 <style>
     .site-header {
-        background-color: transparent !important; /* Makes the header background transparent */
-        position: absolute; /* Allows section background to show through */
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        z-index: 10; /* Keeps it above the other sections */
+        z-index: 1000;
+        background-color: transparent;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .site-header.scrolled {
+        background-color: var(--background-light); /* or use rgba(23, 23, 23, 0.9) for transparency */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     .nav-link.active {
@@ -52,7 +62,18 @@
         font-weight: bolder;
     }
 
-    /* Optional: Add a slight box-shadow or border to make the navbar stand out against certain backgrounds */
-    .site-header .navbar {
+    body {
+        padding-top: 80px; /* to avoid overlap */
     }
 </style>
+
+<script>
+    window.addEventListener('scroll', function () {
+        const header = document.querySelector('.site-header');
+        if (window.scrollY > 10) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+</script>

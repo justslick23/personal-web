@@ -10,82 +10,84 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <!-- Dashboard -->
-            <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('dashboard') }}">
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ url('dashboard') }}">
                     <i class="material-symbols-rounded opacity-5">dashboard</i>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-
-            <hr class="sidebar-divider">
-
+            
             <!-- Portfolio Section -->
-            <div class="sidebar-heading">
-                Portfolio
-            </div>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Portfolio</h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePortfolio"
-                   aria-expanded="false" aria-controls="collapsePortfolio">
-                    <i class="material-symbols-rounded opacity-5">briefcase</i>
-                    <span>Portfolio Items</span>
+                <a class="nav-link text-dark" href="{{ route('portfolio.index') }}">
+                    <i class="material-symbols-rounded opacity-5">view_list</i>
+                    <span class="nav-link-text ms-1">View All</span>
                 </a>
-                <div id="collapsePortfolio" class="collapse" aria-labelledby="headingPortfolio" data-bs-parent="#sidenav-collapse-main">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('portfolio.index') }}">View All</a>
-                        <a class="collapse-item" href="{{ route('portfolio.create') }}">Add New</a>
-                    </div>
-                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('portfolio.create') }}">
+                    <i class="material-symbols-rounded opacity-5">add_circle</i>
+                    <span class="nav-link-text ms-1">Add New</span>
+                </a>
             </li>
 
             <!-- Music Section -->
-            <div class="sidebar-heading">
-                Music
-            </div>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Music</h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMusic"
-                   aria-expanded="false" aria-controls="collapseMusic">
-                    <i class="material-symbols-rounded opacity-5">music_note</i>
-                    <span>Songs & Albums</span>
+                <a class="nav-link text-dark" href="{{ route('music.index') }}">
+                    <i class="material-symbols-rounded opacity-5">library_music</i>
+                    <span class="nav-link-text ms-1">View Songs</span>
                 </a>
-                <div id="collapseMusic" class="collapse" aria-labelledby="headingMusic" data-bs-parent="#sidenav-collapse-main">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Songs</h6>
-                        <a class="collapse-item" href="{{ route('music.index') }}">View Songs</a>
-                        <a class="collapse-item" href="{{ route('music.create') }}">Add New Song</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Albums</h6>
-                        <a class="collapse-item" href="{{ route('music.index') }}">View Albums</a>
-                        <a class="collapse-item" href="{{ route('music.create') }}">Add New Album</a>
-                    </div>
-                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('music.create') }}">
+                    <i class="material-symbols-rounded opacity-5">add_circle</i>
+                    <span class="nav-link-text ms-1">Add New Song</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('music.index') }}">
+                    <i class="material-symbols-rounded opacity-5">album</i>
+                    <span class="nav-link-text ms-1">View Albums</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('music.create') }}">
+                    <i class="material-symbols-rounded opacity-5">add_circle</i>
+                    <span class="nav-link-text ms-1">Add New Album</span>
+                </a>
             </li>
 
-            <hr class="sidebar-divider">
-
             <!-- Settings Section -->
-            <div class="sidebar-heading">
-                Settings
-            </div>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Settings</h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('settings') }}">
+                <a class="nav-link text-dark" href="{{ url('settings') }}">
                     <i class="material-symbols-rounded opacity-5">settings</i>
                     <span class="nav-link-text ms-1">Site Settings</span>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('profile') }}">
+                <a class="nav-link text-dark" href="{{ url('profile') }}">
                     <i class="material-symbols-rounded opacity-5">person</i>
                     <span class="nav-link-text ms-1">Profile</span>
                 </a>
             </li>
-
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
         </ul>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0">
+        <div class="mx-3">
+            <a class="btn btn-outline-dark mt-4 w-100" href="{{ url('/') }}" type="button">View Website</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn bg-gradient-dark w-100 mt-2">Logout</button>
+            </form>
+        </div>
     </div>
 </aside>

@@ -1,10 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');:root {
-    --primary-color: #6a8cff; /* Brighter blue */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --transition: all 0.3s ease;
+    --font-main: 'Roboto Condensed', sans-serif;
+    --font-heading: 'Roboto Condensed', sans-serif;
+}
+
+/* DARK THEME */
+.dark-theme {
+    --primary-color: #6a8cff;
     --primary-dark: #4e6cf7;
     --secondary-color: #1a1a1a;
-    --text-color: #d1d5db; /* Lighter gray for better readability */
+    --text-color: #d1d5db;
     --text-light: #9ca3af;
-    --text-dark: #f3f4f6; /* Nearly white for headings */
+    --text-dark: #f3f4f6;
     --white: #ffffff;
     --gray-light: #2a2a2a;
     --gray: #3a3a3a;
@@ -15,17 +24,37 @@
     --gradient-blue-purple: linear-gradient(135deg, var(--primary-color), #9d4edd);
     --gradient-purple-blue: linear-gradient(135deg, #9d4edd, var(--primary-color));
     --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --font-main: 'Roboto Condensed', sans-serif;
-    --font-heading: 'Roboto Condensed', sans-serif;
-    --transition: all 0.3s ease;
 }
+
+/* LIGHT THEME */
+.light-theme {
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary-color: #f3f4f6;
+    --text-color: #1f2937;
+    --text-light: #6b7280;
+    --text-dark: #111827;
+    --white: #ffffff;
+    --gray-light: #e5e7eb;
+    --gray: #d1d5db;
+    --black: #000000;
+    --background-light: #ffffff;
+    --background-alternate: #f9fafb;
+    --background-card: #f3f4f6;
+    --gradient-blue-purple: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+    --gradient-purple-blue: linear-gradient(135deg, #8b5cf6, var(--primary-color));
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 body {
     font-family: var(--font-main);
     color: var(--text-color);
     line-height: 1.7;
     overflow-x: hidden;
     background-color: var(--background-light);
+    transition: var(--transition);
 }
+
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);

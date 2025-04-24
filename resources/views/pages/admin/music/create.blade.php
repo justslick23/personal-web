@@ -40,13 +40,19 @@
 
         <!-- Artists -->
         <div class="mb-3">
-            <label for="artists" class="form-label">Artists<span class="text-danger">*</span></label>
-            <select name="artist_ids[]" class="form-select" multiple required>
+            <label for="artists" class="form-label">Select Existing Artists</label>
+            <select name="artist_ids[]" class="form-select" multiple>
                 @foreach($artists as $artist)
                     <option value="{{ $artist->id }}">{{ $artist->name }}</option>
                 @endforeach
             </select>
             <small class="text-muted">Hold Ctrl (or Command) to select multiple artists.</small>
+        </div>
+        
+        <!-- Add New Artist -->
+        <div class="mb-3">
+            <label for="new_artist" class="form-label">Or Add New Artist</label>
+            <input type="text" name="new_artist" class="form-control" placeholder="Enter new artist name">
         </div>
 
         <!-- Cover Art -->

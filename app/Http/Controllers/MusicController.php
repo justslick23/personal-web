@@ -31,19 +31,28 @@ class MusicController extends Controller
     // Store the new music in the database
     public function store(Request $request)
     {
-        // Validation for Album or Song
+        // Validation
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|in:song,album', // Ensures only 'song' or 'album' are accepted
+            'type' => 'required|in:song,album',
             'artist_ids' => 'required|array',
-            'artist_ids.*' => 'exists:artists,id', // Ensures artist IDs exist in the database
+            'artist_ids.*' => 'exists:artists,id',
+            'new_artist' => 'nullable|string|max:255',
             'cover_art' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'audio_file' => 'nullable|file|max:100000',
             'release_date' => 'nullable|date',
         ]);
     
-        // Handle Song and Album creation
-        if ($validated['type'] == 'song') {
+        // Add new artist if present
+        if (!empty($validated['new_artist'])) {
+            $newArtist = Artist::create([
+                'name' => $validated['new_artist']
+            ]);
+            $validated['artist_ids'][] = $newArtist->id; // Merge new artist into artist_ids array
+        }
+    
+        // Decide if it's a Song or Album and pass everything forward
+        if ($validated['type'] === 'song') {
             $music = new Song();
             $this->storeSongData($request, $music, $validated);
         } else {
@@ -53,6 +62,7 @@ class MusicController extends Controller
     
         return redirect()->route('music.index')->with('success', ucfirst($validated['type']) . ' uploaded successfully!');
     }
+    
     
     private function storeSongData(Request $request, Song $music, $validated)
     {

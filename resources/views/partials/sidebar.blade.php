@@ -63,6 +63,13 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{ route('artists.create') }}">
+                    <i class="material-symbols-rounded opacity-5">person_add</i>
+                    <span class="nav-link-text ms-1">Add New Artist</span>
+                </a>
+            </li>
+
             <!-- Settings Section -->
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Settings</h6>

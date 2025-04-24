@@ -23,6 +23,8 @@ Route::get('music/play/{slug}', [MusicController::class, 'trackPlay'])->name('mu
 
 
 
+Route::get('artists/create', [ArtistController::class, 'create'])->name('artists.create');
+Route::post('artists', [ArtistController::class, 'store'])->name('artists.store');
 
 // Auth routes (login, register, etc.)
 // Public Authentication Routes

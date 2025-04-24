@@ -35,36 +35,44 @@ class MusicController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:song,album',
-            'artist_ids' => 'required|array',
+            'artist_ids' => 'required_if:new_artist,null|array', // artist_ids is required only if new_artist is not provided
             'artist_ids.*' => 'exists:artists,id',
-            'new_artist' => 'nullable|string|max:255',
+            'new_artist' => 'nullable|array',
+            'new_artist.*' => 'string|max:255',
             'cover_art' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'audio_file' => 'nullable|file|max:100000',
             'release_date' => 'nullable|date',
         ]);
-    
-        // Add new artist if present
+        
+        // Add new artists if present
+        $newArtistIds = [];
         if (!empty($validated['new_artist'])) {
-            $newArtist = Artist::create([
-                'name' => $validated['new_artist']
-            ]);
-            $validated['artist_ids'][] = $newArtist->id; // Merge new artist into artist_ids array
+            foreach ($validated['new_artist'] as $artistName) {
+                // Check if the artist already exists
+                $existingArtist = Artist::firstOrCreate(['name' => $artistName]);
+                $newArtistIds[] = $existingArtist->id;  // Collect new artist ids
+            }
         }
-    
+        
+        // Merge the selected existing artist ids with newly created artists
+        $allArtistIds = array_merge($validated['artist_ids'] ?? [], $newArtistIds); // Merge artist ids
+        
         // Decide if it's a Song or Album and pass everything forward
         if ($validated['type'] === 'song') {
             $music = new Song();
-            $this->storeSongData($request, $music, $validated);
+            $this->storeSongData($request, $music, $validated, $allArtistIds);  // Pass combined artist IDs
         } else {
             $music = new Album();
-            $this->storeAlbumData($request, $music, $validated);
+            $this->storeAlbumData($request, $music, $validated, $allArtistIds);  // Pass combined artist IDs
         }
     
         return redirect()->route('music.index')->with('success', ucfirst($validated['type']) . ' uploaded successfully!');
     }
     
     
-    private function storeSongData(Request $request, Song $music, $validated)
+    
+    
+    private function storeSongData(Request $request, Song $music, $validated, $artistIds)
     {
         $music->title = $validated['title'];
         $music->release_date = $validated['release_date'] ?? null;
@@ -87,7 +95,7 @@ class MusicController extends Controller
         $music->save();
     
         // Attach artists (many-to-many)
-        $music->artists()->attach($validated['artist_ids']);
+        $music->artists()->attach($artistIds);
     }
     
 

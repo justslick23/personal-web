@@ -40,6 +40,7 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" rel="stylesheet">
 
 <!-- Add this before closing body tag -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -244,6 +245,7 @@
         document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '🌞';
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 
 </body>
 </html>

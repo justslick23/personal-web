@@ -224,7 +224,6 @@
 </section>
 
 <!-- Portfolio Section -->
-<!-- Portfolio Section -->
 <section id="portfolio" class="py-5 bg-dark text-white">
     <div class="container py-5">
         <div class="text-center mb-5">
@@ -245,19 +244,42 @@
                 <div class="col-md-6 col-lg-4 d-flex">
                     <div class="portfolio-box d-flex w-100 h-100" data-category="{{ $item->category }}">
                         <div class="portfolio-item position-relative overflow-hidden rounded-3 w-100 h-100 d-flex flex-column">
-                            <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" alt="{{ $item->title }}">
+                            <!-- Link the image to the Fancybox lightbox -->
+                            <a href="{{ asset('storage/' . $item->image) }}" data-fancybox="gallery" data-caption="{{ $item->title }}">
+                                <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" alt="{{ $item->title }}">
+                            </a>
                             <div class="portfolio-overlay position-absolute start-0 top-0 w-100 h-100 d-flex flex-column justify-content-end p-4 bg-dark bg-opacity-75 opacity-0 transition-opacity">
                                 <h5 class="mb-2">{{ $item->title }}</h5>
                                 <p class="text-primary mb-3">{{ $item->category }}</p>
+
+                                <!-- Add buttons with icons -->
+                                <div class="mt-3">
+                                    <!-- View Project Button with icon (if link exists) -->
+                                    @if($item->link) 
+                                        <a href="{{ $item->link }}" class="btn btn-sm btn-primary mb-2" target="_blank">
+                                            <i class="fas fa-link"></i>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+
+        <!-- Pagination Links -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 text-center">
+                {{ $portfolioItems->links() }} <!-- Display pagination links -->
+            </div>
+        </div>
         
     </div>
 </section>
+
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const filterButtons = document.querySelectorAll(".filter-btn");
@@ -471,6 +493,24 @@
 .visible {
     display: block;
 }
+
+/* Customize pagination links */
+.pagination {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    border-radius: 50%;
+    padding: 8px 16px;
+    color: #fff;
+    background-color: #007bff;
+}
+
+.pagination .page-link:hover {
+    background-color: #0056b3;
+}
+
 
 /* Transition effect for opacity */
 .transition-opacity {

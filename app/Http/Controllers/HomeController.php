@@ -23,7 +23,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $portfolioItems = Portfolio::all(); // You can filter or paginate as needed
+        $portfolioItems = Portfolio::paginate(6); // You can filter or paginate as needed
 
         return view('pages.home', compact('portfolioItems'));
     }

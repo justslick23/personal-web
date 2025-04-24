@@ -26,63 +26,89 @@
             </div>
     
             <!-- Category Pills -->
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8">
-                    <div class="category-filter d-flex flex-wrap justify-content-center gap-2" data-aos="fade-up">
-                        <button class="btn btn-warning rounded-pill active" data-filter="all">All Projects</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="web">Web Development</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="mobile">Mobile Apps</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="ui">UI/UX Design</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="brand">Brand Identity</button>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Portfolio Grid -->
-            <div class="row g-4 portfolio-grid">
-                @foreach ($projects as $project)
-                    <div class="col-md-6 col-lg-4 portfolio-item" data-category="{{ strtolower($project->category) }}" data-aos="fade-up">
-                        <div class="portfolio-card bg-secondary h-100 rounded-lg overflow-hidden">
-                            <div class="portfolio-image">
-                                <!-- Display the image with proper URL from the 'public' disk -->
-                                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="img-fluid w-100">
-                                
-                                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                                    <div class="portfolio-actions">
-                                        <!-- Open image in a new tab when clicked -->
-                                        <a href="{{ asset('storage/' . $project->image) }}" class="btn btn-sm btn-light rounded-circle me-2" target="_blank">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        
-                                        <!-- Check if there's an external link to the project -->
-                                        @if ($project->link)
-                                            <a href="{{ $project->link }}" class="btn btn-sm btn-primary rounded-circle" target="_blank">
-                                                <i class="fas fa-link"></i>
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="portfolio-content p-4">
-                                <div class="portfolio-category mb-2">
-                                    <span class="badge bg-warning rounded-pill">{{ $project->category }}</span>
-                                </div>
-                                <h4 class="portfolio-title mb-2">{{ $project->title }}</h4>
-                                <p class="portfolio-description text-muted mb-0">{{ $project->description }}</p>
+         <!-- Category Pills -->
+<div class="row justify-content-center mb-5">
+    <div class="col-lg-8">
+        <div class="category-filter d-flex flex-wrap justify-content-center gap-2" data-aos="fade-up">
+            <button class="btn btn-warning rounded-pill active" data-filter="all">All Projects</button>
+            <button class="btn btn-outline-light rounded-pill" data-filter="web-app-design">Web App Design</button>
+            <button class="btn btn-outline-light rounded-pill" data-filter="poster-design">Poster Design</button>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Grid -->
+<div class="row g-4 portfolio-grid" id="filtered-projects">
+    @foreach ($projects as $project)
+        <div class="col-md-6 col-lg-4 d-flex">
+            <div class="portfolio-item d-flex flex-column w-100 h-100" data-category="{{ strtolower(str_replace(' ', '-', $project->category)) }}">
+                <div class="portfolio-card bg-secondary h-100 rounded-lg overflow-hidden d-flex flex-column">
+                    <div class="portfolio-image position-relative">
+                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="img-fluid w-100">
+                        <div class="portfolio-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100">
+                            <div class="portfolio-actions">
+                                <a href="{{ asset('storage/' . $project->image) }}" class="btn btn-sm btn-light rounded-circle me-2" target="_blank">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                @if ($project->link)
+                                    <a href="{{ $project->link }}" class="btn btn-sm btn-primary rounded-circle" target="_blank">
+                                        <i class="fas fa-link"></i>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
-    
-            <!-- Load More Button -->
-            <div class="row mt-5">
-                <div class="col-12 text-center" data-aos="fade-up">
-                    <a href="#" class="btn btn-outline-light btn-lg rounded-pill px-5">Load More Projects</a>
+                    <div class="portfolio-content p-4">
+                        <div class="portfolio-category mb-2">
+                            <span class="badge bg-warning rounded-pill">{{ $project->category }}</span>
+                        </div>
+                        <h4 class="portfolio-title mb-2">{{ $project->title }}</h4>
+                        <p class="portfolio-description text-muted mb-0">{{ $project->description }}</p>
+                    </div>
                 </div>
             </div>
+        </div>
+    @endforeach
+</div>
+
+<!-- Pagination -->
+<div class="row justify-content-center mt-5">
+    <div class="col-12 text-center">
+        {{ $projects->links('pagination::bootstrap-4') }} <!-- Customize as needed -->
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterButtons = document.querySelectorAll(".category-filter button");
+        const items = document.querySelectorAll(".portfolio-item");
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const filter = this.getAttribute("data-filter").toLowerCase();
+
+                // Update button styling
+                filterButtons.forEach(btn => btn.classList.remove("btn-warning", "active"));
+                filterButtons.forEach(btn => btn.classList.add("btn-outline-light"));
+                this.classList.remove("btn-outline-light");
+                this.classList.add("btn-warning", "active");
+
+                // Show/hide items
+                items.forEach(item => {
+                    const category = item.getAttribute("data-category");
+                    if (filter === "all" || category === filter) {
+                        item.parentElement.style.display = "flex";
+                    } else {
+                        item.parentElement.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+            
+            
         </div>
     </section>
     

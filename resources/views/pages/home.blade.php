@@ -231,28 +231,71 @@
             <h2 class="fw-bold mb-3">My Recent Work</h2>
             <p class="text-light opacity-75 mx-auto" style="max-width: 650px;">Here are some of my recent projects that showcase my design abilities and creative approach.</p>
         </div>
-        
+
+        <!-- Portfolio Filters -->
         <div class="portfolio-filter mb-5 text-center">
-            <button class="btn btn-sm btn-primary px-4 py-2 me-2 mb-2">All</button>
-            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2">App Design</button>
-            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2">Poster Design</button>
+            <button class="btn btn-sm btn-primary px-4 py-2 me-2 mb-2 filter-btn" data-filter="all">All</button>
+            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2 filter-btn" data-filter="Web App Design">Web App Design</button>
+            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2 filter-btn" data-filter="Poster Design">Poster Design</button>
         </div>
-        
-        <div class="row g-4">
+
+        <!-- Portfolio Items -->
+        <div class="row g-4" id="portfolio-items">
             @foreach($portfolioItems as $item)
-                <div class="col-md-6 col-lg-4">
-                    <div class="portfolio-item position-relative overflow-hidden rounded-3">
-                        <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" alt="{{ $item->title }}">
-                        <div class="portfolio-overlay position-absolute start-0 top-0 w-100 h-100 d-flex flex-column justify-content-end p-4 bg-dark bg-opacity-75 opacity-0 transition-opacity">
-                            <h5 class="mb-2">{{ $item->title }}</h5>
-                            <p class="text-primary mb-3">{{ $item->category }}</p>
+                <div class="col-md-6 col-lg-4 d-flex">
+                    <div class="portfolio-box d-flex w-100 h-100" data-category="{{ $item->category }}">
+                        <div class="portfolio-item position-relative overflow-hidden rounded-3 w-100 h-100 d-flex flex-column">
+                            <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" alt="{{ $item->title }}">
+                            <div class="portfolio-overlay position-absolute start-0 top-0 w-100 h-100 d-flex flex-column justify-content-end p-4 bg-dark bg-opacity-75 opacity-0 transition-opacity">
+                                <h5 class="mb-2">{{ $item->title }}</h5>
+                                <p class="text-primary mb-3">{{ $item->category }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+        
     </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const portfolioItems = document.querySelectorAll(".portfolio-box");
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const filter = this.getAttribute("data-filter").toLowerCase().trim();
+
+                // Update button styles
+                filterButtons.forEach(btn => {
+                    btn.classList.remove("btn-primary");
+                    btn.classList.add("btn-outline-light");
+                });
+                this.classList.remove("btn-outline-light");
+                this.classList.add("btn-primary");
+
+                // Filter portfolio items
+                portfolioItems.forEach(item => {
+                    const category = item.getAttribute("data-category").toLowerCase().trim();
+                    if (filter === "all" || category === filter) {
+                        item.classList.remove("hidden");
+                        item.classList.add("visible");
+                    } else {
+                        item.classList.remove("visible");
+                        item.classList.add("hidden");
+                    }
+                });
+            });
+        });
+
+        // Show all initially
+        portfolioItems.forEach(item => item.classList.add("visible"));
+    });
+</script>
+
+
+
 
 
 
@@ -367,9 +410,28 @@
 .portfolio-item {
     transition: all 0.3s ease;
 }
+
+.portfolio-box {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .portfolio-box.hidden {
+        opacity: 0;
+        transform: scale(0.95);
+        pointer-events: none;
+        position: absolute;
+    }
+
+    .portfolio-box.visible {
+        opacity: 1;
+        transform: scale(1);
+        position: relative;
+    }
 .portfolio-item:hover .portfolio-overlay {
     opacity: 1 !important;
+    transition: opacity 0.3s ease-in-out;
 }
+
 .transition-opacity {
     transition: opacity 0.3s ease;
 }

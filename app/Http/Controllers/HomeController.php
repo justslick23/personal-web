@@ -36,7 +36,7 @@ class HomeController extends Controller
 
     
     public function portfolio()
-    {        $projects = Portfolio::all();
+    {        $projects = Portfolio::paginate(6);
 
         return view('pages.portfolio', compact('projects'));
     }

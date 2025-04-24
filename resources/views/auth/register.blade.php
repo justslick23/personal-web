@@ -1,130 +1,85 @@
-@extends('layouts.auth')
+@extends('layouts.authentication')
 
 @section('content')
-<div class="register-container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                            <div class="col-md-8">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-8">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-8">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-8">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<main class="main-content mt-0">
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
+              style="background-image: url('{{ asset('assets/img/illustrations/illustration-signup.jpg') }}'); background-size: cover;">
             </div>
+          </div>
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+            <div class="card card-plain">
+
+              <div class="card-header">
+                <h4 class="font-weight-bolder">Sign Up</h4>
+                <p class="mb-0">Enter your email and password to register</p>
+              </div>
+
+              <div class="card-body">
+
+                {{-- Validation Errors --}}
+                @if ($errors->any())
+                  <div class="alert alert-danger">
+                    <ul class="mb-0">
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                  </div>
+                @endif
+
+                <form role="form" method="POST" action="{{ route('register') }}">
+                  @csrf
+
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                  </div>
+
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                  </div>
+
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                  </div>
+
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" name="password_confirmation" required>
+                  </div>
+
+                  <div class="form-check form-check-info text-start ps-0">
+                    <input class="form-check-input" type="checkbox" id="terms" required>
+                    <label class="form-check-label" for="terms">
+                      I agree to the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                    </label>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-lg bg-gradient-dark w-100 mt-4 mb-0">Sign Up</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                <p class="mb-2 text-sm mx-auto">
+                  Already have an account?
+                  <a href="{{ route('login') }}" class="text-primary text-gradient font-weight-bold">Sign in</a>
+                </p>
+              </div>
+
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </section>
+</main>
 @endsection
-
-<style>
-    /* CSS for centering the register form */
-    .register-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh; /* Full height of the viewport */
-    }
-
-    .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .card-body {
-        padding: 2rem;
-    }
-
-    /* Optional: Adding spacing and styling to buttons and form */
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .form-check-input {
-        margin-top: 0.3rem;
-    }
-
-    .invalid-feedback {
-        color: #e74a3b;
-    }
-
-    /* Increase form container width */
-    @media (min-width: 768px) {
-        .col-md-8 {
-            max-width: 70%; /* Makes the form wider */
-        }
-    }
-
-    /* Optional: Styling for large screens */
-    @media (min-width: 992px) {
-        .col-lg-6 {
-            max-width: 50%; /* Makes the form even wider on large screens */
-        }
-    }
-</style>

@@ -22,7 +22,7 @@ class PortfolioController extends Controller
         // Validate incoming request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link' => 'nullable|url',

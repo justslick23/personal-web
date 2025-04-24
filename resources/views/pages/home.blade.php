@@ -407,38 +407,89 @@
 
 <!-- Add this for the portfolio overlay hover effect -->
 <style>
+/* Portfolio Overlay Hover Effect */
 .portfolio-item {
     transition: all 0.3s ease;
+    position: relative; /* Ensure overlay is positioned correctly */
 }
 
 .portfolio-box {
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-    .portfolio-box.hidden {
-        opacity: 0;
-        transform: scale(0.95);
-        pointer-events: none;
-        position: absolute;
-    }
+.portfolio-box.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    position: absolute;
+}
 
-    .portfolio-box.visible {
-        opacity: 1;
-        transform: scale(1);
-        position: relative;
-    }
+.portfolio-box.visible {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+}
+
+/* Show the overlay on hover */
 .portfolio-item:hover .portfolio-overlay {
     opacity: 1 !important;
     transition: opacity 0.3s ease-in-out;
 }
 
+/* Ensure equal height for all portfolio items */
+.portfolio-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.portfolio-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Ensure images fill the space while maintaining their aspect ratio */
+.portfolio-item img {
+    object-fit: cover; /* Ensures the image covers the container */
+    height: 250px; /* You can adjust this value to your desired height */
+    width: 100%; /* Ensures the image spans the full width */
+}
+
+/* Optional: Add a uniform margin/padding */
+.portfolio-box {
+    padding: 15px;
+}
+
+/* Hide items initially when filtered out */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+/* Transition effect for opacity */
 .transition-opacity {
     transition: opacity 0.3s ease;
 }
+
+/* Focus effect for form inputs */
 .form-control:focus {
     box-shadow: none;
     border-color: #0d6efd;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .portfolio-item img {
+        height: 200px; /* Adjust for smaller screens */
+    }
+}
+
 </style>
 
 @endsection

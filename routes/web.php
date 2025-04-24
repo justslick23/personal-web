@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\PortfolioController;
@@ -11,23 +10,19 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
-
-// Public HomeController routes
-// These routes are accessible only for guests (not logged-in users)
-Route::middleware('guest')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home'); // homepage
-    Route::get('/about', [HomeController::class, 'about'])->name('about');
-    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-    Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
-});
-
-
+//these should be accessed by anyone without prompt for login
+Route::get('/', [HomeController::class, 'index'])->name('home'); // homepage
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
-
 Route::get('/music', [HomeController::class, 'music'])->name('music');
 Route::get('music/{slug}', [HomeController::class, 'musicShow'])->name('music.show');
 Route::get('/download/{id}', [HomeController::class, 'downloadTrack'])->name('music.download');
 Route::get('music/play/{slug}', [MusicController::class, 'trackPlay'])->name('music.trackPlay');
+
+
+
 
 // Auth routes (login, register, etc.)
 // Public Authentication Routes
@@ -45,7 +40,7 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
-// Dashboard - Requires Auth
+//require auth from here below
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

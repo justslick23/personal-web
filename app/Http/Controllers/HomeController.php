@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use App\Models\Song;
+use Illuminate\Support\Str;
 
 use App\Models\Album;
 use Illuminate\Support\Facades\Mail;
@@ -49,11 +52,38 @@ class HomeController extends Controller
     // Music routes
     public function music()
     {
-        $albums = Album::with('songs')->get();
-        $songs = Song::with('album')->get();
+        $albums = Album::with('songs')->orderBy('release_date', 'desc')->get();
+        $songs = Song::with('album')->whereNull('album_id')->orderBy('release_date', 'desc')->get();
     
         return view('pages.music.index', compact('albums', 'songs'));
     }
+
+    public function downloadAlbum($slug)
+{
+    $album = Album::with('songs')->where('slug', $slug)->firstOrFail();
+
+    $zip = new \ZipArchive();
+    $zipFileName = Str::slug($album->title) . '.zip';
+    $zipPath = storage_path('app/public/zips/' . $zipFileName);
+
+    if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+        foreach ($album->songs as $song) {
+            if ($song->file_path && file_exists(storage_path('app/public/' . $song->file_path))) {
+                $zip->addFile(
+                    storage_path('app/public/' . $song->file_path),
+                    basename($song->file_path)
+                );
+            }
+        }
+        $zip->close();
+    }
+
+    // ✅ Increment album download count
+    $album->increment('downloads');
+
+    return response()->download($zipPath)->deleteFileAfterSend(true);
+}
+
     public function musicShow($slug)
     {
         // Find song or album by slug
@@ -68,19 +98,39 @@ class HomeController extends Controller
     
         return view('pages.music.show', compact('track'));
     }
-    
-    
-    public function trackPlay($slug)
+
+    public function showAlbum($slug)
     {
-        $track = Song::where('slug', $slug)->first() ?? Album::where('slug', $slug)->first();
+        $album = Album::with('songs.songStatistics', 'artists') // Eager load song statistics
+                      ->where('slug', $slug)
+                      ->firstOrFail();
     
-        if ($track) {
-            // Increment play count
-            $track->statistics()->increment('plays');
-        }
-    
-        return response()->json(['status' => 'success']);
+        return view('pages.music.album', compact('album'));
     }
+    
+    
+    public function trackPlay($id)
+{
+    // Find the song with its album (if any)
+    $song = Song::with('album')->findOrFail($id);
+
+    // Ensure the song has statistics and increment the play count
+    $songStatistics = $song->songStatistics ?? $song->songStatistics()->create(); // Create if no stats exist
+    $songStatistics->increment('plays');
+    
+    // Increment album streams only if the song has an associated album
+    if ($song->album) {
+        $song->album->increment('streams');
+    } else {
+        // Handle case where song has no album (optional logging or tracking here)
+        // Log::info("Song {$song->id} has no album, skipping album stream increment.");
+    }
+
+    // Return response
+    return response()->json(['message' => 'Play recorded']);
+}
+
+    
     
 
     
@@ -88,7 +138,7 @@ class HomeController extends Controller
     private function incrementTrackStatistic($track, $type)
 {
     // Get or create the statistics record for the track
-    $statistics = $track->statistics()->firstOrCreate(['song_id' => $track->id]);
+    $statistics = $track->Songstatistics()->firstOrCreate(['song_id' => $track->id]);
 
     switch ($type) {
         case 'views':
@@ -104,31 +154,35 @@ class HomeController extends Controller
 
     $statistics->save();
 }
-
-public function downloadTrack($id)
+public function downloadTrack($slug)
 {
-    // Find song or album by ID
-    $track = Song::find($id) ?? Album::find($id);
+    // Try to find the song by slug
+    $track = Song::where('slug', $slug)->first();
 
+    // If not found as a song, try finding it as an album
+    if (!$track) {
+        $track = Album::where('slug', $slug)->first();
+    }
+
+    // If still not found or no file path available, abort
     if (!$track || !$track->file_path) {
-        // If no track or file_path exists, return a 404 error
-        abort(404);
+        abort(404, 'Track not found or file path missing.');
     }
 
     // Increment download counter
     $this->incrementTrackStatistic($track, 'downloads');
 
-    // Check if the file exists before attempting to download
+    // Construct full path to file
     $filePath = storage_path('app/public/' . $track->file_path);
+
     if (!file_exists($filePath)) {
-        // If the file does not exist, return a 404 error
-        abort(404);
+        abort(404, 'File does not exist.');
     }
 
-    // Set MIME type for MP3 files
+    // Determine MIME type (can be extended later if needed)
     $mimeType = 'audio/mpeg';
 
-    // Return the MP3 file for download with correct MIME type
+    // Return the file for download
     return response()->download($filePath, null, ['Content-Type' => $mimeType]);
 }
 

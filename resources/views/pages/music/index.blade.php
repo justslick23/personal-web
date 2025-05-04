@@ -17,18 +17,21 @@
         <div class="row g-4 mb-5">
             @forelse ($albums as $album)
                 <div class="col-md-3 col-sm-6">
-                    <div class="card shadow-sm h-100 border-0">
-                        <img src="{{ $album->cover_url ?? 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ $album->title }}</h5>
-                            <p class="card-text text-muted">Tracks: {{ $album->songs->count() }}</p>
+                    <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none text-dark">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="{{ $album->cover_image ?? 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ $album->title }}</h5>
+                                <p class="card-text text-muted">Tracks: {{ $album->songs->count() }}</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @empty
                 <p class="text-muted">No albums found.</p>
             @endforelse
         </div>
+        
 
         {{-- Songs Section --}}
         <h3 class="mb-3">All Songs</h3>

@@ -41,27 +41,50 @@
                         </div>
 
                         <div class="card-body">
-                            <!-- Login Form -->
-                            <form action="{{ route('login') }}" method="POST">
-                                @csrf
-                                <div class="input-group input-group-outline my-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                            <!-- Display validation errors -->
+                            @if($errors->any())
+                                <div class="alert alert-danger text-white">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
+                            @endif
+
+                            <!-- Login Form -->
+                            <form role="form" class="text-start" action="{{ route('login') }}" method="POST">
+                                @csrf
+                                <div class="input-group input-group-outline my-3 @if(old('email')) is-filled @endif">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autofocus>
+                                </div>
+                                @error('email')
+                                    <div class="text-danger text-xs">{{ $message }}</div>
+                                @enderror
 
                                 <div class="input-group input-group-outline mb-3">
                                     <label class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="password" required>
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
                                 </div>
+                                @error('password')
+                                    <div class="text-danger text-xs">{{ $message }}</div>
+                                @enderror
 
                                 <div class="form-check form-switch d-flex align-items-center mb-3">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe" name="remember" checked>
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" name="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
                                 </div>
 
                                 <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
                                 </div>
+
+                                @if(Route::has('password.request'))
+                                    <p class="mt-2 text-sm text-center">
+                                        <a href="{{ route('password.request') }}" class="text-primary text-gradient font-weight-bold">Forgot your password?</a>
+                                    </p>
+                                @endif
                             </form>
 
                             <p class="mt-4 text-sm text-center">
@@ -106,46 +129,25 @@
 </main>
 @endsection
 
-<style>
-    /* CSS for centering the login form */
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh; /* Full height of the viewport */
-    }
-
-    .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .card-body {
-        padding: 2rem;
-    }
-
-    /* Optional: Adding spacing and styling to buttons and form */
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .btn-link {
-        color: #007bff;
-    }
-
-    .btn-link:hover {
-        text-decoration: underline;
-    }
-
-    .form-check-input {
-        margin-top: 0.3rem;
-    }
-</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle floating labels for filled inputs
+    const inputs = document.querySelectorAll('.input-group-outline input');
+    inputs.forEach(input => {
+        if (input.value.trim() !== '') {
+            input.parentElement.classList.add('is-filled');
+        }
+        
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('is-focused', 'is-filled');
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('is-focused');
+            if (this.value.trim() === '') {
+                this.parentElement.classList.remove('is-filled');
+            }
+        });
+    });
+});
+</script>

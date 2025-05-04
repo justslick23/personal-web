@@ -27,11 +27,12 @@ class Song extends Model
 
     public function artists()
     {
-        return $this->belongsToMany(Artist::class);
+        return $this->belongsToMany(Artist::class, 'artist_song');
     }
+    
 
-    public function statistics()
-{
-    return $this->hasOne(SongStatistics::class);
-}
+    public function songStatistics()
+    {
+        return $this->hasOne(SongStatistics::class);
+    }
 }

@@ -18,9 +18,11 @@ Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
 Route::get('/music', [HomeController::class, 'music'])->name('music');
 Route::get('music/{slug}', [HomeController::class, 'musicShow'])->name('music.show');
-Route::get('/download/{id}', [HomeController::class, 'downloadTrack'])->name('music.download');
-Route::get('music/play/{slug}', [MusicController::class, 'trackPlay'])->name('music.trackPlay');
+Route::get('/download/{slug}', [HomeController::class, 'downloadTrack'])->name('music.download');
+Route::get('music/play/{id}', [HomeController::class, 'trackPlay'])->name('music.trackPlay');
+Route::get('/albums/{slug}', [HomeController::class, 'showAlbum'])->name('albums.view');
 
+Route::get('/music/album/{slug}/download', [HomeController::class, 'downloadAlbum'])->name('album.download');
 
 
 Route::get('artists/create', [ArtistController::class, 'create'])->name('artists.create');
@@ -80,6 +82,8 @@ Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function
 
     // Route to update a song or album
     Route::put('{id}', [MusicController::class, 'update'])->name('update');
+    Route::get('/{slug}', [MusicController::class, 'display'])->name('songs.view');
+    Route::get('/album/{slug}', [MusicController::class, 'showAlbum'])->name('albums.view');
 
     // Route to delete a song or album
     Route::delete('{id}', [MusicController::class, 'destroy'])->name('destroy');

@@ -77,7 +77,7 @@
 
                 <!-- Custom Download Button -->
                 @if($track instanceof \App\Models\Song && $track->id)
-                    <a href="{{ route('music.download', $track->id) }}" class="btn btn-primary mt-3">
+                    <a href="{{ route('music.download', $track->slug) }}" class="btn btn-primary mt-3">
                         <i class="fas fa-download mr-2"></i> Download Now
                     </a>
                 @endif

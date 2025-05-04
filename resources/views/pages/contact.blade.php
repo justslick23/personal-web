@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+@section('title', 'Contact - Tokelo Foso')
+
     @include('partials.page-header', [
         'title' => 'Contact Me',
         'breadcrumbs' => [

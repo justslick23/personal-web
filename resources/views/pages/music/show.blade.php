@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+@section('title', $track->title . ' - Tokelo Foso')
+
     @include('partials.page-header', [
         'title' => $track->title,
         'breadcrumbs' => [

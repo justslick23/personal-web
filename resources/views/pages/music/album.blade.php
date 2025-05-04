@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@section('title', $album->title . ' - Tokelo Foso')
+
     @include('partials.page-header', [
         'title' => $album->title,
         'breadcrumbs' => [

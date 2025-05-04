@@ -19,11 +19,17 @@
                 <div class="col-md-3 col-sm-6">
                     <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none text-dark">
                         <div class="card shadow-sm h-100 border-0">
-                            <img src="{{ $album->cover_image ?? 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
+                            <img src="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ $album->title }}</h5>
-                                <p class="card-text text-muted">Tracks: {{ $album->songs->count() }}</p>
-                            </div>
+                                <p class="card-text text-muted">
+                                    @if($album->artists->isNotEmpty())
+                                        {{ $album->artists->pluck('name')->join(', ') }}
+                                    @else
+                                        No artists available
+                                    @endif
+                                </p>
+                                                            </div>
                         </div>
                     </a>
                 </div>

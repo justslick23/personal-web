@@ -53,18 +53,23 @@
                 </div>
 
                 @if($track instanceof \App\Models\Song && $track->file_path)
-                    <div class="mt-4">
-                        <audio id="audio-{{ $track->id }}" class="song-audio w-100" controls
-                               data-song-id="{{ $track->id }}"> 
-                            <source src="{{ asset('storage/' . $track->file_path) }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                    <div class="mt-4 song-item p-3 mb-3 rounded bg-dark text-white">
+                        <div class="row align-items-center">
+                            <div class="col-12">
+                                <audio id="audio-{{ $track->id }}" class="song-audio w-100" controls
+                                       data-song-id="{{ $track->id }}"> 
+                                    <source src="{{ asset('storage/' . $track->file_path) }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
                     </div>
                 @endif
 
                 <!-- Download Button -->
                 @if($track instanceof \App\Models\Song && $track->id)
-                    <a href="{{ route('music.download', $track->slug) }}" class="btn btn-primary mt-4">
+                    <a href="{{ route('music.download', $track->slug) }}" class="btn btn-primary mt-4" 
+                       onclick="incrementDownload({{ $track->id }})">
                         <i class="fas fa-download me-2"></i> Download Now
                     </a>
                 @endif
@@ -128,7 +133,7 @@
         <script>
             // Define the incrementPlay function in the global scope so it can be accessed from HTML
             function incrementPlay(songId) {
-                console.log('Tracking play for track ID:', songId);
+                console.log('Tracking play for song ID:', songId);
                 
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
                 
@@ -152,9 +157,9 @@
                 })
                 .then(data => {
                     if (data.message === 'Play recorded') {
-                        console.log('Play incremented successfully for track ID:', songId);
+                        console.log('Play incremented successfully for song ID:', songId);
                     } else {
-                        console.log('Failed to increment play for track ID:', songId);
+                        console.log('Failed to increment play for song ID:', songId);
                     }
                 })
                 .catch(function(error) {
@@ -162,30 +167,48 @@
                 });
             }
             
-            // Function to increment track view
-            function incrementTrackView(trackId) {
-                console.log('Tracking view for track ID:', trackId);
-                fetch('/api/tracks/' + trackId + '/view', {
-                    method: 'POST',
+            // Function to increment download count
+            function incrementDownload(songId) {
+                console.log('Download tracked for song ID:', songId);
+                fetch('{{ url('/music/download') }}/' + songId, {
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Accept': 'application/json'
                     }
                 }).catch(function(error) {
-                    console.error('Error logging track view:', error);
+                    console.error('Error logging download:', error);
                 });
             }
             
             document.addEventListener('DOMContentLoaded', function() {
-                console.log('DOM loaded - audio player ready');
+                console.log('DOM loaded - standard audio players ready');
                 
-                // Get the audio player and add the 'play' event listener
-                const audioPlayer = document.querySelector('.song-audio');
-                if (audioPlayer) {
-                    audioPlayer.addEventListener('play', function() {
+                // Get all audio players and add the 'play' event listener
+                const audioPlayers = document.querySelectorAll('.song-audio');
+                
+                // Keep track of songs already played in this session
+                const playedSongs = new Set();
+                
+                audioPlayers.forEach(audio => {
+                    audio.addEventListener('play', function() {
                         const songId = this.getAttribute('data-song-id');
                         incrementPlay(songId);
+                    });
+                });
+                
+                // Function to increment track view
+                function incrementTrackView(trackId) {
+                    console.log('Tracking view for track ID:', trackId);
+                    fetch('/api/tracks/' + trackId + '/view', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json'
+                        }
+                    }).catch(function(error) {
+                        console.error('Error logging track view:', error);
                     });
                 }
                 

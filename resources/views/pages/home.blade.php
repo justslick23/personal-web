@@ -189,7 +189,7 @@
                     <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2022-Present</span>
                     <h4 class="mb-2">Web Designer</h4>
                     <p class="text-primary mb-2">Computer Business Solutions</p>
-                    <p class="text-light opacity-75 mb-0">Led design projects for multiple clients, creating responsive websites and improving user experience metrics by 40%.</p>
+                    <p class="text-light opacity-75 mb-0">Led design projects for multiple clients, creating responsive websites and improving user experience.</p>
                 </div>
                 
                 <div class="bg-dark p-4 rounded-3 mb-4 position-relative">

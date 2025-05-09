@@ -1,7 +1,7 @@
 @extends('layouts.app')
+@section('title', $track->title . ' - Tokelo Foso')
 
 @section('content')
-@section('title', $track->title . ' - Tokelo Foso')
 
     @include('partials.page-header', [
         'title' => $track->title,
@@ -113,6 +113,7 @@
         <div class="alert alert-success mt-4">
             {{ session('success') }}
         </div>
+        @endif
     
         <div class="mt-5">
             <h5>Subscribe to our mailing list for new music updates</h5>

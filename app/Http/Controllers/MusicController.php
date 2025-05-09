@@ -223,6 +223,66 @@ class MusicController extends Controller
     
         return view('pages.admin.music.album', compact('album'));
     }
+    public function edit($id)
+    {
+        // Find the music item, either as a song or album
+        $music = Song::find($id) ?? Album::find($id);
+        
+        // If songs is null, default it to an empty collection
+        if ($music && !$music->songs) {
+            $music->songs = collect();
+        }
+            
+        if (!$music) {
+            abort(404); // If neither is found, abort with 404
+        }
+    
+        // Get all artists
+        $artists = Artist::all();
+    
+        // Pass music (song or album), and artists to the view
+        return view('pages.admin.music.edit', compact('music', 'artists'));
+    }
+    
+    // Update a song or album
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'artist_ids' => 'nullable|array',
+            'artist_ids.*' => 'exists:artists,id',
+            'cover_art' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'release_date' => 'nullable|date',
+        ]);
+    
+        // Find the Song or Album model (depending on what you're updating)
+        $music = Song::findOrFail($id); // Use Album::findOrFail() for updating albums
+    
+        // Update basic fields
+        $music->title = $request->title;
+        $music->release_date = $request->release_date;
+    
+        // Handle the relationship with artists (Many-to-many relationship)
+        if ($request->has('artist_ids')) {
+            $music->artists()->sync($request->artist_ids); // Sync the artists to the song/album
+        }
+    
+        // Handle the cover art upload (delete old cover art if exists)
+        if ($request->hasFile('cover_art')) {
+            // Delete the old cover art if it exists
+            if ($music->cover_art) {
+                Storage::delete($music->cover_art);
+            }
+            // Store the new cover art and update the model
+            $music->cover_art = $request->file('cover_art')->store('cover_arts');
+        }
+    
+        // Save the updated model
+        $music->save();
+    
+        // Redirect back with a success message
+        return redirect()->route('music.index')->with('success', 'Song/Album updated successfully!');
+    }
     
 
     public function display($slug)

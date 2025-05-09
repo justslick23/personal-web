@@ -72,6 +72,7 @@ Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('s
 
 
 // Admin Music Routes - Requires Auth
+
 Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function () {
     // Route to view all songs and albums
     Route::get('/', [MusicController::class, 'index'])->name('index');
@@ -87,9 +88,14 @@ Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function
 
     // Route to update a song or album
     Route::put('{id}', [MusicController::class, 'update'])->name('update');
-    Route::get('/{slug}', [MusicController::class, 'display'])->name('songs.view');
-    Route::get('/album/{slug}', [MusicController::class, 'showAlbum'])->name('album.view');
+    
+    // Route to view a song
+    Route::get('{slug}', [MusicController::class, 'display'])->name('songs.view');
+
+    // Route to view an album
+    Route::get('album/{slug}', [MusicController::class, 'showAlbum'])->name('album.view');
 
     // Route to delete a song or album
     Route::delete('{id}', [MusicController::class, 'destroy'])->name('destroy');
 });
+

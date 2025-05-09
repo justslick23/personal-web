@@ -210,7 +210,7 @@
                     <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2018-2020</span>
                     <h4 class="mb-2">Bachelor of Computer and Information Sciences</h4>
                     <p class="text-primary mb-2">Monash University</p>
-                    <p class="text-light opacity-75 mb-0">Graduated with honors. Specialized in digital product design and interactive media.</p>
+                    <p class="text-light opacity-75 mb-0">Majored in Mobile Systems and Software Development</p>
                 </div>
                 
                 <div class="bg-dark p-4 rounded-3 position-relative">

@@ -12,13 +12,23 @@ class Song extends Model
     protected static function boot()
     {
         parent::boot();
-
+    
         static::creating(function ($song) {
             if (!$song->slug) {
-                $song->slug = Str::slug($song->title);
+                $baseSlug = Str::slug($song->title);
+                $slug = $baseSlug;
+                $counter = 1;
+    
+                while (Song::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+    
+                $song->slug = $slug;
             }
         });
     }
+    
 
     public function album()
     {

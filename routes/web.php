@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscriptionController;
+
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\HomeController;
@@ -17,7 +19,7 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submit'])->name('contact.submit');
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
 Route::get('/music', [HomeController::class, 'music'])->name('music');
-Route::get('music/{slug}', [HomeController::class, 'musicShow'])->name('music.show');
+Route::get('song/{slug}', [HomeController::class, 'musicShow'])->name('music.show');
 Route::get('/download/{slug}', [HomeController::class, 'downloadTrack'])->name('music.download');
 Route::get('music/play/{id}', [HomeController::class, 'trackPlay'])->name('music.trackPlay');
 Route::get('/albums/{slug}', [HomeController::class, 'showAlbum'])->name('albums.view');
@@ -65,6 +67,9 @@ Route::middleware('auth')->prefix('admin/portfolio')->name('portfolio.')->group(
     Route::put('{id}', [PortfolioController::class, 'update'])->name('update');
     Route::delete('{id}', [PortfolioController::class, 'destroy'])->name('destroy');
 });
+
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+
 
 // Admin Music Routes - Requires Auth
 Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function () {

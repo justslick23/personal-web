@@ -162,8 +162,32 @@
                     @endforelse
                 </div>
             </div>
-        </div>    
+        </div> 
+        @if(session('success'))
+        <div class="alert alert-success mt-4">
+            {{ session('success') }}
+        </div>
+    
+        <div class="mt-5">
+            <h5>Subscribe to our mailing list for new music updates</h5>
+            <form action="{{ route('subscribe') }}" method="POST" class="row g-2">
+                @csrf
+                <div class="col-auto">
+                    <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+  
+
+@endif
+
+
+
 
     @push('scripts')
         <!-- Font Awesome -->

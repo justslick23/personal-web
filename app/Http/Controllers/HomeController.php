@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use App\Models\Album;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormSubmitted; // Create a Mailable for contact form
+use Illuminate\Support\Facades\Log;
+
 class HomeController extends Controller
 {
     /**
@@ -200,21 +202,23 @@ private function getMimeType($extension)
     return $mimeTypes[$extension] ?? 'application/octet-stream'; // Default to binary stream
 }
 
+
 public function submit(Request $request)
-    {
-        // Validation for contact form fields
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:1000',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'message' => 'required|string|max:1000',
+    ]);
 
-        // Send email to admin or specified email
+    try {
         Mail::to('hello@tokelofoso.online')->send(new ContactFormSubmitted($validated));
-
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'Your message has been sent!');
+    } catch (\Exception $e) {
+        Log::error('Contact form mail failed: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Failed to send message. Please try again later.');
     }
+}
 
 
     

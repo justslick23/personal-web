@@ -17,6 +17,12 @@ class ContactFormSubmitted extends Mailable
     public function build()
     {
         return $this->subject('New Contact Form Submission')
-                    ->view('emails.contact'); // Your email view
+                    ->view('emails.contact')
+                    ->with([
+                        'name' => $this->data['name'],
+                        'email' => $this->data['email'],
+                        'messageContent' => $this->data['message'],
+                    ]);
     }
+    
 }

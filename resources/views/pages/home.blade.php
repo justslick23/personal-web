@@ -224,40 +224,74 @@
 </section>
 
 <!-- Portfolio Section -->
+<!-- Portfolio Section -->
 <section id="portfolio" class="py-5 bg-dark text-white">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bold mb-3">My Recent Work</h2>
+            <h6 class="text-primary fw-bold text-uppercase mb-2">Portfolio</h6>
+            <h2 class="fw-bold mb-3 display-4">My Recent Work</h2>
+            <div class="divider-custom mx-auto my-4">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
             <p class="text-light opacity-75 mx-auto" style="max-width: 650px;">Here are some of my recent projects that showcase my design abilities and creative approach.</p>
         </div>
 
         <!-- Portfolio Filters -->
         <div class="portfolio-filter mb-5 text-center">
-            <button class="btn btn-sm btn-primary px-4 py-2 me-2 mb-2 filter-btn" data-filter="all">All</button>
-            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2 filter-btn" data-filter="Web App Design">Web App Design</button>
-            <button class="btn btn-sm btn-outline-light px-4 py-2 me-2 mb-2 filter-btn" data-filter="Poster Design">Poster Design</button>
+            <div class="filter-container p-2 rounded-pill d-inline-block bg-dark border border-secondary">
+                <button class="btn btn-primary rounded-pill px-4 py-2 me-1 filter-btn active-filter" data-filter="all">All</button>
+                <button class="btn btn-dark rounded-pill px-4 py-2 me-1 filter-btn" data-filter="Web App Design">Web Apps</button>
+                <button class="btn btn-dark rounded-pill px-4 py-2 filter-btn" data-filter="Poster Design">Posters</button>
+            </div>
         </div>
 
         <!-- Portfolio Items -->
         <div class="row g-4" id="portfolio-items">
             @foreach($portfolioItems as $item)
-                <div class="col-md-6 col-lg-4 d-flex">
-                    <div class="portfolio-box d-flex w-100 h-100" data-category="{{ $item->category }}">
-                        <div class="portfolio-item position-relative overflow-hidden rounded-3 w-100 h-100 d-flex flex-column">
-                            <!-- Link the image to the Fancybox lightbox -->
-                            <a href="{{ asset('storage/' . $item->image) }}" data-fancybox="gallery" data-caption="{{ $item->title }}">
-                                <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" alt="{{ $item->title }}">
-                            </a>
-                            <div class="portfolio-overlay position-absolute start-0 top-0 w-100 h-100 d-flex flex-column justify-content-end p-4 bg-dark bg-opacity-75 opacity-0 transition-opacity">
-                                <h5 class="mb-2">{{ $item->title }}</h5>
-                                <p class="text-primary mb-3">{{ $item->category }}</p>
-
-                                <!-- Add buttons with icons -->
-                                <div class="mt-3">
-                                    <!-- View Project Button with icon (if link exists) -->
-                                    @if($item->link) 
-                                        <a href="{{ $item->link }}" class="btn btn-sm btn-primary mb-2" target="_blank">
-                                            <i class="fas fa-link"></i>
+                <div class="col-md-6 col-lg-4 portfolio-item-wrapper">
+                    <div class="portfolio-box h-100" data-category="{{ $item->category }}">
+                        <div class="portfolio-card rounded-4 overflow-hidden bg-dark border border-secondary">
+                            <!-- Make the image container taller -->
+                            <div class="position-relative" style="aspect-ratio: 1/1;">
+                                <!-- Link the image to the Fancybox lightbox for Poster Design -->
+                                @if($item->category == 'Poster Design')
+                                    <a href="{{ asset('storage/' . $item->image) }}" data-fancybox="gallery" data-caption="{{ $item->title }}">
+                                        <img src="{{ asset('storage/' . $item->image) }}" class="portfolio-img w-100 h-100 object-fit-cover" alt="{{ $item->title }}">
+                                        <div class="img-overlay">
+                                            <span class="zoom-icon"><i class="fas fa-search-plus fa-2x"></i></span>
+                                        </div>
+                                    </a>
+                                @else
+                                    <div class="position-relative">
+                                        <img src="{{ asset('storage/' . $item->image) }}" class="portfolio-img w-100 h-100 object-fit-cover" alt="{{ $item->title }}">
+                                        @if($item->link)
+                                        <div class="img-overlay">
+                                            <span class="link-icon"><i class="fas fa-link fa-2x"></i></span>
+                                        </div>
+                                        @endif
+                                    </div>
+                                @endif
+                                <div class="category-badge">{{ $item->category }}</div>
+                            </div>
+                            
+                            <!-- Card content -->
+                            <div class="portfolio-content p-3 text-center">
+                                <h5 class="portfolio-title fw-bold mb-2">{{ $item->title }}</h5>
+                                
+                                <div class="portfolio-actions mt-2">
+                                    <!-- View Project Button for Web App Design -->
+                                    @if($item->category == 'Web App Design' && $item->link) 
+                                        <a href="{{ $item->link }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1" target="_blank">
+                                            <i class="fas fa-external-link-alt me-1"></i>View
+                                        </a>
+                                    @endif
+                                    
+                                    <!-- View Image Button for Poster Design -->
+                                    @if($item->category == 'Poster Design')
+                                        <a href="{{ asset('storage/' . $item->image) }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1" data-fancybox="gallery-buttons" data-caption="{{ $item->title }}">
+                                            <i class="fas fa-search-plus me-1"></i>View
                                         </a>
                                     @endif
                                 </div>
@@ -271,55 +305,287 @@
         <!-- Pagination Links -->
         <div class="row justify-content-center mt-5">
             <div class="col-12 text-center">
-                {{ $portfolioItems->links() }} <!-- Display pagination links -->
+                <div class="pagination-custom">
+                    {{ $portfolioItems->links() }} <!-- Display pagination links -->
+                </div>
             </div>
         </div>
-        
     </div>
 </section>
 
+<style>
+    /* Custom divider */
+    .divider-custom {
+        width: 100%;
+        max-width: 7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .divider-custom-line {
+        width: 100%;
+        height: 0.25rem;
+        background-color: var(--bs-primary);
+        border-radius: 1rem;
+    }
+    
+    .divider-custom-icon {
+        color: var(--bs-primary);
+        font-size: 1rem;
+        margin: 0 1rem;
+    }
+    
+    /* Smooth transition for filters */
+    .filter-container {
+        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn {
+        transition: all 0.3s ease;
+        border: none;
+        font-weight: 600;
+    }
+    
+    .filter-btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .active-filter {
+        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
+    }
+    
+    /* Portfolio card styling */
+    .portfolio-card {
+        transition: all 0.4s ease;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: #212529;
+    }
+    
+    .portfolio-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    }
+    
+    .portfolio-img {
+        transition: all 0.5s ease;
+    }
+    
+    .category-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: var(--bs-primary);
+        color: white;
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
+    }
+    
+    .img-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .portfolio-card:hover .img-overlay {
+        opacity: 1;
+    }
+    
+    .zoom-icon, .link-icon {
+        color: white;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.3s ease 0.1s;
+    }
+    
+    .portfolio-card:hover .zoom-icon,
+    .portfolio-card:hover .link-icon {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .portfolio-content {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .portfolio-title {
+        color: white;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .portfolio-title:after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        width: 50px;
+        height: 3px;
+        background-color: var(--bs-primary);
+        transform: translateX(-50%);
+    }
+    
+    /* Animation for filtering */
+    .portfolio-box {
+        transition: all 0.6s ease;
+    }
+    
+    .portfolio-item-wrapper {
+        transition: all 0.4s ease;
+    }
+    
+    .portfolio-box.hidden {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    
+    .portfolio-box.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    /* Custom pagination styling */
+    .pagination-custom .page-item .page-link {
+        border-radius: 50%;
+        margin: 0 0.2rem;
+        color: var(--bs-primary);
+        border: none;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination-custom .page-item.active .page-link {
+        background-color: var(--bs-primary);
+        color: white;
+        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
+    }
+    
+    .pagination-custom .page-item .page-link:hover {
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
+        transform: translateY(-2px);
+    }
+</style>
 
+<!-- Fancybox CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const portfolioItems = document.querySelectorAll(".portfolio-box");
-
+        
+        // Filter functionality
         filterButtons.forEach(button => {
             button.addEventListener("click", function () {
                 const filter = this.getAttribute("data-filter").toLowerCase().trim();
-
+                
                 // Update button styles
                 filterButtons.forEach(btn => {
-                    btn.classList.remove("btn-primary");
-                    btn.classList.add("btn-outline-light");
+                    btn.classList.remove("btn-primary", "active-filter");
+                    btn.classList.add("btn-dark");
                 });
-                this.classList.remove("btn-outline-light");
-                this.classList.add("btn-primary");
-
-                // Filter portfolio items
-                portfolioItems.forEach(item => {
+                this.classList.remove("btn-dark");
+                this.classList.add("btn-primary", "active-filter");
+                
+                // Create animation
+                const wrappers = document.querySelectorAll('.portfolio-item-wrapper');
+                
+                // Filter and animate portfolio items
+                let visibleCount = 0;
+                
+                portfolioItems.forEach((item, index) => {
+                    const wrapper = wrappers[index];
                     const category = item.getAttribute("data-category").toLowerCase().trim();
-                    if (filter === "all" || category === filter) {
-                        item.classList.remove("hidden");
-                        item.classList.add("visible");
+                    
+                    if (filter === "all" || category === filter.toLowerCase()) {
+                        // Show the item with a staggered delay
+                        setTimeout(() => {
+                            wrapper.style.display = "block";
+                            item.classList.remove("hidden");
+                            item.classList.add("visible");
+                        }, visibleCount * 100);
+                        visibleCount++;
                     } else {
+                        // Hide the item
                         item.classList.remove("visible");
                         item.classList.add("hidden");
+                        setTimeout(() => {
+                            wrapper.style.display = "none";
+                        }, 300);
                     }
                 });
             });
         });
-
-        // Show all initially
-        portfolioItems.forEach(item => item.classList.add("visible"));
+        
+        // Show all initially with staggered animation
+        portfolioItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add("visible");
+            }, index * 100);
+        });
+        
+        // Initialize Fancybox with custom options
+        if (typeof $.fancybox === 'function') {
+            $("[data-fancybox]").fancybox({
+                buttons: [
+                    "zoom",
+                    "share",
+                    "slideShow",
+                    "fullScreen",
+                    "download",
+                    "thumbs",
+                    "close"
+                ],
+                loop: true,
+                protect: true,
+                animationEffect: "zoom-in-out",
+                transitionEffect: "fade",
+                transitionDuration: 500,
+                idleTime: 4,
+                thumbs: {
+                    autoStart: true,
+                    hideOnClose: true
+                },
+                touch: {
+                    vertical: true,
+                    momentum: true
+                }
+            });
+            
+            // Add custom class to Fancybox container
+            $(document).on('onInit.fb', function(e, instance) {
+                instance.$refs.container.addClass('custom-fancybox');
+            });
+        } else {
+            console.warn("Fancybox not loaded. Make sure jQuery and Fancybox are properly included.");
+        }
     });
 </script>
 
-
-
-
-
+<!-- jQuery and Fancybox JS (required for Fancybox to work) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <!-- Contact Section -->
 <section id="contact" class="py-5 bg-dark text-white">

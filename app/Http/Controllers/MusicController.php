@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Subscriber;
+use App\Mail\NewReleaseNotification;
+use Illuminate\Support\Facades\Mail;
+
 class MusicController extends Controller
 {
     // Show the form to add new music
@@ -95,10 +99,25 @@ class MusicController extends Controller
         if ($request->type === 'song') {
             $music = new Song();
             $this->storeSongData($request, $music, $validated, $allArtistIds);
+            $url = route('music.show', ['slug' => $music->slug]);  // For a song
+
         } else {
             $music = new Album();
             $this->storeAlbumData($request, $music, $validated, $allArtistIds);
+            $url = route('albums.view', ['slug' => $music->slug]); // For an album
+
         }
+
+    
+    // Notify all subscribers
+    $subscribers = Subscriber::all();
+    foreach ($subscribers as $subscriber) {
+        // Send the email immediately without queuing
+        Mail::to($subscriber->email)->send(
+            new NewReleaseNotification($request->type, $music->title, $url)
+        );
+    }
+    
         
         return redirect()->route('music.index')->with('success', ucfirst($request->type) . ' uploaded successfully!');
     }
@@ -132,6 +151,8 @@ class MusicController extends Controller
         }
     
         $music->save();
+
+
     
         // Attach artists (many-to-many using artist_song pivot table)
         foreach ($artistIds as $artistId) {

@@ -221,7 +221,7 @@ class MusicController extends Controller
                       ->where('slug', $slug)
                       ->firstOrFail();
     
-        return view('pages.music.album', compact('album'));
+        return view('pages.admin.music.album', compact('album'));
     }
     
 

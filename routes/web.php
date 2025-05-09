@@ -88,7 +88,7 @@ Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function
     // Route to update a song or album
     Route::put('{id}', [MusicController::class, 'update'])->name('update');
     Route::get('/{slug}', [MusicController::class, 'display'])->name('songs.view');
-    Route::get('/album/{slug}', [MusicController::class, 'showAlbum'])->name('albums.view');
+    Route::get('/album/{slug}', [MusicController::class, 'showAlbum'])->name('album.view');
 
     // Route to delete a song or album
     Route::delete('{id}', [MusicController::class, 'destroy'])->name('destroy');

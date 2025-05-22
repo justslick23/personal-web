@@ -11,6 +11,7 @@
         ]
     ])
 
+<section class="music-track-details">
     <div class="container py-5">
         <div class="row align-items-center">
             <!-- Left side: Track Cover -->
@@ -131,7 +132,7 @@
 
     </div>
 
-
+</section>
     
 
     @push('scripts')

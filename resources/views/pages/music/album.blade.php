@@ -12,6 +12,8 @@
         ]
     ])
 
+    <section class="album-section">
+
     <div class="container py-5">
         <div class="row align-items-center">
             <!-- Left side: Album Cover -->
@@ -183,7 +185,7 @@
             </form>
         </div>
     </div>
-
+</section>
   
 
 

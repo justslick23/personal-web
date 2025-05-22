@@ -51,3 +51,29 @@
         </div>
     </div>
 </footer>
+<style>
+      footer {
+        background: radial-gradient(
+        circle at 50% 50%,
+        rgba(12, 10, 21, 0.3),
+        #0f0f1d 50%,
+        #0a0a23 100%
+    );
+    }
+
+    footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/background 2.jpg'); /* Ensure correct file path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Parallax effect */
+    filter: brightness(50%); /* Darkens only the background */
+    z-index: -1; /* Places it behind content */
+}
+</style>

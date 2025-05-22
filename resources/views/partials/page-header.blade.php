@@ -23,28 +23,62 @@
 </section>
 
 <style>
-  .page-header {
-    background: url('{{ asset('images/671cf59ff59393be6e93326276503411.jpg') }}') center/cover no-repeat;
+.page-header {
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(12, 10, 21, 0.83),
+        #0f0f1d 50%,
+        #0a0a23 100%
+    );
+    background-size: 200% 200%;
+    background-position: center;
+    animation: animateGradient 20s ease-in-out infinite;
+
     position: relative;
     text-align: center;
-    padding: 120px 0; /* Equal padding top and bottom */
-    color: white;
-  }
 
-  .page-header::before {
+    /* Increased padding for more height */
+    padding: 220px 0 140px;
+
+    color: white;
+    margin-top: -80px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+
+.page-header::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
-  }
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    z-index: 0;
+}
 
-  .page-header .container {
+.page-header .container {
     position: relative;
     z-index: 2;
-  }
+}
+
+/* 🌌 Animation keyframes */
+@keyframes animateGradient {
+    0% {
+        background-position: 50% 50%;
+    }
+    25% {
+        background-position: 60% 40%;
+    }
+    50% {
+        background-position: 40% 60%;
+    }
+    75% {
+        background-position: 45% 45%;
+    }
+    100% {
+        background-position: 50% 50%;
+    }
+}
+
 
   .page-title {
     font-size: 3rem;
@@ -72,4 +106,8 @@
     color: white;
     font-weight: 600;
   }
+
+  body {
+    padding-top: 0; /* remove extra space */
+}
 </style>

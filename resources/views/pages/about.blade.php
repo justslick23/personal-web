@@ -552,22 +552,32 @@ p {
   font-weight: 400;
 }
 
-/* Section styling - noise texture overlay for depth */
 section {
-  position: relative;
-}
+        background: radial-gradient(
+        circle at 50% 50%,
+        rgba(12, 10, 21, 0.3),
+        #0f0f1d 50%,
+        #0a0a23 100%
+    );
 
-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  z-index: 0;
-  pointer-events: none;
+    }
+
+    section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/background 2.jpg'); /* Ensure correct file path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Parallax effect */
+    filter: brightness(50%); /* Darkens only the background */
+    z-index: -1; /* Places it behind content */
+    padding-bottom: 100px !important;
+
 }
 
 /* Section alternating backgrounds */

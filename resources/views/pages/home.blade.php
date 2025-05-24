@@ -1,221 +1,1068 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --dark: #0f172a;
+        --darker: #020617;
+        --gray: #334155;
+        --success: #10b981;
+        --warning: #f59e0b;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        overflow-x: hidden;
+    }
+    
+    .hero-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Animated Background Particles */
+    .particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 50%;
+        animation: float-particles 6s infinite linear;
+        opacity: 0.6;
+    }
+    
+    @keyframes float-particles {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.6;
+        }
+        90% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateY(-10px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    /* Glowing Orbs */
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(1px);
+        animation: float-orb 8s infinite ease-in-out;
+        pointer-events: none;
+    }
+    
+    .orb-1 {
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent);
+        top: 20%;
+        left: -10%;
+        animation-delay: 0s;
+    }
+    
+    .orb-2 {
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.25), transparent);
+        top: 60%;
+        right: -5%;
+        animation-delay: -4s;
+    }
+    
+    .orb-3 {
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.2), transparent);
+        top: 80%;
+        left: 20%;
+        animation-delay: -2s;
+    }
+    
+    @keyframes float-orb {
+        0%, 100% {
+            transform: translateY(0px) scale(1);
+        }
+        33% {
+            transform: translateY(-30px) scale(1.1);
+        }
+        66% {
+            transform: translateY(20px) scale(0.9);
+        }
+    }
+    
+    /* Content Styling */
+    .hero-content {
+        position: relative;
+        z-index: 10;
+    }
+    
+    .typewriter {
+        display: inline-block;
+        font-weight: 600;
+        position: relative;
+        min-height: 1.5em;
+    }
+    
+    .typewriter::after {
+        content: '|';
+        display: inline-block;
+        color: var(--primary);
+        animation: blink 1s infinite;
+        margin-left: 2px;
+    }
+    
+    @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--accent) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glow-text 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow-text {
+        from {
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
+        }
+        to {
+            filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.6));
+        }
+    }
+    
+    .hero-description {
+        font-size: 1.25rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 2rem;
+        animation: slideInUp 1s ease-out 0.5s both;
+    }
+    
+    /* Profile Image with Interactive Effects */
+    .profile-container {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+    
+    .profile-image {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid transparent;
+        background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent)) padding-box;
+        transition: all 0.4s ease;
+        animation: profile-float 6s ease-in-out infinite;
+    }
+    
+    .profile-image:hover {
+        transform: scale(1.05);
+        filter: brightness(1.1);
+    }
+    
+    @keyframes profile-float {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-20px) rotate(1deg);
+        }
+        50% {
+            transform: translateY(-10px) rotate(0deg);
+        }
+        75% {
+            transform: translateY(-15px) rotate(-1deg);
+        }
+    }
+    
+    .profile-ring {
+        position: absolute;
+        inset: -20px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        background: linear-gradient(45deg, var(--primary), transparent, var(--accent)) border-box;
+        animation: rotate-ring 10s linear infinite;
+        opacity: 0.7;
+    }
+    
+    @keyframes rotate-ring {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Interactive Buttons */
+    .hero-btn {
+        padding: 15px 35px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-primary-hero {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn-primary-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btn-outline-hero {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .btn-outline-hero:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .hero-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .hero-btn:hover::before {
+        left: 100%;
+    }
+    
+    /* Social Icons - Hero Section */
+    .social-float {
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        z-index: 10;
+    }
+    
+    .social-float .social-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        animation: bounce-in 0.8s ease-out;
+    }
+    
+    .social-float .social-icon:hover {
+        background: var(--primary);
+        transform: translateX(-10px) scale(1.1);
+        color: white;
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        text-decoration: none;
+    }
+    
+    .social-float .social-icon:nth-child(1) { animation-delay: 0.1s; }
+    .social-float .social-icon:nth-child(2) { animation-delay: 0.2s; }
+    .social-float .social-icon:nth-child(3) { animation-delay: 0.3s; }
+    .social-float .social-icon:nth-child(4) { animation-delay: 0.4s; }
+    
+    @keyframes bounce-in {
+        0% {
+            opacity: 0;
+            transform: translateX(50px) scale(0.3);
+        }
+        50% {
+            transform: translateX(-10px) scale(1.05);
+        }
+        70% {
+            transform: translateX(5px) scale(0.9);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+    }
+    
+    /* Scroll Indicator */
+    .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        animation: bounce-scroll 2s infinite;
+    }
+    
+    .scroll-indicator i {
+        font-size: 1.5rem;
+        display: block;
+        margin-top: 0.5rem;
+    }
+    
+    @keyframes bounce-scroll {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        40% {
+            transform: translateX(-50%) translateY(-10px);
+        }
+        60% {
+            transform: translateX(-50%) translateY(-5px);
+        }
+    }
+    
+    /* Animations */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .slide-in-left {
+        animation: slideInLeft 1s ease-out;
+    }
+    
+    .slide-in-right {
+        animation: slideInRight 1s ease-out 0.3s both;
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Skills Section */
+    .skill-bar {
+        background: rgba(255,255,255,0.1);
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .skill-progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 4px;
+        transition: width 2s ease;
+        width: 0;
+    }
+    
+    /* Portfolio Section */
+    .portfolio-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .portfolio-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        border-color: var(--primary);
+    }
+    
+    .portfolio-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .portfolio-card:hover::before {
+        left: 100%;
+    }
+    
+    .filter-btn {
+        padding: 8px 20px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: transparent;
+        color: white;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    
+    .filter-btn.active,
+    .filter-btn:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+    
+    /* Contact Section */
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+        color: white;
+    }
+    
+    .contact-icon:hover {
+        transform: scale(1.1);
+    }
+    
+    .form-control {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    
+    .form-control:focus {
+        background: rgba(255,255,255,0.1);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        outline: none;
+        color: white;
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+    
+    /* Section Animation */
+    .section-enter {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+    }
+    
+    .section-enter.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* General Social Icons */
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .social-icon:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+        color: white;
+        text-decoration: none;
+    }
+    
+    /* Alert Styles */
+    .alert {
+        border-radius: 8px;
+        border: none;
+    }
+    
+    .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    
+    .btn-close {
+        filter: invert(1);
+    }
+    
+    /* Portfolio Image Styling */
+    .portfolio-item img {
+        transition: transform 0.3s ease;
+    }
+    
+    .portfolio-item:hover img {
+        transform: scale(1.05);
+    }
+    
+    /* Loading States */
+    .btn-loading {
+        position: relative;
+        color: transparent;
+    }
+    
+    .btn-loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -8px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .social-float {
+            position: static;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 2rem;
+            transform: none;
+        }
+        
+        .social-float .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .profile-image {
+            width: 250px;
+            height: 250px;
+        }
+        
+        .hero-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+        
+        .hero-title {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+        }
+        
+        .particles {
+            display: none;
+        }
+        
+        .orb {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-section {
+            min-height: auto;
+            padding: 4rem 0;
+        }
+        
+        .profile-image {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .hero-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .section-padding {
+            padding: 3rem 0;
+        }
+    }
+    
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--dark);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary);
+    }
+    </style>
+    
 
 <!-- Hero Section -->
-<<!-- Hero Section -->
-<section class="hero-section position-relative text-white" style="min-height: 100vh; ">
-    <!-- Background Image Container -->
-
-    
-    <div class="container h-100 d-flex flex-column justify-content-center py-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <p class="text-uppercase mb-2">
-                    <span id="typewriter" class="text-primary d-inline-block"></span>
-                </p>
-                <!-- Typewriter Effect Script -->
-                <script>
-                    const roles = ["Web Designer", "Software Developer", "Graphic Designer"];
-                    let part = 0;
-                    let partIndex = 0;
-                    let intervalVal;
-                    const element = document.getElementById("typewriter");
+<section class="hero-section">
+        <!-- Animated Background -->
+        <div class="particles" id="particles"></div>
+        
+        <!-- Floating Orbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        
+        <!-- Floating Social Icons -->
+        <div class="social-float d-none d-lg-flex">
+            <a href="https://www.facebook.com/tokelo.foso/" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://x.com/slkstr_" class="social-icon">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/tokelo-foso/" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://www.instagram.com/slkstrgrm/" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+        
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Content Column -->
+                <div class="col-lg-6 hero-content slide-in-left">
+                    <p class="text-uppercase mb-3 text-primary fs-5 fw-bold">
+                        <span id="typewriter" class="typewriter"></span>
+                    </p>
+                    
+                    <h1 class="hero-title">
+                        Hello, I'm<br>
+                        <span class="text-primary">Tokelo Foso</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Crafting visuals, coding experiences, and composing beats are my passions. 
+                        Let's bring your ideas to life with creativity at its core. 
+                        Welcome to my world of design, development, and music!
+                    </p>
+                    
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a href="#portfolio" class="hero-btn btn-primary-hero">
+                            <i class="fas fa-rocket"></i>
+                            View Projects
+                        </a>
+                        <a href="#contact" class="hero-btn btn-outline-hero">
+                            <i class="fas fa-paper-plane"></i>
+                            Contact Me
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Social Icons -->
+                    <div class="social-float d-flex d-lg-none justify-content-start">
+                        <a href="https://www.facebook.com/tokelo.foso/" class="social-icon me-2">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/slkstr_" class="social-icon me-2">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/tokelo-foso/" class="social-icon me-2">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/slkstrgrm/" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
                 
-                    function typeEffect() {
-                        let currentRole = roles[part];
-                        element.innerHTML = currentRole.substring(0, partIndex + 1);
-                
-                        partIndex++;
-                
-                        if (partIndex === currentRole.length) {
-                            clearInterval(intervalVal);
-                            setTimeout(() => {
-                                intervalVal = setInterval(eraseEffect, 100);
-                            }, 2000);
-                        }
-                    }
-                
-                    function eraseEffect() {
-                        let currentRole = roles[part];
-                        element.innerHTML = currentRole.substring(0, partIndex - 1);
-                        partIndex--;
-                
-                        if (partIndex === 0) {
-                            clearInterval(intervalVal);
-                            part = (part + 1) % roles.length;
-                            setTimeout(() => {
-                                intervalVal = setInterval(typeEffect, 100);
-                            }, 300);
-                        }
-                    }
-                
-                    // Start typing
-                    document.addEventListener("DOMContentLoaded", () => {
-                        setTimeout(() => {
-                            intervalVal = setInterval(typeEffect, 100);
-                        }, 1000);
-                    });
-                </script>
-                
-                <h1 class="display-3 fw-bold mb-4">Hello, I'm <br><span class="text-primary">Tokelo Foso</span></h1>
-                <p class="lead mb-5 text-light opacity-75">Crafting visuals, coding experiences, and composing beats are my passions. Let's bring your ideas to life with creativity at its core. Welcome to my world of design, development, and music!</p>
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="#portfolio" class="btn btn-primary px-4 py-2">View Projects</a>
-                    <a href="#contact" class="btn btn-outline-light px-4 py-2">Contact Me</a>
+                <!-- Image Column -->
+                <div class="col-lg-6 text-center slide-in-right">
+                    <div class="profile-container">
+                        <div class="profile-ring"></div>
+                        <img src="{{ asset('images/me.jpg') }}" 
+                             class="profile-image" 
+                             alt="Tokelo Foso"
+                             id="profileImg">
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6 mt-5 mt-lg-0 text-center">
-                <style>
-                    @keyframes moveUpDown {
-                        0% {
-                            transform: translateY(0);
-                        }
-                        50% {
-                            transform: translateY(-20px); /* Adjust this value for the height of the movement */
-                        }
-                        100% {
-                            transform: translateY(0);
-                        }
-                    }
-                
-                    .moving-image {
-                        animation: moveUpDown 2s ease-in-out infinite; /* 2s duration, infinite loop */
-                    }
-                </style>
-                
-                <img src="{{ asset('images/me.jpg') }}" class="img-fluid moving-image" alt="Tokelo Foso" style="max-width: 500px;">
-            </div>
         </div>
-    </div>
-    <div class="position-absolute bottom-0 start-0 w-100 text-center pb-4">
-        <a href="#about" class="text-white">
-            <i class="fas fa-chevron-down fa-2x"></i>
-        </a>
-    </div>
-</section>
-
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <small>Scroll Down</small>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
 
 <!-- About Section -->
-<section id="about" class="py-5 bg-dark text-white">
+<section id="about" class="py-5" style="background: var(--dark);">
     <div class="container py-5">
-        <div class="row">
-            <div class="col-lg-6 pe-lg-5">
-                <h2 class="fw-bold mb-4">About Me</h2>
-                <p class="lead text-primary mb-4">Creative Designer & Developer based in Lesotho</p>
-                <p class="mb-4 text-light opacity-75">I’m Tokelo, a versatile creative with a flair for design, a knack for coding, and a love for music. As a Graphic Designer and Web Developer, I thrive on turning concepts into captivating visuals and seamless digital experiences. When I’m not immersed in pixels and code, you’ll find me shaping melodies as a Music Producer. Join me on this journey where creativity knows no bounds.
-
-                </p>
-            
+        <div class="row align-items-center">
+            <div class="col-lg-6 section-enter animation-fade-in-left"> <h2 class="fw-bold mb-3 text-white display-4">About Me</h2> <p class="lead text-primary mb-4 h4">Creative Designer & Developer based in Lesotho</p>
+                <p class="mb-4 text-light opacity-75">I'm Tokelo, a versatile creative with a flair for design, a knack for coding, and a love for music. As a Graphic Designer and Web Developer, I thrive on turning concepts into captivating visuals and seamless digital experiences.</p>
+                <div class="d-flex align-items-center mt-4 animation-scale-up"> <i class="fas fa-magic fa-3x text-primary me-3"></i> <p class="text-white mb-0 fs-5">Bringing ideas to life, one pixel at a time.</p>
+                </div>
             </div>
-            <div class="col-lg-6 mt-5 mt-lg-0">
-                <div class="p-4 bg-black rounded-3 h-100">
-                    <h3 class="fw-bold mb-4">My Skills</h3>
+            <div class="col-lg-6 section-enter animation-fade-in-right"> <div class="p-4 rounded-3 shadow-lg hover-effect" style="background: var(--darker);"> <h3 class="fw-bold mb-4 text-white text-center">The Designer's Mindset: Problem to Pixel</h3>
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>UI/UX Design</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 95%"></div>
+                    <p class="mb-4 text-light opacity-75 text-center">
+                        I approach every challenge as an opportunity to innovate. From dissecting complex problems to meticulously crafting pixel-perfect designs and robust code, my goal is to deliver intuitive, effective, and visually compelling solutions that truly work.
+                    </p>
+                    
+                    <div class="d-flex align-items-center mb-3 process-step animation-slide-up"> <i class="fas fa-binoculars fa-2x text-primary me-3 icon-bounce"></i> <div>
+                            <h5 class="text-white mb-0">Understand & Analyze</h5>
+                            <p class="text-light opacity-75 mb-0">Deep dive into challenges and goals.</p>
                         </div>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Web Design</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 90%"></div>
+                    <div class="d-flex align-items-center mb-3 process-step animation-slide-up delay-1"> <i class="fas fa-drafting-compass fa-2x text-primary me-3 icon-bounce"></i>
+                        <div>
+                            <h5 class="text-white mb-0">Design & Engineer</h5>
+                            <p class="text-light opacity-75 mb-0">Crafting thoughtful and functional blueprints.</p>
                         </div>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Figma</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 90%"></div>
+                    <div class="d-flex align-items-center process-step animation-slide-up delay-2"> <i class="fas fa-check-double fa-2x text-primary me-3 icon-bounce"></i>
+                        <div>
+                            <h5 class="text-white mb-0">Refine & Deliver</h5>
+                            <p class="text-light opacity-75 mb-0">Polished, high-quality results that exceed expectations.</p>
                         </div>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Adobe XD</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Illustrator</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>HTML/CSS</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary" style="width: 90%"></div>
-                        </div>
-                    </div>
+                    <div class="text-center mt-4">
+                        <p class="text-white mb-3 fs-5">Ready to solve your next design challenge?</p>
+                        <a href="#contact" class="btn btn-primary btn-lg custom-btn-pulse">Let's Discuss Your Project <i class="fas fa-arrow-right ms-2"></i></a> </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.section-enter');
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.2 // Trigger when 20% of the element is visible
+    };
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible'); // Add a 'visible' class
+                observer.unobserve(entry.target); // Stop observing once animated
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // For the individual process steps and magic icon line
+    const processSteps = document.querySelectorAll('.process-step, .animation-scale-up');
+    const stepObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 }); // Trigger when 50% visible
+
+    processSteps.forEach(step => {
+        stepObserver.observe(step);
+    });
+});
+</script>
+<style>
+    /* Basic Animations (adjust timings and values as needed) */
+
+/* Fade In Left/Right */
+.animation-fade-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.animation-fade-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Slide Up */
+.animation-slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Animation Delays for sequence */
+.animation-slide-up.delay-1 { transition-delay: 0.2s; }
+.animation-slide-up.delay-2 { transition-delay: 0.4s; }
+
+/* Scale Up (subtle for the magic icon line) */
+.animation-scale-up {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+
+/* Scroll-triggered animations (requires JavaScript or a library like AOS) */
+/*
+   To make these animations trigger on scroll, you would typically use JavaScript
+   (e.g., Intersection Observer API or a library like AOS - Animate On Scroll).
+   For example, with AOS, you'd add `data-aos="fade-left"` etc. to your HTML.
+   Without JS, they will play on page load.
+*/
+.section-enter.animation-fade-in-left,
+.section-enter.animation-fade-in-right,
+.animation-slide-up,
+.animation-scale-up {
+    /* These styles will be applied by JavaScript when the element enters the viewport */
+    /* Example using a 'visible' class toggled by JS */
+    /*
+    &.visible {
+        opacity: 1;
+        transform: translateX(0);
+        transform: translateY(0);
+        transform: scale(1);
+    }
+    */
+}
+
+/* ... (your existing animation CSS) ... */
+
+/* When 'visible' class is added by JS, play animation */
+.section-enter.visible.animation-fade-in-left {
+    opacity: 1;
+    transform: translateX(0);
+}
+.section-enter.visible.animation-fade-in-right {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.process-step.visible.animation-slide-up {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animation-scale-up.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* Hover Effects */
+
+/* General box hover effect */
+.hover-effect {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.hover-effect:hover {
+    transform: translateY(-5px); /* Lifts the box slightly */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Process Step Hover */
+.process-step {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    padding: 10px; /* Add some padding for the hover effect */
+    border-radius: 5px;
+    cursor: pointer; /* Indicates interactivity */
+}
+.process-step:hover {
+    background-color: rgba(var(--primary-rgb), 0.1); /* Subtle primary color background */
+    transform: translateX(5px); /* Nudges it slightly to the right */
+}
+
+/* Icon Bounce on hover */
+.icon-bounce {
+    transition: transform 0.3s ease-in-out;
+}
+.process-step:hover .icon-bounce { /* Apply bounce when parent .process-step is hovered */
+    animation: bounce 0.6s forwards;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); } /* Small upward bounce */
+}
+
+/* Custom Button Pulse Animation */
+.custom-btn-pulse {
+    animation: pulse-initial 2s infinite ease-in-out; /* Initial subtle pulse */
+    transition: all 0.3s ease;
+}
+
+.custom-btn-pulse:hover {
+    animation: none; /* Stop initial pulse on hover */
+    transform: scale(1.05); /* Grow slightly on hover */
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.6); /* Glow effect */
+}
+
+@keyframes pulse-initial {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+
+</style>
 
 <!-- Experience Section -->
-<section class="py-5 bg-black text-white">
+<section class="py-5" style="background: var(--darker);">
     <div class="container py-5">
-        <h2 class="fw-bold text-center mb-5">Experience & Education</h2>
+        <h2 class="fw-bold text-center mb-5 text-white section-enter">Experience & Education</h2>
         <div class="row">
-            <div class="col-lg-6 pe-lg-5">
-                <h3 class="border-start border-primary border-4 ps-3 mb-4">Work Experience</h3>
+            <div class="col-lg-6 section-enter">
+                <h3 class="border-start border-primary border-4 ps-3 mb-4 text-white">Work Experience</h3>
                 
-                <div class="bg-dark p-4 rounded-3 mb-4 position-relative">
-                    <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2022-Present</span>
-                    <h4 class="mb-2">Web Designer</h4>
+                <div class="portfolio-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="mb-2 text-white">Web Designer</h4>
+                        <span class="badge bg-primary">2022-Present</span>
+                    </div>
                     <p class="text-primary mb-2">Computer Business Solutions</p>
                     <p class="text-light opacity-75 mb-0">Led design projects for multiple clients, creating responsive websites and improving user experience.</p>
                 </div>
                 
-                <div class="bg-dark p-4 rounded-3 mb-4 position-relative">
-                    <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2021-2022</span>
-                    <h4 class="mb-2">Graphic Designer</h4>
+                <div class="portfolio-card p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="mb-2 text-white">Graphic Designer</h4>
+                        <span class="badge bg-primary">2021-2022</span>
+                    </div>
                     <p class="text-primary mb-2">Osmium Lesotho</p>
-                    <p class="text-light opacity-75 mb-0">
-                        Created visual content for marketing campaigns, social media, and websites. Worked closely with clients to bring their brand vision to life through innovative designs. Supported product launches and enhanced UI elements for digital platforms.
-                    </p>
+                    <p class="text-light opacity-75 mb-0">Created visual content for marketing campaigns, social media, and websites. Worked closely with clients to bring their brand vision to life.</p>
                 </div>
-                
             </div>
             
-            <div class="col-lg-6 mt-5 mt-lg-0">
-                <h3 class="border-start border-primary border-4 ps-3 mb-4">Education</h3>
+            <div class="col-lg-6 section-enter">
+                <h3 class="border-start border-primary border-4 ps-3 mb-4 text-white">Education</h3>
                 
-                <div class="bg-dark p-4 rounded-3 mb-4 position-relative">
-                    <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2018-2020</span>
-                    <h4 class="mb-2">Bachelor of Computer and Information Sciences</h4>
+                <div class="portfolio-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="mb-2 text-white">Bachelor of Computer and Information Sciences</h4>
+                        <span class="badge bg-primary">2018-2020</span>
+                    </div>
                     <p class="text-primary mb-2">Monash University</p>
                     <p class="text-light opacity-75 mb-0">Majored in Mobile Systems and Software Development</p>
                 </div>
                 
-                <div class="bg-dark p-4 rounded-3 position-relative">
-                    <span class="badge bg-primary position-absolute end-0 top-0 mt-4 me-4">2014-2016</span>
-                    <h4 class="mb-2">International General Certificate in Secondary Education</h4>
+                <div class="portfolio-card p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="mb-2 text-white">IGCSE</h4>
+                        <span class="badge bg-primary">2014-2016</span>
+                    </div>
                     <p class="text-primary mb-2">Machabeng College</p>
                 </div>
             </div>
@@ -224,467 +1071,137 @@
 </section>
 
 <!-- Portfolio Section -->
-<!-- Portfolio Section -->
-<section id="portfolio" class="py-5 bg-dark text-white">
+<section id="portfolio" class="py-5" style="background: var(--dark);">
     <div class="container py-5">
-        <div class="text-center mb-5">
+        <div class="text-center mb-5 section-enter">
             <h6 class="text-primary fw-bold text-uppercase mb-2">Portfolio</h6>
-            <h2 class="fw-bold mb-3 display-4">My Recent Work</h2>
-            <div class="divider-custom mx-auto my-4">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                <div class="divider-custom-line"></div>
-            </div>
+            <h2 class="fw-bold mb-3 display-4 text-white">My Recent Work</h2>
             <p class="text-light opacity-75 mx-auto" style="max-width: 650px;">Here are some of my recent projects that showcase my design abilities and creative approach.</p>
         </div>
 
         <!-- Portfolio Filters -->
-        <div class="portfolio-filter mb-5 text-center">
-            <div class="filter-container p-2 rounded-pill d-inline-block bg-dark border border-secondary">
-                <button class="btn btn-primary rounded-pill px-4 py-2 me-1 filter-btn active-filter" data-filter="all">All</button>
-                <button class="btn btn-dark rounded-pill px-4 py-2 me-1 filter-btn" data-filter="Web App Design">Web Apps</button>
-                <button class="btn btn-dark rounded-pill px-4 py-2 filter-btn" data-filter="Poster Design">Posters</button>
-            </div>
+        <div class="text-center mb-5 section-enter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Web App Design">Web Apps</button>
+            <button class="filter-btn" data-filter="Poster Design">Posters</button>
         </div>
 
         <!-- Portfolio Items -->
         <div class="row g-4" id="portfolio-items">
             @foreach($portfolioItems as $item)
-                <div class="col-md-6 col-lg-4 portfolio-item-wrapper">
-                    <div class="portfolio-box h-100" data-category="{{ $item->category }}">
-                        <div class="portfolio-card rounded-4 overflow-hidden bg-dark border border-secondary">
-                            <!-- Make the image container taller -->
-                            <div class="position-relative" style="aspect-ratio: 1/1;">
-                                <!-- Link the image to the Fancybox lightbox for Poster Design -->
-                                @if($item->category == 'Poster Design')
-                                    <a href="{{ asset('storage/' . $item->image) }}" data-fancybox="gallery" data-caption="{{ $item->title }}">
-                                        <img src="{{ asset('storage/' . $item->image) }}" class="portfolio-img w-100 h-100 object-fit-cover" alt="{{ $item->title }}">
-                                        <div class="img-overlay">
-                                            <span class="zoom-icon"><i class="fas fa-search-plus fa-2x"></i></span>
-                                        </div>
-                                    </a>
-                                @else
-                                    <div class="position-relative">
-                                        <img src="{{ asset('storage/' . $item->image) }}" class="portfolio-img w-100 h-100 object-fit-cover" alt="{{ $item->title }}">
-                                        @if($item->link)
-                                        <div class="img-overlay">
-                                            <span class="link-icon"><i class="fas fa-link fa-2x"></i></span>
-                                        </div>
-                                        @endif
-                                    </div>
-                                @endif
-                                <div class="category-badge">{{ $item->category }}</div>
+                <div class="col-md-6 col-lg-4 portfolio-item" data-category="{{ $item->category }}">
+                    <div class="portfolio-card h-100">
+                        <div class="position-relative" style="aspect-ratio: 1/1;">
+                            <img src="{{ asset('storage/' . $item->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $item->title }}" style="border-radius: 12px 12px 0 0;">
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-primary">{{ $item->category }}</span>
                             </div>
-                            
-                            <!-- Card content -->
-                            <div class="portfolio-content p-3 text-center">
-                                <h5 class="portfolio-title fw-bold mb-2">{{ $item->title }}</h5>
-                                
-                                <div class="portfolio-actions mt-2">
-                                    <!-- View Project Button for Web App Design -->
-                                    @if($item->category == 'Web App Design' && $item->link) 
-                                        <a href="{{ $item->link }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1" target="_blank">
-                                            <i class="fas fa-external-link-alt me-1"></i>View
-                                        </a>
-                                    @endif
-                                    
-                                    <!-- View Image Button for Poster Design -->
-                                    @if($item->category == 'Poster Design')
-                                        <a href="{{ asset('storage/' . $item->image) }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1" data-fancybox="gallery-buttons" data-caption="{{ $item->title }}">
-                                            <i class="fas fa-search-plus me-1"></i>View
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
+                        </div>
+                        
+                        <div class="p-3 text-center">
+                            <h5 class="fw-bold mb-2 text-white">{{ $item->title }}</h5>
+                            @if($item->link && $item->category == 'Web App Design')
+                                <a href="{{ $item->link }}" class="btn btn-sm btn-primary" target="_blank">
+                                    View Project
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <!-- Pagination Links -->
-        <div class="row justify-content-center mt-5">
-            <div class="col-12 text-center">
-                <div class="pagination-custom">
-                    {{ $portfolioItems->links() }} <!-- Display pagination links -->
-                </div>
-            </div>
+        <!-- Pagination -->
+        <div class="text-center mt-5">
+            {{ $portfolioItems->links() }}
         </div>
     </div>
 </section>
 
-<style>
-    /* Custom divider */
-    .divider-custom {
-        width: 100%;
-        max-width: 7rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .divider-custom-line {
-        width: 100%;
-        height: 0.25rem;
-        background-color: var(--bs-primary);
-        border-radius: 1rem;
-    }
-    
-    .divider-custom-icon {
-        color: var(--bs-primary);
-        font-size: 1rem;
-        margin: 0 1rem;
-    }
-    
-    /* Smooth transition for filters */
-    .filter-container {
-        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-    }
-    
-    .filter-btn {
-        transition: all 0.3s ease;
-        border: none;
-        font-weight: 600;
-    }
-    
-    .filter-btn:hover {
-        transform: translateY(-2px);
-    }
-    
-    .active-filter {
-        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
-    }
-    
-    /* Portfolio card styling */
-    .portfolio-card {
-        transition: all 0.4s ease;
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
-        position: relative;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background-color: #212529;
-    }
-    
-    .portfolio-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
-    }
-    
-    .portfolio-img {
-        transition: all 0.5s ease;
-    }
-    
-    .category-badge {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background-color: var(--bs-primary);
-        color: white;
-        font-size: 0.75rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 2rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
-    }
-    
-    .img-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        transition: all 0.3s ease;
-    }
-    
-    .portfolio-card:hover .img-overlay {
-        opacity: 1;
-    }
-    
-    .zoom-icon, .link-icon {
-        color: white;
-        opacity: 0;
-        transform: scale(0.5);
-        transition: all 0.3s ease 0.1s;
-    }
-    
-    .portfolio-card:hover .zoom-icon,
-    .portfolio-card:hover .link-icon {
-        opacity: 1;
-        transform: scale(1);
-    }
-    
-    .portfolio-content {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    .portfolio-title {
-        color: white;
-        position: relative;
-        display: inline-block;
-    }
-    
-    .portfolio-title:after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        width: 50px;
-        height: 3px;
-        background-color: var(--bs-primary);
-        transform: translateX(-50%);
-    }
-    
-    /* Animation for filtering */
-    .portfolio-box {
-        transition: all 0.6s ease;
-    }
-    
-    .portfolio-item-wrapper {
-        transition: all 0.4s ease;
-    }
-    
-    .portfolio-box.hidden {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    
-    .portfolio-box.visible {
-        opacity: 1;
-        transform: scale(1);
-    }
-    
-    /* Custom pagination styling */
-    .pagination-custom .page-item .page-link {
-        border-radius: 50%;
-        margin: 0 0.2rem;
-        color: var(--bs-primary);
-        border: none;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-    
-    .pagination-custom .page-item.active .page-link {
-        background-color: var(--bs-primary);
-        color: white;
-        box-shadow: 0 0.25rem 0.5rem rgba(var(--bs-primary-rgb), 0.4);
-    }
-    
-    .pagination-custom .page-item .page-link:hover {
-        background-color: rgba(var(--bs-primary-rgb), 0.1);
-        transform: translateY(-2px);
-    }
-</style>
-
-<!-- Fancybox CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const portfolioItems = document.querySelectorAll(".portfolio-box");
-        
-        // Filter functionality
-        filterButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                const filter = this.getAttribute("data-filter").toLowerCase().trim();
-                
-                // Update button styles
-                filterButtons.forEach(btn => {
-                    btn.classList.remove("btn-primary", "active-filter");
-                    btn.classList.add("btn-dark");
-                });
-                this.classList.remove("btn-dark");
-                this.classList.add("btn-primary", "active-filter");
-                
-                // Create animation
-                const wrappers = document.querySelectorAll('.portfolio-item-wrapper');
-                
-                // Filter and animate portfolio items
-                let visibleCount = 0;
-                
-                portfolioItems.forEach((item, index) => {
-                    const wrapper = wrappers[index];
-                    const category = item.getAttribute("data-category").toLowerCase().trim();
-                    
-                    if (filter === "all" || category === filter.toLowerCase()) {
-                        // Show the item with a staggered delay
-                        setTimeout(() => {
-                            wrapper.style.display = "block";
-                            item.classList.remove("hidden");
-                            item.classList.add("visible");
-                        }, visibleCount * 100);
-                        visibleCount++;
-                    } else {
-                        // Hide the item
-                        item.classList.remove("visible");
-                        item.classList.add("hidden");
-                        setTimeout(() => {
-                            wrapper.style.display = "none";
-                        }, 300);
-                    }
-                });
-            });
-        });
-        
-        // Show all initially with staggered animation
-        portfolioItems.forEach((item, index) => {
-            setTimeout(() => {
-                item.classList.add("visible");
-            }, index * 100);
-        });
-        
-        // Initialize Fancybox with custom options
-        if (typeof $.fancybox === 'function') {
-            $("[data-fancybox]").fancybox({
-                buttons: [
-                    "zoom",
-                    "share",
-                    "slideShow",
-                    "fullScreen",
-                    "download",
-                    "thumbs",
-                    "close"
-                ],
-                loop: true,
-                protect: true,
-                animationEffect: "zoom-in-out",
-                transitionEffect: "fade",
-                transitionDuration: 500,
-                idleTime: 4,
-                thumbs: {
-                    autoStart: true,
-                    hideOnClose: true
-                },
-                touch: {
-                    vertical: true,
-                    momentum: true
-                }
-            });
-            
-            // Add custom class to Fancybox container
-            $(document).on('onInit.fb', function(e, instance) {
-                instance.$refs.container.addClass('custom-fancybox');
-            });
-        } else {
-            console.warn("Fancybox not loaded. Make sure jQuery and Fancybox are properly included.");
-        }
-    });
-</script>
-
-<!-- jQuery and Fancybox JS (required for Fancybox to work) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-
 <!-- Contact Section -->
-<section id="contact" class="py-5 bg-dark text-white">
+<section id="contact" class="py-5" style="background: var(--darker);">
     <div class="container py-5">
         <div class="row align-items-center">
-            <div class="col-lg-6 pe-lg-5 mb-5 mb-lg-0">
-                <h2 class="fw-bold mb-4">Let's Work Together</h2>
+            <div class="col-lg-6 section-enter">
+                <h2 class="fw-bold mb-4 text-white">Let's Work Together</h2>
                 <p class="lead text-primary mb-4">Have a design project in mind? Let's bring your vision to life.</p>
                 <p class="mb-5 text-light opacity-75">I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.</p>
                 
-                <div class="contact-info">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="contact-icon bg-primary p-3 rounded-circle me-3">
-                            <i class="fas fa-envelope text-dark"></i>
-                        </div>
-                        <div>
-                            <h5 class="mb-1">Email</h5>
-                            <p class="mb-0"><a href="mailto:hello@tokelofoso.online" class="text-primary text-decoration-none">hello@tokelofoso.online</a></p>
-                        </div>
+                <div class="mb-4 d-flex align-items-center">
+                    <div class="contact-icon me-3">
+                        <i class="fas fa-envelope text-white"></i>
                     </div>
-                    
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="contact-icon bg-primary p-3 rounded-circle me-3">
-                            <i class="fas fa-phone text-dark"></i>
-                        </div>
-                        <div>
-                            <h5 class="mb-1">Phone</h5>
-                            <p class="mb-0"><a href="tel:+26668231628" class="text-primary text-decoration-none">(+266) 6823 1628</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex align-items-center">
-                        <div class="contact-icon bg-primary p-3 rounded-circle me-3">
-                            <i class="fas fa-map-marker-alt text-dark"></i>
-                        </div>
-                        <div>
-                            <h5 class="mb-1">Location</h5>
-                            <p class="mb-0 text-light opacity-75">Ha Matala Phase 2, Maseru, Lesotho</p>
-                        </div>
+                    <div>
+                        <h5 class="mb-1 text-white">Email</h5>
+                        <a href="mailto:hello@tokelofoso.online" class="text-primary text-decoration-none">hello@tokelofoso.online</a>
                     </div>
                 </div>
                 
-                <div class="mt-5">
-                    <h5 class="mb-3">Follow Me</h5>
+                <div class="mb-4 d-flex align-items-center">
+                    <div class="contact-icon me-3">
+                        <i class="fas fa-phone text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1 text-white">Phone</h5>
+                        <a href="tel:+26668231628" class="text-primary text-decoration-none">(+266) 6823 1628</a>
+                    </div>
+                </div>
+                
+                <div class="mb-5 d-flex align-items-center">
+                    <div class="contact-icon me-3">
+                        <i class="fas fa-map-marker-alt text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1 text-white">Location</h5>
+                        <p class="mb-0 text-light opacity-75">Ha Matala Phase 2, Maseru, Lesotho</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h5 class="mb-3 text-white">Follow Me</h5>
                     <div class="d-flex">
-                        <!-- Facebook -->
-                        <a href="https://www.facebook.com/tokelo.foso" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                            <i class="fab fa-facebook-f text-primary"></i>
+                        <a href="https://www.facebook.com/tokelo.foso" class="social-icon">
+                            <i class="fab fa-facebook-f text-white"></i>
                         </a>
-                
-                        <!-- X (formerly Twitter) -->
-                        <a href="https://www.x.com/slkstr_" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                            <i class="fab fa-x text-primary"></i>
+                        <a href="https://www.x.com/slkstr_" class="social-icon">
+                            <i class="fab fa-x-twitter text-white"></i>
                         </a>
-                
-                        <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/in/tokelo-foso" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                            <i class="fab fa-linkedin-in text-primary"></i>
+                        <a href="https://www.linkedin.com/in/tokelo-foso" class="social-icon">
+                            <i class="fab fa-linkedin-in text-white"></i>
                         </a>
-                
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com/slkstrgrm" class="social-icon bg-dark p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <i class="fab fa-instagram text-primary"></i>
+                        <a href="https://www.instagram.com/slkstrgrm" class="social-icon">
+                            <i class="fab fa-instagram text-white"></i>
                         </a>
                     </div>
                 </div>
-                
             </div>
             
-            <div class="col-lg-6">
-                <div class="contact-form bg-black p-4 p-lg-5 rounded-3">
-                    <h3 class="mb-4">Send Me a Message</h3>
+            <div class="col-lg-6 section-enter">
+                <div class="portfolio-card p-4">
+                    <h3 class="mb-4 text-white">Send Me a Message</h3>
                     
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
                             {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
                     
                     <form action="{{ route('contact.submit') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label text-white">Name</label>
-                            <input type="text" name="name" id="name" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Name" required>
+                            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label text-white">Email</label>
-                            <input type="email" name="email" id="email" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Your Email" required>
+                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="subject" class="form-label text-white">Subject</label>
-                            <input type="text" name="subject" id="subject" class="form-control form-control-lg border-0 bg-dark text-white" placeholder="Subject">
+                            <input type="text" name="subject" class="form-control" placeholder="Subject">
                         </div>
                         <div class="mb-4">
-                            <label for="message" class="form-label text-white">Message</label>
-                            <textarea name="message" id="message" class="form-control form-control-lg border-0 bg-dark text-white" rows="5" placeholder="Your Message" required></textarea>
+                            <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary px-4 py-3 w-100">Send Message</button>
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -692,604 +1209,101 @@
     </div>
 </section>
 
-
-<!-- Add this for the portfolio overlay hover effect -->
-<style>
-    :root {
-        --bg-primary: #0f0f23;
-        --bg-secondary: #16213e;
-        --bg-tertiary: #1a1a2e;
-        --bg-card: rgba(22, 33, 62, 0.8);
-        --bg-glass: rgba(255, 255, 255, 0.05);
-        --border-glass: rgba(255, 255, 255, 0.1);
-        --text-primary: #ffffff;
-        --text-secondary: #b8c5d6;
-        --text-muted: #8892b0;
-        --accent-primary: #64ffda;
-        --accent-secondary: #ff6b9d;
-        --accent-tertiary: #ffd93d;
-        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --gradient-dark: linear-gradient(135deg, #0f0f23 0%, #16213e 50%, #1a1a2e 100%);
-        --shadow-dark: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        --shadow-glow: 0 0 30px rgba(100, 255, 218, 0.3);
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        line-height: 1.6;
-        overflow-x: hidden;
-    }
-
-    /* Animated Background */
-    .animated-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -2;
-        background: var(--gradient-dark);
-        background-size: 400% 400%;
-        animation: gradientShift 20s ease infinite;
-    }
-
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    /* Particle Background */
-    .particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
-
-    .particle {
-        position: absolute;
-        background: var(--accent-primary);
-        border-radius: 50%;
-        opacity: 0.1;
-        animation: float 20s linear infinite;
-    }
-
-    .particle:nth-child(odd) {
-        background: var(--accent-secondary);
-        animation-duration: 25s;
-    }
-
-    .particle:nth-child(3n) {
-        background: var(--accent-tertiary);
-        animation-duration: 30s;
-    }
-
-    @keyframes float {
-        0% {
-            transform: translateY(100vh) rotate(0deg);
-            opacity: 0;
-        }
-        10% {
-            opacity: 0.3;
-        }
-        90% {
-            opacity: 0.3;
-        }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-
-    /* Glass Morphism Effect */
-    .glass-card {
-        background: var(--bg-glass);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border-glass);
-        border-radius: 24px;
-        box-shadow: var(--shadow-dark);
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .glass-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-        opacity: 0.5;
-    }
-
-    .glass-card:hover {
-        transform: translateY(-12px);
-        box-shadow: var(--shadow-dark), var(--shadow-glow);
-        border-color: rgba(100, 255, 218, 0.3);
-    }
-
-    /* Hero Section */
-    .hero-section {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        position: relative;
-        padding: 120px 0 60px;
-        background: radial-gradient(
-        circle at 50% 50%,
-        rgba(12, 10, 21, 0.3),
-        #0f0f1d 50%,
-        #0a0a23 100%
-    );
-    }
-
-
-
-    section {
-        background: radial-gradient(
-        circle at 50% 50%,
-        rgba(12, 10, 21, 0.3),
-        #0f0f1d 50%,
-        #0a0a23 100%
-    );
-    }
-
-    section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Parallax effect */
-    filter: brightness(50%); /* Darkens only the background */
-    z-index: -1; /* Places it behind content */
-}
-
-    .hero-title {
-        font-size: clamp(3rem, 8vw, 6rem);
-        font-weight: 800;
-        line-height: 1.1;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 50%, var(--accent-secondary) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 2rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.5rem;
-        color: var(--text-secondary);
-        margin-bottom: 3rem;
-        font-weight: 300;
-    }
-
-    /* Typewriter Effect */
-    .typewriter {
-        font-size: 1.2rem;
-        color: var(--accent-primary);
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .typewriter::after {
-        content: '|';
-        animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-        0%, 50% { opacity: 1; }
-        51%, 100% { opacity: 0; }
-    }
-
-    /* Enhanced Buttons */
-    .glow-btn {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        border: none;
-        border-radius: 50px;
-        padding: 16px 32px;
-        color: var(--bg-primary);
-        font-weight: 600;
-        font-size: 1rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        box-shadow: 0 8px 32px rgba(100, 255, 218, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .glow-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition: left 0.6s;
-    }
-
-    .glow-btn:hover::before {
-        left: 100%;
-    }
-
-    .glow-btn:hover {
-        transform: translateY(-4px) scale(1.05);
-        box-shadow: 0 16px 48px rgba(100, 255, 218, 0.5);
-        color: var(--bg-primary);
-        text-decoration: none;
-    }
-
-    .glow-btn.secondary {
-        background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
-        box-shadow: 0 8px 32px rgba(255, 107, 157, 0.3);
-    }
-
-    .glow-btn.secondary:hover {
-        box-shadow: 0 16px 48px rgba(255, 107, 157, 0.5);
-    }
-
-    /* Profile Image */
-    .profile-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .profile-img {
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        border: 4px solid var(--accent-primary);
-        box-shadow: 0 0 50px rgba(100, 255, 218, 0.4);
-        transition: all 0.4s ease;
-        animation: profileFloat 6s ease-in-out infinite;
-        object-fit: cover;
-    }
-
-    @keyframes profileFloat {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(2deg); }
-    }
-
-    .profile-glow {
-        position: absolute;
-        top: -30px;
-        left: -30px;
-        right: -30px;
-        bottom: -30px;
-        background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
-        border-radius: 50%;
-        z-index: -1;
-        opacity: 0.2;
-        animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 0.2; }
-        50% { transform: scale(1.1); opacity: 0.1; }
-    }
-
-    /* Skills Progress Bars */
-    .skill-item {
-        margin-bottom: 2rem;
-    }
-
-    .skill-bar {
-        height: 12px;
-        background: var(--bg-secondary);
-        border-radius: 10px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .skill-progress {
-        height: 100%;
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        border-radius: 10px;
-        position: relative;
-        animation: skillSlide 2s ease-out;
-        box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
-    }
-
-    @keyframes skillSlide {
-        from { width: 0 !important; }
-    }
-
-    .skill-progress::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.1) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 0.1) 50%,
-            rgba(255, 255, 255, 0.1) 75%,
-            transparent 75%
-        );
-        background-size: 20px 20px;
-        animation: move 2s linear infinite;
-    }
-
-    @keyframes move {
-        0% { background-position: 0 0; }
-        100% { background-position: 20px 20px; }
-    }
-
-    /* Portfolio Cards */
-    .portfolio-card-modern {
-        background: var(--bg-glass);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border-glass);
-        border-radius: 20px;
-        overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        position: relative;
-        height: 100%;
-    }
-
-    .portfolio-card-modern::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 1;
-    }
-
-    .portfolio-card-modern:hover::before {
-        opacity: 0.05;
-    }
-
-    .portfolio-card-modern:hover {
-        transform: translateY(-15px) scale(1.02);
-        box-shadow: var(--shadow-dark), var(--shadow-glow);
-        border-color: rgba(100, 255, 218, 0.3);
-    }
-
-    .portfolio-image {
-        height: 250px;
-        object-fit: cover;
-        transition: transform 0.4s ease;
-    }
-
-    .portfolio-card-modern:hover .portfolio-image {
-        transform: scale(1.05);
-    }
-
-    /* Filter Buttons */
-    .filter-btn-modern {
-        background: var(--bg-glass);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border-glass);
-        border-radius: 30px;
-        padding: 12px 24px;
-        color: var(--text-secondary);
-        transition: all 0.3s ease;
-        margin: 0 8px 8px 0;
-        font-weight: 500;
-    }
-
-    .filter-btn-modern:hover,
-    .filter-btn-modern.active {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: var(--bg-primary);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
-    }
-
-    /* Contact Form */
-    .contact-form-modern {
-        background: var(--bg-glass);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border-glass);
-        border-radius: 24px;
-        padding: 3rem;
-    }
-
-    .form-control-modern {
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-glass);
-        border-radius: 12px;
-        padding: 16px 20px;
-        color: var(--text-primary);
-        transition: all 0.3s ease;
-        font-size: 1rem;
-    }
-
-    .form-control-modern:focus {
-        outline: none;
-        border-color: var(--accent-primary);
-        box-shadow: 0 0 25px rgba(100, 255, 218, 0.3);
-        background: var(--bg-tertiary);
-        color: var(--text-primary);
-    }
-
-    .form-control-modern::placeholder {
-        color: var(--text-muted);
-    }
-
-    /* Social Icons */
-    .social-icon-modern {
-        width: 60px;
-        height: 60px;
-        background: var(--bg-glass);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border-glass);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-secondary);
-        text-decoration: none;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        margin: 0 12px;
-        font-size: 1.2rem;
-    }
-
-    .social-icon-modern:hover {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: var(--bg-primary);
-        transform: translateY(-8px) rotate(360deg);
-        box-shadow: 0 15px 35px rgba(100, 255, 218, 0.4);
-    }
-
-    /* Experience Timeline */
-    .timeline-item {
-        background: var(--bg-glass);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border-glass);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .timeline-item::before {
-        content: '';
-        position: absolute;
-        left: -10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        background: var(--accent-primary);
-        border-radius: 50%;
-        box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
-    }
-
-    .timeline-item:hover {
-        transform: translateX(10px);
-        border-color: rgba(100, 255, 218, 0.3);
-    }
-
-    /* Section Titles */
-    .section-title {
-        font-size: clamp(2.5rem, 5vw, 4rem);
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 4rem;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    /* Animations */
-    .fade-in-up {
-        animation: fadeInUp 1s ease-out forwards;
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .stagger-1 { animation-delay: 0.1s; }
-    .stagger-2 { animation-delay: 0.2s; }
-    .stagger-3 { animation-delay: 0.3s; }
-    .stagger-4 { animation-delay: 0.4s; }
-    .stagger-5 { animation-delay: 0.5s; }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .hero-section {
-            text-align: center;
-            padding: 80px 0 40px;
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Typewriter effect
+    const roles = ["Web Designer", "Software Developer", "Graphic Designer"];
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typewriter = document.getElementById('typewriter');
+    
+    function type() {
+        const currentRole = roles[roleIndex];
+        
+        if (isDeleting) {
+            typewriter.textContent = currentRole.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            typewriter.textContent = currentRole.substring(0, charIndex + 1);
+            charIndex++;
         }
         
-        .profile-img {
-            width: 300px;
-            height: 300px;
+        if (!isDeleting && charIndex === currentRole.length) {
+            setTimeout(() => isDeleting = true, 2000);
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            roleIndex = (roleIndex + 1) % roles.length;
         }
         
-        .contact-form-modern {
-            padding: 2rem;
-        }
-        
-        .particles {
-            display: none;
-        }
+        setTimeout(type, isDeleting ? 50 : 100);
     }
-
-    /* Portfolio Filter Animation */
-    .portfolio-item-wrapper {
-        transition: all 0.4s ease;
-    }
-
-    .portfolio-item-wrapper.hidden {
-        opacity: 0;
-        transform: scale(0.8);
-        pointer-events: none;
-    }
-
-    .portfolio-item-wrapper.visible {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    /* Badge Styles */
-    .custom-badge {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: var(--bg-primary);
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-
-    /* Contact Info Styles */
-    .contact-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--bg-primary);
-        font-size: 1.2rem;
-    }
-</style>
+    
+    setTimeout(type, 1000);
+    
+    // Scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animate skill bars
+                if (entry.target.querySelector('.skill-progress')) {
+                    entry.target.querySelectorAll('.skill-progress').forEach(bar => {
+                        setTimeout(() => {
+                            bar.style.width = bar.dataset.width + '%';
+                        }, 500);
+                    });
+                }
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.section-enter').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Portfolio filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.dataset.filter;
+            
+            portfolioItems.forEach(item => {
+                if (filter === 'all' || item.dataset.category === filter) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
 
 @endsection
-
-<!-- Note: Make sure to include Font Awesome in your layout for the icons to work -->
-<!-- Add this in your layout file head: -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->

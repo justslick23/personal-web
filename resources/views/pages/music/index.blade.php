@@ -13,8 +13,9 @@
     <section class="discography-section">
         <div class="container py-5">
             <h2 class="text-center mb-4">My Discography</h2>
-            <p class="text-center text-white mb-5" style = "text-color: white;">Click a cover to view song or album details.</p>
+            <p class="text-center mb-5" style="color: white;">Click a cover to view song or album details.</p>
 
+            {{-- Mailing List --}}
             <div class="mt-5 text-center">
                 <h5>Subscribe to our mailing list for new music updates</h5>
                 <form action="{{ route('subscribe') }}" method="POST" class="row g-2 justify-content-center mt-2">
@@ -27,7 +28,8 @@
                     </div>
                 </form>
             </div>
-            <br><br>            
+
+            <br><br>
 
             {{-- Albums Section --}}
             <h3 class="mb-3">Albums</h3>
@@ -36,7 +38,7 @@
                     <div class="col-md-3 col-sm-6">
                         <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none text-dark">
                             <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
+                                <img src="{{ $album->cover_image ? asset($album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{ $album->title }}</h5>
                                     <p class="card-text text-muted">
@@ -62,10 +64,10 @@
                     <div class="col-md-3 col-sm-6">
                         <a href="{{ route('music.show', ['slug' => $track->slug]) }}" class="text-decoration-none text-dark">
                             <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $track->cover_art ? asset('storage/' . $track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $track->title }}">
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">{{ $track->title }}</h5>
-                                    <p class="card-text text-center text-muted">
+                                <img src="{{ $track->cover_art ? asset($track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $track->title }}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ $track->title }}</h5>
+                                    <p class="card-text text-muted">
                                         {{ $track->artist }}
                                         @if ($track->album)
                                             — <em>{{ $track->album->title }}</em>
@@ -82,9 +84,10 @@
         </div>
     </section>
 @endsection
+
 @push('styles')
 <style>
-    .discography-section {
+.discography-section {
     position: relative;
     background: radial-gradient(
         circle at 50% 50%,
@@ -111,7 +114,5 @@
     filter: brightness(50%);
     z-index: -1;
 }
-
-    </style>
-    
+</style>
 @endpush

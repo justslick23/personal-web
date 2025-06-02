@@ -128,85 +128,77 @@ class MusicController extends Controller
         $music->title = $validated['title'];
         $music->release_date = $validated['release_date'] ?? null;
     
-        // Generate slug from title
+        // Generate slug
         $music->slug = Str::slug($validated['title']);
     
-        // Upload Cover Art
+        // Upload cover art to public/uploads/covers
         if ($request->hasFile('cover_art')) {
-            $coverPath = $request->file('cover_art')->store('covers', 'public');
-            $music->cover_art = $coverPath;
+            $cover = $request->file('cover_art');
+            $coverFilename = Str::slug($validated['title']) . '-' . uniqid() . '.' . $cover->getClientOriginalExtension();
+            $cover->move(public_path('uploads/covers'), $coverFilename);
+            $music->cover_art = 'uploads/covers/' . $coverFilename;
         }
     
-        // Upload Audio File with song-title-based filename
+        // Upload audio file to public/uploads/audio
         if ($request->hasFile('audio_file')) {
-            $audioFile = $request->file('audio_file');
-    
-            // Sanitize and create filename from song title and extension
-            $extension = $audioFile->getClientOriginalExtension();
-            $audioFilename = Str::slug($validated['title']) . '.' . $extension;
-    
-            // Store the file with the custom filename
-            $audioPath = $audioFile->storeAs('audio', $audioFilename, 'public');
-            $music->file_path = $audioPath;
+            $audio = $request->file('audio_file');
+            $audioFilename = Str::slug($validated['title']) . '-' . uniqid() . '.' . $audio->getClientOriginalExtension();
+            $audio->move(public_path('uploads/audio'), $audioFilename);
+            $music->file_path = 'uploads/audio/' . $audioFilename;
         }
     
         $music->save();
-
-
     
-        // Attach artists (many-to-many using artist_song pivot table)
-        foreach ($artistIds as $artistId) {
-            $music->artists()->attach($artistId);
-        }
+        // Attach artists
+        $music->artists()->sync($artistIds);
     }
     
     
     
     private function storeAlbumData(Request $request, Album $music, $validated, $artistIds)
-{
-    $music->title = $validated['title'];
-    $music->release_date = $validated['release_date'] ?? null;
-    $music->slug = Str::slug($validated['title']); // Create a slug from the album title
-
-    // Upload Cover Art
-    if ($request->hasFile('cover_art')) {
-        $coverPath = $request->file('cover_art')->store('covers', 'public');
-        $music->cover_image = $coverPath;
-    }
+    {
+        $music->title = $validated['title'];
+        $music->release_date = $validated['release_date'] ?? null;
+        $music->slug = Str::slug($validated['title']);
     
-    $music->save();
+        // Upload cover image
+        if ($request->hasFile('cover_art')) {
+            $cover = $request->file('cover_art');
+            $coverFilename = Str::slug($validated['title']) . '-' . uniqid() . '.' . $cover->getClientOriginalExtension();
+            $cover->move(public_path('uploads/covers'), $coverFilename);
+            $music->cover_image = 'uploads/covers/' . $coverFilename;
+        }
     
-    // Attach artists (many-to-many using artist_song table)
-    foreach ($artistIds as $artistId) {
-        $music->artists()->attach($artistId); // This will use the artist_song pivot table
-    }
+        $music->save();
     
-    // Process all songs for this album
-    if (isset($validated['songs']) && is_array($validated['songs'])) {
-        foreach ($validated['songs'] as $songData) {
-            $song = new Song();
-            $song->title = $songData['title'];
-            $song->album_id = $music->id; // Connect to this album
-            
-            // Upload Audio File if provided
-            if (isset($songData['audio_file']) && $request->hasFile('songs.' . array_search($songData, $validated['songs']) . '.audio_file')) {
-                $audioFileKey = 'songs.' . array_search($songData, $validated['songs']) . '.audio_file';
-                $audioFile = $request->file($audioFileKey);
-                $audioFilename = $audioFile->getClientOriginalName();
-                $audioPath = $audioFile->storeAs('audio', $audioFilename, 'public');
-                $song->file_path = $audioPath;
-            }
-            
-            $song->save();
-            
-            // Attach the same artists to each song as the album
-            foreach ($artistIds as $artistId) {
-                $song->artists()->attach($artistId); // Use the artist_song pivot table for the song
+        // Attach artists to album
+        $music->artists()->sync($artistIds);
+    
+        // Handle songs if provided
+        if (isset($validated['songs']) && is_array($validated['songs'])) {
+            foreach ($validated['songs'] as $index => $songData) {
+                $song = new Song();
+                $song->title = $songData['title'];
+                $song->album_id = $music->id;
+                $song->slug = Str::slug($songData['title']) . '-' . uniqid();
+    
+                // Handle audio upload
+                $audioKey = 'songs.' . $index . '.audio_file';
+                if ($request->hasFile($audioKey)) {
+                    $audioFile = $request->file($audioKey);
+                    $audioFilename = Str::slug($songData['title']) . '-' . uniqid() . '.' . $audioFile->getClientOriginalExtension();
+                    $audioFile->move(public_path('uploads/audio'), $audioFilename);
+                    $song->file_path = 'uploads/audio/' . $audioFilename;
+                }
+    
+                $song->save();
+    
+                // Attach artists to the song
+                $song->artists()->sync($artistIds);
             }
         }
     }
-}
-
+    
 
     // Show a specific music item
     public function show($id)

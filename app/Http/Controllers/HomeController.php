@@ -175,7 +175,7 @@ public function downloadTrack($slug)
     $this->incrementTrackStatistic($track, 'downloads');
 
     // Construct full path to file
-    $filePath = storage_path('app/public/' . $track->file_path);
+    $filePath = public_path($track->file_path);
 
     if (!file_exists($filePath)) {
         abort(404, 'File does not exist.');

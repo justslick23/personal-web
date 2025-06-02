@@ -16,7 +16,7 @@
         <div class="row align-items-center">
             <!-- Track Cover -->
             <div class="col-md-5">
-                <img src="{{ $track->cover_art ? asset($track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}"
+                <img src="{{ $track->cover_art ? asset('public/' . $track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}"
                      class="img-fluid rounded shadow" alt="{{ $track->title }}">
             </div>
 

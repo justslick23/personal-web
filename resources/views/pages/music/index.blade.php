@@ -38,7 +38,7 @@
                     <div class="col-md-3 col-sm-6">
                         <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none text-dark">
                             <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $album->cover_image ? asset($album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
+                                <img src="{{ $album->cover_image ? asset('public/' . $album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{ $album->title }}</h5>
                                     <p class="card-text text-muted">
@@ -64,7 +64,7 @@
                     <div class="col-md-3 col-sm-6">
                         <a href="{{ route('music.show', ['slug' => $track->slug]) }}" class="text-decoration-none text-dark">
                             <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $track->cover_art ? asset($track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $track->title }}">
+                                <img src="{{ $track->cover_art ? asset('public/' .$track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $track->title }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{ $track->title }}</h5>
                                     <p class="card-text text-muted">

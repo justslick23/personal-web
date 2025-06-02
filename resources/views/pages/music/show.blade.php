@@ -57,7 +57,7 @@
                     <div class="mt-4 song-item p-3 mb-3 rounded bg-dark text-white">
                         <audio id="audio-{{ $track->id }}" class="song-audio w-100" controls
                                data-song-id="{{ $track->id }}">
-                            <source src="{{ asset($track->file_path) }}" type="audio/mpeg">
+                            <source src="{{ asset(path: 'public/' . $track->file_path) }}" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
                     </div>

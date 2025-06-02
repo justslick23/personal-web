@@ -13,7 +13,21 @@
     <section class="discography-section">
         <div class="container py-5">
             <h2 class="text-center mb-4">My Discography</h2>
-            <p class="text-center text-muted mb-5">Click a cover to view song or album details.</p>
+            <p class="text-center text-white mb-5" style = "text-color: white;">Click a cover to view song or album details.</p>
+
+            <div class="mt-5 text-center">
+                <h5>Subscribe to our mailing list for new music updates</h5>
+                <form action="{{ route('subscribe') }}" method="POST" class="row g-2 justify-content-center mt-2">
+                    @csrf
+                    <div class="col-auto">
+                        <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+            <br><br>            
 
             {{-- Albums Section --}}
             <h3 class="mb-3">Albums</h3>

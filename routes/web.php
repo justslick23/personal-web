@@ -66,9 +66,58 @@ Route::middleware('auth')->prefix('admin/portfolio')->name('portfolio.')->group(
     Route::get('{id}/edit', [PortfolioController::class, 'edit'])->name('edit');
     Route::put('{id}', [PortfolioController::class, 'update'])->name('update');
     Route::delete('{id}', [PortfolioController::class, 'destroy'])->name('destroy');
+    Route::get('{id}/image', [PortfolioController::class, 'serveImage'])->name('image');
+    Route::get('{id}/show', [PortfolioController::class, 'show'])->name('show'); // Add this
+
 });
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+
+// Add this route to your web.php temporarily
+Route::get('/debug-b2', function () {
+    try {
+        $config = config('filesystems.disks.b2');
+
+        // Correct keys to check
+        $requiredKeys = ['key', 'secret', 'region', 'bucket', 'endpoint'];
+        $missing = [];
+
+        foreach ($requiredKeys as $key) {
+            if (empty($config[$key])) {
+                $missing[] = $key;
+            }
+        }
+
+        if (!empty($missing)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Missing B2 configuration',
+                'missing_keys' => $missing,
+                'config' => array_map(fn ($v) => $v ? 'SET' : 'MISSING', $config),
+            ]);
+        }
+
+        // Try to upload a test file
+        $disk = Storage::disk('b2');
+        $testFile = 'debug/test-b2-' . Str::random(6) . '.txt';
+        $disk->put($testFile, 'Backblaze B2 test successful at ' . now());
+
+        // Clean up after 5 seconds delay (if needed)
+        $disk->delete($testFile);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'B2 connection working and file upload successful!',
+            'disk' => $disk->url($testFile) ?? 'No public URL available (private bucket)',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'B2 connection failed',
+            'error' => $e->getMessage(),
+        ]);
+    }
+});
 
 
 // Admin Music Routes - Requires Auth
@@ -99,3 +148,4 @@ Route::middleware('auth')->prefix('admin/music')->name('music.')->group(function
     Route::delete('{id}', [MusicController::class, 'destroy'])->name('destroy');
 });
 
+Route::get('/test-b2-connection', [PortfolioController::class, 'testB2Connection']);

@@ -1,3 +1,5 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -1092,8 +1094,12 @@
                 <div class="col-md-6 col-lg-4 portfolio-item" data-category="{{ $item->category }}">
                     <div class="portfolio-card h-100">
                         <div class="position-relative" style="aspect-ratio: 1/1;">
-                            <img src="{{ asset('storage/' . $item->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $item->title }}" style="border-radius: 12px 12px 0 0;">
-                            <div class="position-absolute top-0 end-0 m-3">
+                            <img 
+                            src="{{ Storage::disk('b2')->temporaryUrl($item->image, now()->addMinutes(15)) }}" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="{{ $item->title }}" 
+                            style="border-radius: 12px 12px 0 0;">
+                                                    <div class="position-absolute top-0 end-0 m-3">
                                 <span class="badge bg-primary">{{ $item->category }}</span>
                             </div>
                         </div>

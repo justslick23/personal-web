@@ -1,3 +1,5 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -46,12 +48,16 @@
             <div class="portfolio-item d-flex flex-column w-100 h-100" data-category="{{ strtolower(str_replace(' ', '-', $project->category)) }}">
                 <div class="portfolio-card bg-secondary h-100 rounded-lg overflow-hidden d-flex flex-column">
                     <div class="portfolio-image position-relative">
-                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="img-fluid w-100">
-                        <div class="portfolio-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100">
+                        <img 
+                        src="{{ Storage::disk('b2')->temporaryUrl($project->image, now()->addMinutes(15)) }}" 
+                        alt="{{ $project->title }}" 
+                        class="img-fluid w-100">                        <div class="portfolio-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100">
                             <div class="portfolio-actions">
-                                <a href="{{ asset('storage/' . $project->image) }}" class="btn btn-sm btn-light rounded-circle me-2" target="_blank">
-                                    <i class="fas fa-eye"></i>
-                                </a>
+                                href="{{ Storage::disk('b2')->temporaryUrl($project->image, now()->addMinutes(15)) }}" 
+                                class="btn btn-sm btn-light rounded-circle me-2" 
+                                target="_blank">
+                                <i class="fas fa-eye"></i>
+                            </a>
                                 @if ($project->link)
                                     <a href="{{ $project->link }}" class="btn btn-sm btn-primary rounded-circle" target="_blank">
                                         <i class="fas fa-link"></i>

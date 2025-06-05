@@ -158,36 +158,29 @@ class PortfolioController extends Controller
     * Handle image upload to Backblaze B2 with enhanced error handling
     */
     public function handleImageUpload($file)
-{
-    if (!$file) {
-        throw new \Exception('No file provided for upload');
+    {
+        if (!$file) {
+            throw new \Exception('No file provided for upload');
+        }
+    
+        // Generate unique filename
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+    
+        // Define destination path under public/
+        $destinationPath = public_path('images/portfolio');
+    
+        // Make sure the directory exists
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+    
+        // Move the uploaded file to the public directory
+        $file->move($destinationPath, $filename);
+    
+        // Return relative path (e.g., for saving in database)
+        return 'images/portfolio/' . $filename;
     }
-
-    // Generate unique filename
-    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-    $targetPath = 'images/portfolio/' . $filename;
-
-    // Save original file temporarily
-    $tempPath = $file->getRealPath();
-
-    // You can also move the uploaded file to a temp location first, but here we optimize directly
-
-    // Create the optimizer chain
-    $optimizerChain = OptimizerChainFactory::create();
-
-    // Optimize the image in-place
-    $optimizerChain->optimize($tempPath);
-
-    // Store optimized image to disk
-    $stored = Storage::disk('public')->putFileAs('images/portfolio', $file, $filename);
-
-    if (!$stored) {
-        throw new \Exception('Failed to store optimized image');
-    }
-
-    // Return stored file path (relative)
-    return $targetPath;
-}
+    
     
     /**
      * Get signed URL for private portfolio image

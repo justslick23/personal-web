@@ -44,12 +44,12 @@
                 <div class="d-flex gap-3 align-items-center mt-3">
                     <span class="badge bg-primary text-white px-3 py-2">
                         <i class="fas fa-headphones-alt me-1"></i>
-                        {{ number_format($track->statistics->plays ?? 0) }} Plays
+                        {{ number_format($track->songStatistics->plays ?? 0) }} Plays
                     </span>
 
                     <span class="badge bg-success text-white px-3 py-2">
                         <i class="fas fa-download me-1"></i>
-                        {{ number_format($track->statistics->downloads ?? 0) }} Downloads
+                        {{ number_format($track->songStatistics->downloads ?? 0) }} Downloads
                     </span>
                 </div>
 

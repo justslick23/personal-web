@@ -1094,11 +1094,8 @@
                 <div class="col-md-6 col-lg-4 portfolio-item" data-category="{{ $item->category }}">
                     <div class="portfolio-card h-100">
                         <div class="position-relative" style="aspect-ratio: 1/1;">
-                            <img 
-                            src="{{ Storage::disk('b2')->temporaryUrl($item->image, now()->addMinutes(15)) }}" 
-                            class="w-100 h-100 object-fit-cover" 
-                            alt="{{ $item->title }}" 
-                            style="border-radius: 12px 12px 0 0;">
+                            <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default.jpg') }}" alt="Course Image">
+
                                                     <div class="position-absolute top-0 end-0 m-3">
                                 <span class="badge bg-primary">{{ $item->category }}</span>
                             </div>

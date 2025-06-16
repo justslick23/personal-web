@@ -193,6 +193,8 @@ public function submit(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
         'message' => 'required|string|max:1000',
+        'g-recaptcha-response' => 'required|captcha',
+
     ]);
 
     try {

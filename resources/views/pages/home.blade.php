@@ -1192,6 +1192,7 @@
                     
                     <form action="{{ route('contact.submit') }}" method="POST">
                         @csrf
+                    
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                         </div>
@@ -1204,8 +1205,23 @@
                         <div class="mb-4">
                             <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
                         </div>
+                    
+                        {{-- reCAPTCHA token --}}
+                        <input type="hidden" name="g-recaptcha-response" id="recaptcha">
+                    
                         <button type="submit" class="btn btn-primary w-100">Send Message</button>
                     </form>
+                    
+                    {{-- Load reCAPTCHA script and generate token --}}
+                    {!! NoCaptcha::renderJs() !!}
+                    <script>
+                        grecaptcha.ready(function () {
+                            grecaptcha.execute('{{ config('captcha.sitekey') }}', {action: 'contact'}).then(function (token) {
+                                document.getElementById('recaptcha').value = token;
+                            });
+                        });
+                    </script>
+                    
                 </div>
             </div>
         </div>

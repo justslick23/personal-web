@@ -19,7 +19,7 @@
                     <p class="text-center text-white">I'd love to hear from you. Please fill out the form below, and I'll get back to you as soon as possible.</p>
                     
                     <!-- Contact Form -->
-                    <form action="#" method="POST" class="shadow p-4 bg-dark text-white rounded">
+                    <form action="{{ route('contact.submit') }}" method="POST" class="shadow p-4 bg-dark text-white rounded">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -35,6 +35,8 @@
                             <label for="message">Your Message</label>
                             <textarea class="form-control bg-secondary text-white" id="message" name="message" rows="5" required></textarea>
                         </div>
+                        <input type="hidden" name="g-recaptcha-response" id="recaptcha">
+
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary px-5">Send Message</button>
                         </div>
@@ -60,7 +62,3 @@
 </section>
 @endsection
 
-<style>
-    section {
-   
-</style>

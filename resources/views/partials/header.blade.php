@@ -21,31 +21,32 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" href="{{ route('home') }}">
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
                             Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('about') ? 'active' : '' }}" href="{{ route('about') }}">
+                        <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">
                             About Me
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('portfolio') ? 'active' : '' }}" href="{{ route('portfolio') }}">
+                        <a class="nav-link {{ request()->routeIs('portfolio') ? 'active' : '' }}" href="{{ route('portfolio') }}">
                             Portfolio
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('music') ? 'active' : '' }}" href="{{ route('music') }}">
+                        <a class="nav-link {{ request()->routeIs('music') ? 'active' : '' }}" href="{{ route('music') }}">
                             Music
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
+                        <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
                             Contact
                         </a>
                     </li>
                 </ul>
+                
                 
                 <!-- Right side elements -->
                 <div class="navbar-right d-flex align-items-center gap-3">

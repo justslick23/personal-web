@@ -77,6 +77,15 @@ return [
     | set to any locale for which you plan to have translation strings.
     |
     */
+
+    'aliases' => [
+
+    // ... other facades ...
+
+    'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+
+],
+
     
 
     'locale' => env('APP_LOCALE', 'en'),

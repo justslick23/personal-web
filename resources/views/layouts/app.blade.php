@@ -19,7 +19,7 @@
     <!-- SEO Meta Tags -->
     <title>@yield('title', 'Tokelo Foso - Creative Portfolio | Web Developer & Designer')</title>
     <meta name="description" content="@yield('description', 'Tokelo Foso - Professional web developer and creative designer. Explore my portfolio of innovative web solutions, creative designs, and digital experiences.')">
-    <meta name="keywords" content="@yield('keywords', 'Tokelo Foso, web developer, creative designer, portfolio, web design, frontend developer, UI/UX designer')">
+    <meta name="keywords" content="@yield('keywords', 'Tokelo Foso, web developer, creative designer, portfolio, web design, music producer, software developer, frontend developer, UI/UX designer')">
     <meta name="author" content="Tokelo Foso">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="language" content="English">

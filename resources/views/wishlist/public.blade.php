@@ -58,21 +58,38 @@
                                 @endif
 
                                 <!-- Action Buttons -->
+                             <!-- Action Buttons -->
                                 <div class="wish-actions">
                                     @if(!$item->is_received)
                                         @if($item->contribution_link)
-                                            <a href="{{ $item->contribution_link }}" 
-                                               target="_blank" 
-                                               class="btn btn-contribute">
-                                                <i class="fas fa-heart me-2"></i>
-                                                Contribute
-                                            </a>
+                                            <!-- Contribution Dropdown -->
+                                            <div class="dropdown w-100">
+                                                <button class="btn btn-contribute dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-heart me-2"></i>
+                                                    Contribute
+                                                </button>
+                                                <ul class="dropdown-menu w-100 shadow-sm">
+                                                    <li>
+                                                        <a class="dropdown-item" target="_blank" href="https://paypal.me/JustSlick?country.x=LS&locale.x=en_US">
+                                                            <i class="fab fa-paypal me-2 text-primary"></i> PayPal
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#mpesaModal">
+                                                            <i class="fas fa-mobile-alt me-2 text-success"></i> M-Pesa / EcoCash
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#eftModal">
+                                                            <i class="fas fa-university me-2 text-dark"></i> EFT / Bank Transfer
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         @endif
-                                        
+
                                         @if($item->url)
-                                            <a href="{{ $item->url }}" 
-                                               target="_blank" 
-                                               class="btn btn-purchase">
+                                            <a href="{{ $item->url }}" target="_blank" class="btn btn-purchase">
                                                 <i class="fas fa-external-link-alt me-2"></i>
                                                 Buy This
                                             </a>
@@ -84,6 +101,7 @@
                                         </div>
                                     @endif
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -103,6 +121,49 @@
         @endif
     </div>
 </section>
+
+<!-- M-Pesa/EcoCash Modal -->
+<div class="modal fade" id="mpesaModal" tabindex="-1" aria-labelledby="mpesaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="mpesaModalLabel">M-Pesa / EcoCash</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-2"><strong>Send to:</strong></p>
+          <ul class="list-unstyled">
+            <li class="text-muted">M-Pesa: <strong>+266 5676 9106</strong></li>
+            <li class="text-muted">EcoCash: <strong>+266 6823 1628</strong></li>
+          </ul>
+          <p class="text-muted">Please include your name or the item name in the reference.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- EFT Modal -->
+  <div class="modal fade" id="eftModal" tabindex="-1" aria-labelledby="eftModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="eftModalLabel">EFT / Bank Transfer</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-2"><strong>Banking Details:</strong></p>
+          <ul class="list-unstyled">
+            <li class="text-muted" ><strong>Bank:</strong> First National Bank </li>
+            <li class="text-muted"><strong>Account Name:</strong> Tokelo Foso</li>
+            <li class="text-muted"><strong>Account Number:</strong> 62512324782 </li>
+            <li class="text-muted"><strong>Branch Code:</strong> 280061</li>
+          </ul>
+          <p class="text-muted">Use your name or item name as reference. Kindly notify me once done.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
 <style>
 .wishlist-showcase {

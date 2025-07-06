@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WishlistItem;
 use Illuminate\Support\Facades\Storage;
-
+use App\Mail\WishlistItemAddedMail;
+use App\Models\WishlistEmail;
+use Illuminate\Support\Facades\Mail;
 class WishlistController extends Controller
 {
     // Show wishlist to public (friends)
@@ -43,11 +45,20 @@ class WishlistController extends Controller
             $validated['contribution_link'] = 'https://paypal.me/JustSlick?country.x=LS&locale.x=en_US';
         }
     
-        WishlistItem::create($validated);
+        // Create the wishlist item
+        $item = WishlistItem::create($validated);
+    
+        // Fetch all active subscribers
+        $subscribers = WishlistEmail::where('is_active', true)->get();
+    
+        // Send notification email to each subscriber
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)
+                ->send(new WishlistItemAddedMail($item, $subscriber));
+        }
     
         return redirect()->back()->with('success', 'Item added successfully.');
     }
-    
 
     // Show item edit form
     public function edit($id)
@@ -105,5 +116,40 @@ class WishlistController extends Controller
         $item->save();
 
         return redirect()->back()->with('success', 'Received status updated.');
+    }
+
+    public function listSubscribers()
+    {
+        $subscribers = WishlistEmail::orderBy('created_at', 'desc')->paginate(15);
+        return view('wishlist_emails.index', compact('subscribers'));
+    }
+
+    // Show form to add subscriber
+    public function createSubscriber()
+    {
+        return view('wishlist_emails.create');
+    }
+
+    // Store new subscriber
+    public function storeSubscriber(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'required|email|unique:wishlist_emails,email',
+        ]);
+
+        WishlistEmail::create($validated);
+
+        return redirect()->route('wishlistEmails.index')->with('success', 'Subscriber added successfully.');
+    }
+
+    // Delete subscriber
+    public function destroySubscriber($id)
+    {
+        $subscriber = WishlistEmail::findOrFail($id);
+        $subscriber->delete();
+
+        return redirect()->back()->with('success', 'Subscriber deleted.');
     }
 }

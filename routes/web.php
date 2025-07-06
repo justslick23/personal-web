@@ -83,6 +83,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggleReceived'])->name('wishlist.toggle');
 });
 
+Route::prefix('wishlist-emails')->name('wishlistEmails.')->group(function () {
+    Route::get('/', [WishlistController::class, 'listSubscribers'])->name('index');
+    Route::get('/create', [WishlistController::class, 'createSubscriber'])->name('create');
+    Route::post('/', [WishlistController::class, 'storeSubscriber'])->name('store');
+    Route::delete('/{id}', [WishlistController::class, 'destroySubscriber'])->name('destroy');
+});
+
+
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
 

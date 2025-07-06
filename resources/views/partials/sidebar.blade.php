@@ -82,6 +82,24 @@
                 </a>
             </li>
 
+            <!-- Wishlist Emails Section -->
+<li class="nav-item mt-3">
+    <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Wishlist Emails</h6>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ request()->is('wishlist-emails') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('wishlistEmails.index') }}">
+        <i class="material-symbols-rounded opacity-5">mail</i>
+        <span class="nav-link-text ms-1">Subscribers</span>
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ request()->is('wishlist-emails/create') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('wishlistEmails.create') }}">
+        <i class="material-symbols-rounded opacity-5">person_add</i>
+        <span class="nav-link-text ms-1">Add Subscriber</span>
+    </a>
+</li>
+
+
             <!-- Settings Section -->
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Settings</h6>

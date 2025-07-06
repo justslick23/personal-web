@@ -21,13 +21,9 @@
                     <input type="text" name="title" id="title" class="form-control" required value="{{ old('title') }}">
                     @error('title')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
+              
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
-                    @error('description')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price ($)</label>
+                    <label for="price" class="form-label">Price (M)</label>
                     <input type="number" step="0.01" name="price" id="price" class="form-control" value="{{ old('price') }}">
                     @error('price')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
@@ -36,11 +32,7 @@
                     <input type="url" name="url" id="url" class="form-control" value="{{ old('url') }}">
                     @error('url')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
-                <div class="mb-3">
-                    <label for="contribution_link" class="form-label">Contribution Link</label>
-                    <input type="url" name="contribution_link" id="contribution_link" class="form-control" value="{{ old('contribution_link') }}">
-                    @error('contribution_link')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
+             
                 <div class="mb-3">
                     <label for="image" class="form-label">Image (optional)</label>
                     <input type="file" name="image" id="image" class="form-control">

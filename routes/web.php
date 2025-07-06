@@ -5,6 +5,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\WishlistController;
+
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
@@ -26,9 +28,6 @@ Route::get('/albums/{slug}', [HomeController::class, 'showAlbum'])->name('albums
 
 Route::get('/music/album/{slug}/download', [HomeController::class, 'downloadAlbum'])->name('album.download');
 
-
-Route::get('artists/create', [ArtistController::class, 'create'])->name('artists.create');
-Route::post('artists', [ArtistController::class, 'store'])->name('artists.store');
 
 // Auth routes (login, register, etc.)
 // Public Authentication Routes
@@ -70,6 +69,20 @@ Route::middleware('auth')->prefix('admin/portfolio')->name('portfolio.')->group(
     Route::get('{id}/show', [PortfolioController::class, 'show'])->name('show'); // Add this
 
 });
+
+// Public wishlist
+Route::get('/wishlist', [WishlistController::class, 'showPublic'])->name('wishlist.public');
+
+// Admin (only for logged in user)
+Route::middleware('auth')->group(function () {
+    Route::get('/wishlist/manage', [WishlistController::class, 'indexAdmin'])->name('wishlist.admin');
+    Route::post('/wishlist/store', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::get('/wishlist/edit/{id}', [WishlistController::class, 'edit'])->name('wishlist.edit');
+    Route::post('/wishlist/update/{id}', [WishlistController::class, 'update'])->name('wishlist.update');
+    Route::delete('/wishlist/delete/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggleReceived'])->name('wishlist.toggle');
+});
+
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
 

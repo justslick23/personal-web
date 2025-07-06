@@ -145,7 +145,7 @@
     }
     </script>
     
-    @yield('styles')
+
     @stack('head-scripts')
 </head>
 <body itemscope itemtype="https://schema.org/WebPage">
@@ -155,6 +155,7 @@
     @include('partials.header')
     
     <main id="main-content" role="main">
+
         @yield('content')
     </main>
     

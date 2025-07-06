@@ -1,4 +1,5 @@
 @extends('layouts.auth')
+@php use Illuminate\Support\Facades\Auth; @endphp
 
 @section('content')
     <!-- Main content area -->

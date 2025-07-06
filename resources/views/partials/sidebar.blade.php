@@ -63,10 +63,22 @@
                 </a>
             </li>
 
+        
+
+            <!-- Wishlist Section -->
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Wishlist</h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{{ route('artists.create') }}">
-                    <i class="material-symbols-rounded opacity-5">person_add</i>
-                    <span class="nav-link-text ms-1">Add New Artist</span>
+                <a class="nav-link {{ request()->is('wishlist') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('wishlist.admin') }}">
+                    <i class="material-symbols-rounded opacity-5">favorite</i>
+                    <span class="nav-link-text ms-1">View Wishlist</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('wishlist/manage') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('wishlist.admin') }}">
+                    <i class="material-symbols-rounded opacity-5">edit</i>
+                    <span class="nav-link-text ms-1">Manage Wishlist</span>
                 </a>
             </li>
 

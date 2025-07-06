@@ -569,7 +569,6 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/background 2.jpg'); /* Ensure correct file path */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

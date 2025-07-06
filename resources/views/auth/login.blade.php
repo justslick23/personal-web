@@ -1,4 +1,5 @@
 @extends('layouts.authentication')
+@php use Illuminate\Support\Facades\Route; @endphp
 
 @section('content')
 <div class="container position-sticky z-index-sticky top-0">

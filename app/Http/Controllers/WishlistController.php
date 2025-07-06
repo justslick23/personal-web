@@ -37,8 +37,12 @@ class WishlistController extends Controller
         ]);
     
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('wishlist_images', 'public');
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('wishlist_images'), $imageName);
+            $validated['image'] = 'wishlist_images/' . $imageName;
         }
+        
     
         // Set default contribution link if none provided
         if (empty($validated['contribution_link'])) {

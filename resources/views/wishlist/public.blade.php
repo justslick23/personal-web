@@ -40,17 +40,8 @@
                             @endif
 
                             <!-- Item Image -->
-                            <div class="wish-image">
-                                @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" 
-                                         alt="{{ $item->title }}" 
-                                         loading="lazy">
-                                @else
-                                    <div class="image-placeholder">
-                                        <i class="fas fa-gift fa-3x"></i>
-                                    </div>
-                                @endif
-                            </div>
+                            <img src="{{ asset($item->image) }}" alt="{{ $item->title }}">
+
 
                             <!-- Item Details -->
                             <div class="wish-details">

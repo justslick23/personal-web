@@ -40,7 +40,7 @@
                             @endif
 
                             <!-- Item Image -->
-                            <img src="{{ asset($item->image) }}" alt="{{ $item->title }}">
+                            <img src="{{ $item->image ? asset('public/' . $item->image) : 'https://via.placeholder.com/400x400?text=No+Image' }}" alt="{{ $item->title }}">
 
 
                             <!-- Item Details -->

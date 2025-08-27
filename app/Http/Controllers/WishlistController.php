@@ -85,13 +85,16 @@ class WishlistController extends Controller
             'contribution_link' => 'nullable|url',
             'is_received' => 'nullable|boolean',
         ]);
-
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($item->image) {
-                Storage::disk('public')->delete($item->image);
+            if ($item->image && file_exists(public_path($item->image))) {
+                unlink(public_path($item->image));
             }
-            $validated['image'] = $request->file('image')->store('wishlist_images', 'public');
+        
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('wishlist_images'), $imageName);
+            $validated['image'] = 'wishlist_images/' . $imageName;
         }
 
         $item->update($validated);

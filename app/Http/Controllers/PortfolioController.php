@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Exception;
-use Aws\S3\Exception\S3Exception; // Ensure S3Exception is imported for specific errors
-use Illuminate\Support\Str; // Add this at the top if not already there
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class PortfolioController extends Controller
@@ -29,6 +27,7 @@ class PortfolioController extends Controller
     {
         return view('pages.admin.portfolio.create');
     }
+    
     public function store(Request $request)
     {
         try {
@@ -47,7 +46,7 @@ class PortfolioController extends Controller
                 'link.url' => 'Please provide a valid URL.',
             ]);
     
-            // Compress and store the image locally (default disk)
+            // Handle image upload locally
             $imagePath = $this->handleImageUpload($request->file('image'));
     
             // Save portfolio data in DB with local image path
@@ -59,17 +58,17 @@ class PortfolioController extends Controller
                 'link' => $validatedData['link'],
             ]);
     
-            \Log::info('Portfolio item created successfully', ['id' => $portfolio->id]);
+            Log::info('Portfolio item created successfully', ['id' => $portfolio->id]);
     
             return redirect()->route('portfolio.index')
                 ->with('success', 'Portfolio item added successfully!');
     
         } catch (Exception $e) {
-            \Log::error('Error creating portfolio item: ' . $e->getMessage());
+            Log::error('Error creating portfolio item: ' . $e->getMessage());
     
             // Clean up the uploaded file if it exists locally
-            if (isset($imagePath) && Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+            if (isset($imagePath) && file_exists(public_path($imagePath))) {
+                unlink(public_path($imagePath));
             }
     
             return redirect()->back()
@@ -103,9 +102,9 @@ class PortfolioController extends Controller
 
             // Handle new image upload
             if ($request->hasFile('image')) {
-                // Delete old image
-                if ($portfolio->image && Storage::disk('b2')->exists($portfolio->image)) {
-                    Storage::disk('b2')->delete($portfolio->image);
+                // Delete old image from public directory
+                if ($portfolio->image && file_exists(public_path($portfolio->image))) {
+                    unlink(public_path($portfolio->image));
                 }
                 
                 $imagePath = $this->handleImageUpload($request->file('image'));
@@ -135,9 +134,9 @@ class PortfolioController extends Controller
     public function destroy(Portfolio $portfolio)
     {
         try {
-            // Delete image from B2 storage
-            if ($portfolio->image && Storage::disk('b2')->exists($portfolio->image)) {
-                Storage::disk('b2')->delete($portfolio->image);
+            // Delete image from public directory
+            if ($portfolio->image && file_exists(public_path($portfolio->image))) {
+                unlink(public_path($portfolio->image));
             }
 
             $portfolio->delete();
@@ -155,147 +154,117 @@ class PortfolioController extends Controller
     }
 
     /**
-    * Handle image upload to Backblaze B2 with enhanced error handling
-    */
+     * Handle image upload to local public directory with compression
+     */
     public function handleImageUpload($file)
     {
         if (!$file) {
             throw new \Exception('No file provided for upload');
         }
-    
+
         // Generate unique filename
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-    
-        // Define destination path under public/
+        
+        // Define destination path in public directory
         $destinationPath = public_path('images/portfolio');
-    
-        // Make sure the directory exists
+        
+        // Create directory if it doesn't exist
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
-    
-        // Move the uploaded file to the public directory
-        $file->move($destinationPath, $filename);
-    
-        // Return relative path (e.g., for saving in database)
+
+        // Full path for the file
+        $fullPath = $destinationPath . '/' . $filename;
+        
+        try {
+            // Use Intervention Image for compression and resizing
+            $image = Image::make($file->getRealPath());
+            
+            // Resize if image is too large (max width: 1200px, maintain aspect ratio)
+            if ($image->width() > 1200) {
+                $image->resize(1200, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
+            
+            // Compress and save
+            $image->save($fullPath, 85); // 85% quality
+            
+        } catch (Exception $e) {
+            // Fallback to regular move if Intervention Image fails
+            Log::warning('Image compression failed, using regular upload: ' . $e->getMessage());
+            $file->move($destinationPath, $filename);
+        }
+
+        // Return relative path for database storage
         return 'images/portfolio/' . $filename;
     }
     
-    
     /**
-     * Get signed URL for private portfolio image
+     * Get public URL for portfolio image
      */
-    public function getImageUrl(Portfolio $portfolio, $expiration = 3600)
+    public function getImageUrl(Portfolio $portfolio)
     {
         if (!$portfolio->image) {
-            return null;
+            return asset('images/default-portfolio.jpg'); // Fallback image
         }
 
-        // Generate signed URL for private B2 bucket (1 hour expiration by default)
-        return Storage::disk('b2')->temporaryUrl($portfolio->image, now()->addSeconds($expiration));
+        return asset($portfolio->image);
     }
 
     /**
-     * Serve portfolio image through Laravel (for private buckets)
+     * Test local storage setup
      */
-    public function serveImage(Portfolio $portfolio)
+    public function testLocalStorage()
     {
         try {
-            if (!$portfolio->image || !Storage::disk('b2')->exists($portfolio->image)) {
-                abort(404, 'Image not found');
+            $testPath = public_path('images/portfolio');
+            
+            // Check if directory exists and is writable
+            if (!file_exists($testPath)) {
+                mkdir($testPath, 0755, true);
             }
-
-            $file = Storage::disk('b2')->get($portfolio->image);
-            $mimeType = Storage::disk('b2')->mimeType($portfolio->image);
-
-            return response($file, 200)
-                ->header('Content-Type', $mimeType)
-                ->header('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
-
-        } catch (Exception $e) {
-            Log::error('Error serving portfolio image: ' . $e->getMessage());
-            abort(404, 'Image not found');
-        }
-    }
-
-    public function testB2Connection()
-    {
-        try {
-            $config = config('filesystems.disks.b2');
-    
-            // Correct keys to check for S3 driver
-            $requiredKeys = ['key', 'secret', 'region', 'bucket', 'endpoint'];
-            $missing = [];
-    
-            foreach ($requiredKeys as $key) {
-                // Check if the key exists and has a non-empty value
-                if (!isset($config[$key]) || empty($config[$key])) {
-                    $missing[] = $key;
-                }
-            }
-    
-            if (!empty($missing)) {
+            
+            if (!is_writable($testPath)) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Missing B2 configuration',
-                    'missing_keys' => $missing,
-                    // Map values to 'SET' or 'MISSING' for display, handling null/empty for keys
-                    'config_status' => array_map(fn ($k) => (isset($config[$k]) && !empty($config[$k])) ? 'SET' : 'MISSING', array_combine($requiredKeys, $requiredKeys)),
-                    'provided_config' => $config // For more detailed debug, remove for production
+                    'message' => 'Portfolio images directory is not writable',
+                    'path' => $testPath,
+                    'permissions' => substr(sprintf('%o', fileperms($testPath)), -4)
                 ]);
             }
-    
-            $disk = Storage::disk('b2');
-            $testFile = 'debug/connection-test-' . Str::random(6) . '.txt';
-    
-            // Perform a write operation
-            $disk->put($testFile, 'Backblaze B2 test successful at ' . now());
-    
-            // Perform a read operation to verify
-            $content = $disk->get($testFile);
-    
-            // Clean up the test file
-            $disk->delete($testFile);
-    
+            
+            // Test file creation
+            $testFile = $testPath . '/test-' . time() . '.txt';
+            file_put_contents($testFile, 'Local storage test successful at ' . now());
+            
+            if (!file_exists($testFile)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to create test file',
+                    'path' => $testPath
+                ]);
+            }
+            
+            // Clean up test file
+            unlink($testFile);
+            
             return response()->json([
                 'status' => 'success',
-                'message' => 'B2 connection working and file operations successful!',
-                'test_file_path' => $testFile,
-                'test_file_content_snippet' => substr($content, 0, 50) . '...',
-                // If your bucket is public, you can try to get its URL for verification
-                'public_url_attempt' => method_exists($disk, 'url') ? $disk->url($testFile) : 'No public URL method',
+                'message' => 'Local storage is working correctly!',
+                'path' => $testPath,
+                'permissions' => substr(sprintf('%o', fileperms($testPath)), -4),
+                'writable' => is_writable($testPath),
+                'url_base' => asset('images/portfolio/')
             ]);
-        } catch (\Aws\S3\Exception\S3Exception $e) {
-            // Catch specific S3 exceptions for more detail
+            
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'B2 connection failed with S3 Exception',
-                'error_code' => $e->getAwsErrorCode(),
-                'error_message' => $e->getAwsErrorMessage(),
-                'request_id' => $e->getAwsRequestId(),
-                'details' => $e->getMessage(),
-                'config_status' => [
-                    'key' => config('filesystems.disks.b2.key') ? 'Set' : 'Missing',
-                    'secret' => config('filesystems.disks.b2.secret') ? 'Set' : 'Missing',
-                    'bucket' => config('filesystems.disks.b2.bucket') ? 'Set' : 'Missing',
-                    'region' => config('filesystems.disks.b2.region') ? 'Set' : 'Missing',
-                    'endpoint' => config('filesystems.disks.b2.endpoint') ? 'Set' : 'Missing',
-                ]
-            ]);
-        } catch (\Exception $e) {
-            // Catch any other general exceptions
-            return response()->json([
-                'status' => 'error',
-                'message' => 'B2 connection failed unexpectedly',
+                'message' => 'Local storage test failed',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                 'config_status' => [
-                    'key' => config('filesystems.disks.b2.key') ? 'Set' : 'Missing',
-                    'secret' => config('filesystems.disks.b2.secret') ? 'Set' : 'Missing',
-                    'bucket' => config('filesystems.disks.b2.bucket') ? 'Set' : 'Missing',
-                    'region' => config('filesystems.disks.b2.region') ? 'Set' : 'Missing',
-                    'endpoint' => config('filesystems.disks.b2.endpoint') ? 'Set' : 'Missing',
-                ]
+                'path' => $testPath ?? 'Unknown'
             ]);
         }
     }

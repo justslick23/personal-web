@@ -67,7 +67,7 @@ class LoginController extends Controller
         // Attempt to log the user in
         if ($this->attemptLogin($request)) {
             // Log successful login
-            \Log::info('User logged in successfully: ' . $request->email);
+            Log::info('User logged in successfully: ' . $request->email);
             
             return $this->sendLoginResponse($request);
         }

@@ -1,4 +1,8 @@
-@@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+@endphp
 
 @extends('layouts.app')
 
@@ -227,7 +231,7 @@
     </div>
 </section>
 
-<!-- Portfolio Section -->
+<<!-- Portfolio Section -->
 <section id="portfolio" class="py-5 bg-dark text-white">
     <div class="container py-5">
         <div class="text-center mb-5">
@@ -247,35 +251,59 @@
 
         <!-- Portfolio Items -->
         <div class="row g-4" id="portfolio-items">
-            @foreach($portfolioItems as $item)
-                <div class="col-md-6 col-lg-4" data-category="{{ $item->category }}">
-                    <div class="card bg-dark border-secondary h-100 card-hover">
-                        <div class="position-relative">
-                            <img src="{{ $item->image ? asset('public/' . $item->image) : asset('images/default.jpg') }}" 
-                                 class="card-img-top" 
-                                 alt="{{ $item->title }}"
-                                 style="height: 250px; object-fit: cover;">
-                            <div class="position-absolute top-0 end-0 m-3">
-                                <span class="badge bg-primary">{{ $item->category }}</span>
+            @if(isset($portfolioItems) && $portfolioItems->count() > 0)
+                @foreach($portfolioItems as $item)
+                    <div class="col-md-6 col-lg-4" data-category="{{ $item->category }}">
+                        <div class="card bg-dark border-secondary h-100 card-hover">
+                            <div class="position-relative">
+                                {{-- Correct image path for cPanel --}}
+                                <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-portfolio.jpg') }}" 
+                                     class="card-img-top" 
+                                     alt="{{ $item->title }}"
+                                     style="height: 250px; object-fit: cover;"
+                                     onerror="this.src='{{ asset('images/default-portfolio.jpg') }}'">
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge bg-primary">{{ $item->category }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold text-white">{{ $item->title }}</h5>
+                                <p class="card-text text-white-50 mb-3">
+                                    {{ Str::limit($item->description, 80) }}
+                                </p>
+                                @if($item->link && $item->category == 'Web App Design')
+                                    <a href="{{ $item->link }}" class="btn btn-sm btn-primary" target="_blank">
+                                        View Project
+                                    </a>
+                                @endif
                             </div>
                         </div>
-                        
-                        <div class="card-body text-center">
-                            <h5 class="card-title fw-bold text-white">{{ $item->title }}</h5>
-                            @if($item->link && $item->category == 'Web App Design')
-                                <a href="{{ $item->link }}" class="btn btn-sm btn-primary" target="_blank">
-                                    View Project
-                                </a>
-                            @endif
-                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="col-12 text-center">
+                    <div class="py-5">
+                        <i class="fas fa-folder-open fa-3x text-primary mb-3"></i>
+                        <h4 class="text-white">Portfolio Coming Soon</h4>
+                        <p class="text-white-50">Check back later for my latest work.</p>
                     </div>
                 </div>
-            @endforeach
+            @endif
         </div>
 
         <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-5">
-            {{ $portfolioItems->links() }}
+        @if(isset($portfolioItems) && $portfolioItems->hasPages())
+            <div class="d-flex justify-content-center mt-5">
+                {{ $portfolioItems->links() }}
+            </div>
+        @endif
+
+        <!-- View All Portfolio Link -->
+        <div class="text-center mt-5">
+            <a href="{{ route('portfolio') }}" class="btn btn-outline-primary btn-lg">
+                View All Projects <i class="fas fa-arrow-right ms-2"></i>
+            </a>
         </div>
     </div>
 </section>

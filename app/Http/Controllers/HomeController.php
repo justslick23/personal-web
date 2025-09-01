@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use App\Models\Song;
 use Illuminate\Support\Str;
+use PDF; // DomPDF facade
 
 use App\Models\Album;
 use Illuminate\Support\Facades\Mail;
@@ -39,6 +40,19 @@ class HomeController extends Controller
         return view('pages.about');
     }
 
+    public function downloadCV()
+    {
+        $pdf = PDF::loadView('pdf.cv')
+            ->setPaper('A4', 'portrait')
+            ->setOptions([
+                'margin_top' => 0,
+                'margin_right' => 0,
+                'margin_bottom' => 0,
+                'margin_left' => 0,
+            ]);
+    
+        return $pdf->download('Tokelo_Foso_CV.pdf');
+    }
     
     public function portfolio()
     {        $projects = Portfolio::paginate(6);

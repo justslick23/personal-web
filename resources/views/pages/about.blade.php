@@ -52,7 +52,7 @@
                         </div>
                         <div class="d-flex gap-3">
                           <a href="{{ route('contact') }}" class="btn btn-primary btn-lg rounded-pill">Get In Touch</a>
-                          <a href="{{ asset('storage/cv/Tokelo Foso CV (Revamp).pdf') }}" class="btn btn-outline-dark btn-lg rounded-pill" target="_blank" download>Download CV</a>
+                          <a href="{{ route('download.cv') }}" class="btn btn-outline-dark btn-lg rounded-pill" target="_blank">Download CV</a>
                         </div>
                       
                     </div>

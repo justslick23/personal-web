@@ -90,6 +90,8 @@ Route::prefix('wishlist-emails')->name('wishlistEmails.')->group(function () {
     Route::delete('/{id}', [WishlistController::class, 'destroySubscriber'])->name('destroy');
 });
 
+Route::get('/download-cv', [HomeController::class, 'downloadCV'])->name('download.cv');
+
 
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');

@@ -73,7 +73,7 @@ class LoginController extends Controller
         }
 
         // Log failed login attempt
-        \Log::warning('Failed login attempt for email: ' . $request->email);
+        Log::warning('Failed login attempt for email: ' . $request->email);
 
         // If the login attempt was unsuccessful, we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this

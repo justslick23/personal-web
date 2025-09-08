@@ -175,18 +175,29 @@ use Illuminate\Support\Str;
             @if(isset($portfolioItems) && $portfolioItems->count() > 0)
                 @foreach($portfolioItems as $index => $item)
                     <div class="portfolio-item scroll-animate" 
-                         data-category="{{ $item->category }}" 
+                         data-category="{{ $item->category ?? 'uncategorized' }}" 
                          style="animation-delay: {{ $index * 0.1 }}s;">
                         <div class="position-relative overflow-hidden">
-                            <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-portfolio.jpg') }}" 
+                            @php
+                                $imagePath = '';
+                                if (!empty($item->image)) {
+                                    $imagePath = Storage::disk('public')->exists($item->image) 
+                                        ? asset('storage/' . $item->image) 
+                                        : asset('images/default-portfolio.jpg');
+                                } else {
+                                    $imagePath = asset('images/default-portfolio.jpg');
+                                }
+                            @endphp
+                            
+                            <img src="{{ $imagePath }}" 
                                  class="portfolio-image" 
-                                 alt="{{ $item->title }}"
+                                 alt="{{ $item->title ?? 'Portfolio Item' }}"
                                  onerror="this.src='{{ asset('images/default-portfolio.jpg') }}'">
                             
                             <div class="portfolio-overlay">
                                 <div class="text-center">
-                                    @if($item->link && $item->category == 'Web App Design')
-                                        <a href="{{ $item->link }}" class="btn-modern btn-primary-modern" target="_blank">
+                                    @if(!empty($item->link) && ($item->category ?? '') == 'Web App Design')
+                                        <a href="{{ $item->link }}" class="btn-modern btn-primary-modern" target="_blank" rel="noopener">
                                             <i class="fas fa-external-link-alt"></i>
                                             View Project
                                         </a>
@@ -195,14 +206,14 @@ use Illuminate\Support\Str;
                             </div>
                             
                             <div class="position-absolute top-0 end-0 m-3">
-                                <span class="badge bg-success">{{ $item->category }}</span>
+                                <span class="badge bg-success">{{ $item->category ?? 'Uncategorized' }}</span>
                             </div>
                         </div>
                         
                         <div class="p-4">
-                            <h5 class="fw-bold mb-2">{{ $item->title }}</h5>
+                            <h5 class="fw-bold mb-2">{{ $item->title ?? 'Untitled Project' }}</h5>
                             <p class="text-secondary mb-0 small">
-                                {{ Str::limit($item->description, 100) }}
+                                {{ !empty($item->description) ? Str::limit($item->description, 100) : 'No description available.' }}
                             </p>
                         </div>
                     </div>
@@ -464,7 +475,18 @@ use Illuminate\Support\Str;
                         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
                             <i class="fas fa-check-circle me-2"></i>
                             {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                     
@@ -473,30 +495,66 @@ use Illuminate\Support\Str;
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                                    <input type="text" 
+                                           name="name" 
+                                           class="form-control @error('name') is-invalid @enderror" 
+                                           id="name" 
+                                           placeholder="Your Name" 
+                                           value="{{ old('name') }}"
+                                           required>
                                     <label for="name" class="text-secondary">Your Name</label>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Your Email" required>
+                                    <input type="email" 
+                                           name="email" 
+                                           class="form-control @error('email') is-invalid @enderror" 
+                                           id="email" 
+                                           placeholder="Your Email" 
+                                           value="{{ old('email') }}"
+                                           required>
                                     <label for="email" class="text-secondary">Your Email</label>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject">
+                                    <input type="text" 
+                                           name="subject" 
+                                           class="form-control @error('subject') is-invalid @enderror" 
+                                           id="subject" 
+                                           placeholder="Subject"
+                                           value="{{ old('subject') }}">
                                     <label for="subject" class="text-secondary">Subject</label>
+                                    @error('subject')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea name="message" class="form-control" id="message" style="height: 120px;" placeholder="Your Message" required></textarea>
+                                    <textarea name="message" 
+                                              class="form-control @error('message') is-invalid @enderror" 
+                                              id="message" 
+                                              style="height: 120px;" 
+                                              placeholder="Your Message" 
+                                              required>{{ old('message') }}</textarea>
                                     <label for="message" class="text-secondary">Your Message</label>
+                                    @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
-                                <input type="hidden" name="g-recaptcha-response" id="recaptcha">
+                                @if(config('captcha.sitekey'))
+                                    <input type="hidden" name="g-recaptcha-response" id="recaptcha">
+                                @endif
                                 <button type="submit" class="btn-modern btn-primary-modern w-100 py-3">
                                     <i class="fas fa-paper-plane me-2"></i>
                                     Send Message
@@ -510,11 +568,8 @@ use Illuminate\Support\Str;
     </div>
 </section>
 
-
-
 @endsection
 
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Typewriter Effect
@@ -525,6 +580,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const typewriterElement = document.getElementById('typewriter');
     
     function typeWriter() {
+        if (!typewriterElement) return;
+        
         const currentRole = roles[roleIndex];
         
         if (isDeleting) {
@@ -637,16 +694,42 @@ document.addEventListener('DOMContentLoaded', function() {
         counterObserver.observe(el);
     });
     
-    // reCAPTCHA
-    if (typeof grecaptcha !== 'undefined') {
-        grecaptcha.ready(function () {
-            grecaptcha.execute('{{ config('captcha.sitekey') }}', {action: 'contact'}).then(function (token) {
-                document.getElementById('recaptcha').value = token;
+    // reCAPTCHA - Only initialize if config exists
+    if (typeof grecaptcha !== 'undefined' && document.getElementById('recaptcha')) {
+        const sitekey = '{{ config("captcha.sitekey") }}';
+        if (sitekey) {
+            grecaptcha.ready(function () {
+                grecaptcha.execute(sitekey, {action: 'contact'}).then(function (token) {
+                    document.getElementById('recaptcha').value = token;
+                });
             });
+        }
+    }
+    
+    // Form validation enhancement
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
         });
     }
 });
 </script>
 
-{!! NoCaptcha::renderJs() !!}
-@endpush
+@if(config('captcha.sitekey'))
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('captcha.sitekey') }}"></script>
+@endif

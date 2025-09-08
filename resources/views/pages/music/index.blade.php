@@ -10,21 +10,21 @@
         ]
     ])
 
-    <section class="discography-section">
-        <div class="container py-5">
-            <h2 class="text-center mb-4">My Discography</h2>
-            <p class="text-center mb-5" style="color: white;">Click a cover to view song or album details.</p>
+    <section class="discography-section section-padding">
+        <div class="container">
+            <h2 class="text-center mb-4 text-gradient">My Discography</h2>
+            <p class="text-center mb-5 text-secondary">Click a cover to view song or album details.</p>
 
             {{-- Mailing List --}}
             <div class="mt-5 text-center">
-                <h5>Subscribe to our mailing list for new music updates</h5>
-                <form action="{{ route('subscribe') }}" method="POST" class="row g-2 justify-content-center mt-2">
+                <h5 class="text-glow">Subscribe to our mailing list for new music updates</h5>
+                <form action="{{ route('subscribe') }}" method="POST" class="row g-2 justify-content-center mt-3 contact-form">
                     @csrf
                     <div class="col-auto">
                         <input type="email" name="email" class="form-control" placeholder="Your email" required>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                        <button type="submit" class="btn-modern btn-primary-modern">Subscribe</button>
                     </div>
                 </form>
             </div>
@@ -32,16 +32,18 @@
             <br><br>
 
             {{-- Albums Section --}}
-            <h3 class="mb-3">Albums</h3>
+            <h3 class="mb-3 text-gradient">Albums</h3>
             <div class="row g-4 mb-5">
                 @forelse ($albums as $album)
                     <div class="col-md-3 col-sm-6">
-                        <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none text-dark">
-                            <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $album->cover_image ? asset('public/' . $album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $album->title }}">
-                                <div class="card-body text-center">
+                        <a href="{{ route('albums.view', $album->slug) }}" class="text-decoration-none">
+                            <div class="modern-card h-100 text-center">
+                                <img src="{{ $album->cover_image ? asset('public/' . $album->cover_image) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" 
+                                     class="wishlist-image" 
+                                     alt="{{ $album->title }}">
+                                <div class="mt-3">
                                     <h5 class="card-title">{{ $album->title }}</h5>
-                                    <p class="card-text text-muted">
+                                    <p class="text-secondary mb-0">
                                         @if($album->artists->isNotEmpty())
                                             {{ $album->artists->pluck('name')->join(', ') }}
                                         @else
@@ -58,16 +60,18 @@
             </div>
 
             {{-- Songs Section --}}
-            <h3 class="mb-3">All Songs</h3>
+            <h3 class="mb-3 text-gradient">All Songs</h3>
             <div class="row g-4">
                 @forelse ($songs as $track)
                     <div class="col-md-3 col-sm-6">
-                        <a href="{{ route('music.show', ['slug' => $track->slug]) }}" class="text-decoration-none text-dark">
-                            <div class="card shadow-sm h-100 border-0">
-                                <img src="{{ $track->cover_art ? asset('public/' .$track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" class="card-img-top" alt="{{ $track->title }}">
-                                <div class="card-body text-center">
+                        <a href="{{ route('music.show', ['slug' => $track->slug]) }}" class="text-decoration-none">
+                            <div class="modern-card h-100 text-center">
+                                <img src="{{ $track->cover_art ? asset('public/' .$track->cover_art) : 'https://via.placeholder.com/400x400?text=No+Cover' }}" 
+                                     class="wishlist-image" 
+                                     alt="{{ $track->title }}">
+                                <div class="mt-3">
                                     <h5 class="card-title">{{ $track->title }}</h5>
-                                    <p class="card-text text-muted">
+                                    <p class="text-secondary mb-0">
                                         {{ $track->artist }}
                                         @if ($track->album)
                                             — <em>{{ $track->album->title }}</em>
@@ -84,34 +88,3 @@
         </div>
     </section>
 @endsection
-
-@push('styles')
-<style>
-.discography-section {
-    position: relative;
-    background: radial-gradient(
-        circle at 50% 50%,
-        rgba(12, 10, 21, 0.3),
-        #0f0f1d 50%,
-        #0a0a23 100%
-    );
-    background-attachment: fixed;
-    overflow: hidden;
-}
-
-.discography-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    filter: brightness(50%);
-    z-index: -1;
-}
-</style>
-@endpush

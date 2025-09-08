@@ -4,292 +4,255 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tokelo Foso - Resume</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
+    /* Basic Reset */
+    * {margin:0; padding:0; box-sizing:border-box;}
+    
     body {
-        font-family: 'Roboto', Arial, sans-serif;
-        line-height: 1.4;
-        color: #1f2937;
-        background: white;
+        font-family: Arial, sans-serif;
         font-size: 11pt;
-        max-width: 210mm;
-        margin: 0 auto;
-        padding: 20mm;
+        line-height: 1.4;
+        color: #111;
+        padding: 20px;
     }
 
+    a {color: #1e40af; text-decoration: none;}
+    a:hover {text-decoration: underline;}
+
+    /* Container */
+    .resume-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* Header */
     .header {
         text-align: center;
-        margin-bottom: 20pt;
-        border-bottom: 2pt solid #3b82f6;
-        padding-bottom: 15pt;
+        margin-bottom: 20px;
     }
-
-    .name {
-        font-size: 20pt;
-        font-weight: 700;
-        margin-bottom: 5pt;
-        text-transform: uppercase;
-        letter-spacing: 1pt;
+    .header h1 {
+        font-size: 28pt;
         color: #1e40af;
+        margin-bottom: 5px;
     }
-
-    .job-title {
+    .header h2 {
         font-size: 12pt;
         font-weight: 600;
-        margin-bottom: 10pt;
-        text-transform: uppercase;
+        margin-bottom: 10px;
         color: #374151;
     }
 
     .contact-info {
         font-size: 10pt;
-        line-height: 1.3;
         color: #6b7280;
     }
+    .contact-info div {margin-bottom: 2px;}
 
+    /* Sections */
     .section {
-        margin-bottom: 20pt;
+        margin-bottom: 20px;
     }
-
-    .section-title {
+    .section h3 {
         font-size: 14pt;
         font-weight: 700;
-        text-transform: uppercase;
-        margin-bottom: 10pt;
-        border-bottom: 1pt solid #3b82f6;
-        padding-bottom: 3pt;
         color: #1e40af;
+        border-bottom: 2px solid #3b82f6;
+        padding-bottom: 3px;
+        margin-bottom: 10px;
     }
 
-    .job-entry, .education-entry, .cert-entry {
-        margin-bottom: 15pt;
+    /* Job/Project Entries */
+    .entry {
+        margin-bottom: 15px;
     }
-
-    .job-title-entry {
+    .entry-title {
         font-weight: 600;
         font-size: 12pt;
-        margin-bottom: 2pt;
-        color: #1f2937;
+        color: #111;
     }
-
-    .company-date {
+    .entry-subtitle {
         font-size: 11pt;
-        margin-bottom: 5pt;
-        font-style: italic;
-        color: #3b82f6;
-    }
-
-    .job-description {
-        font-size: 11pt;
-        margin-bottom: 5pt;
-        line-height: 1.3;
-        color: #4b5563;
-    }
-
-    .achievements {
-        margin-left: 20pt;
-        margin-bottom: 5pt;
-    }
-
-    .achievements li {
-        margin-bottom: 3pt;
-        line-height: 1.3;
-        color: #374151;
-    }
-
-    .education-title {
-        font-weight: 600;
-        font-size: 12pt;
-        margin-bottom: 2pt;
-        color: #1f2937;
-    }
-
-    .education-details {
-        font-size: 11pt;
-        margin-bottom: 2pt;
         color: #3b82f6;
         font-style: italic;
+        margin-bottom: 5px;
     }
-
-    .skills-grid {
-        display: block;
-    }
-
-    .skills-category {
-        margin-bottom: 8pt;
-    }
-
-    .skills-category-title {
-        font-weight: 600;
+    .entry-description {
         font-size: 11pt;
-        margin-bottom: 3pt;
-        color: #1e40af;
+        color: #111;
+        margin-bottom: 5px;
+    }
+    ul.achievements {
+        margin-left: 20px;
+        margin-bottom: 5px;
+    }
+    ul.achievements li {
+        margin-bottom: 3px;
     }
 
+    /* Two-column layout for skills and summary */
+    .two-columns {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .column {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    /* Skills */
     .skills-list {
-        font-size: 11pt;
-        line-height: 1.4;
-        color: #4b5563;
+        list-style: none;
+        padding-left: 0;
+    }
+    .skills-list li {
+        margin-bottom: 5px;
     }
 
-    .cert-title {
-        font-weight: 600;
-        font-size: 12pt;
-        margin-bottom: 2pt;
-        color: #1f2937;
+    /* Footer */
+    .footer {
+        text-align: center;
+        font-size: 10pt;
+        color: #6b7280;
+        margin-top: 20px;
     }
 
-    .cert-details {
-        font-size: 11pt;
-        font-style: italic;
-        color: #3b82f6;
-    }
-
-    .summary {
-        font-size: 11pt;
-        line-height: 1.4;
-        text-align: justify;
-        color: #4b5563;
-    }
 </style>
 </head>
 <body>
 
-<div class="header">
-    <h1 class="name">Tokelo Foso</h1>
-    <p class="job-title">Software Developer</p>
-    <div class="contact-info">
-        Phone: +26668231628 | Email: tokelo.foso23@gmail.com<br>
-        LinkedIn: linkedin.com/in/tokelo-foso | Website: tokelofoso.online<br>
-        Location: Maseru, Lesotho
-    </div>
-</div>
+<div class="resume-container">
 
-<div class="section">
-    <h2 class="section-title">Professional Summary</h2>
-    <p class="summary">
-        Full-Stack Software Developer with a passion for building scalable web applications and mobile solutions for government, corporate, and non-profit sectors. Expertise in modern web technologies including React.js, Node.js, PHP/Laravel, and Java, with proven ability to deliver end-to-end solutions from concept to deployment. Strong background in database design, API development, and mobile app development with excellent problem-solving skills and client relationship management.
-    </p>
-</div>
-
-<div class="section">
-    <h2 class="section-title">Work Experience</h2>
-    
-    <div class="job-entry">
-        <div class="job-title-entry">Website Designer</div>
-        <div class="company-date">Computer Business Solutions | Maseru District, Lesotho | 2022 - Present</div>
-        <p class="job-description">
-            Lead website designer responsible for delivering tailored web solutions including websites, portals, and applications for diverse clientele.
-        </p>
-        <ul class="achievements">
-            <li>Developed official websites for Government of Lesotho and Metropolitan Lesotho</li>
-            <li>Built Grant Management System for Lesotho Enterprise Assistance Programme under CAFI Project</li>
-            <li>Created in-house Recruitment System with full applicant tracking capabilities</li>
-            <li>Managed full project lifecycle from planning to deployment and maintenance</li>
-            <li>Utilized PHP, JavaScript, Wordpress and modern frameworks for scalable solutions</li>
-        </ul>
-    </div>
-
-    <div class="job-entry">
-        <div class="job-title-entry">Temporary Records Assistant</div>
-        <div class="company-date">Elizabeth Glaser Pediatric AIDS Foundation | 2021 - 2022</div>
-        <ul class="achievements">
-            <li>Supported comprehensive records management for program initiatives</li>
-            <li>Maintained data integrity and organizational compliance standards</li>
-        </ul>
-    </div>
-
-    <div class="job-entry">
-        <div class="job-title-entry">Graphic Designer</div>
-        <div class="company-date">Osmium Lesotho | 2021 - 2022</div>
-        <ul class="achievements">
-            <li>Created compelling graphics for digital and print media campaigns</li>
-            <li>Enhanced client brand visibility through innovative design solutions</li>
-            <li>Collaborated with marketing teams on cohesive brand strategies</li>
-        </ul>
-    </div>
-</div>
-
-<div class="section">
-    <h2 class="section-title">Key Projects</h2>
-    
-    <div class="job-entry">
-        <div class="job-title-entry">Government & Public Sector Projects</div>
-        <ul class="achievements">
-            <li>Government of Lesotho official website development and maintenance</li>
-            <li>Lesotho Embassy (USA) digital presence and portal creation</li>
-            <li>WASCO, MOFPMU, and NUL ongoing website support and updates</li>
-        </ul>
-    </div>
-
-    <div class="job-entry">
-        <div class="job-title-entry">Corporate Solutions</div>
-        <ul class="achievements">
-            <li>Metropolitan corporate website with custom functionality</li>
-            <li>Computer Business Solutions comprehensive platform development</li>
-            <li>Lesotho Flour Mills digital solution and web presence</li>
-        </ul>
-    </div>
-</div>
-
-<div class="section">
-    <h2 class="section-title">Technical Skills</h2>
-    <div class="skills-grid">
-        <div class="skills-category">
-            <div class="skills-category-title">Programming Languages:</div>
-            <div class="skills-list">JavaScript (ES6+), PHP, Java, HTML5, CSS3</div>
-        </div>
-        <div class="skills-category">
-            <div class="skills-category-title">Frameworks & Libraries:</div>
-            <div class="skills-list">React.js, Node.js, Laravel Framework, WordPress</div>
-        </div>
-        <div class="skills-category">
-            <div class="skills-category-title">Databases:</div>
-            <div class="skills-list">MySQL Database, MongoDB</div>
-        </div>
-        <div class="skills-category">
-            <div class="skills-category-title">Technologies & Tools:</div>
-            <div class="skills-list">RESTful APIs, Android App Development, Joget Workflow Platform, Adobe Photoshop</div>
-        </div>
-        <div class="skills-category">
-            <div class="skills-category-title">Core Competencies:</div>
-            <div class="skills-list">Full-Stack Development, System Architecture, Project Management, Problem Solving, Team Collaboration, Client Communication, Time Management, Adaptability</div>
+    <!-- Header -->
+    <div class="header">
+        <h1>Tokelo Foso</h1>
+        <h3>Software Developer</h3>
+        <div class="contact-info">
+            <div>Phone: +26668231628 | Email: tokelo.foso23@gmail.com</div>
+            <div>LinkedIn: linkedin.com/in/tokelo-foso | Website: tokelofoso.online</div>
+            <div>Location: Maseru, Lesotho</div>
         </div>
     </div>
-</div>
 
-<div class="section">
-    <h2 class="section-title">Education</h2>
-    
-    <div class="education-entry">
-        <div class="education-title">Bachelor of Computer & Information Sciences</div>
-        <div class="education-details">Monash University | 2018 - 2020</div>
-    </div>
-    
-    <div class="education-entry">
-        <div class="education-title">Foundation Programme, IT</div>
-        <div class="education-details">Monash South Africa | 2017 - 2018</div>
-    </div>
-    
-    <div class="education-entry">
-        <div class="education-title">IGCSE</div>
-        <div class="education-details">Machabeng College | 2014 - 2016</div>
-    </div>
-</div>
 
-<div class="section">
-    <h2 class="section-title">Certifications</h2>
-    
-    <div class="cert-entry">
-        <div class="cert-title">Microsoft Certified: Dynamics 365 Fundamentals (CRM)</div>
-        <div class="cert-details">Issued March 2024 | Credential ID: 2C0ABCDCFEE1FCA9</div>
+
+    <!-- Work Experience -->
+    <div class="section">
+        <h3>Work Experience</h3>
+        
+        <div class="entry">
+            <strong class="entry-title">Website Designer</strong>
+            <div class="entry-subtitle">Computer Business Solutions | Maseru, Lesotho | 2022 - Present</div>
+            <div class="entry-description">
+                Lead website designer and developer delivering web solutions, portals, and internal systems for clients.
+            </div>
+            <ul class="achievements">
+                <li>Designed websites for Metropolitan Lesotho, Government of Lesotho, Lesotho Flour Mills, CBS, and others.</li>
+                <li>Developed CAFI Grant Management System to streamline application processing.</li>
+                <li>Maintained websites and systems for Lesotho Electricity Company, Transformation Resource Center, WASCO, MOFPMU, and NUL.</li>
+                <li>Managed full project lifecycle using PHP, Laravel, React, and WordPress.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <strong >Temporary Records Assistant</strong>
+            <div class="entry-subtitle">Elizabeth Glaser Pediatric AIDS Foundation | 2021 - 2022</div>
+            <ul class="achievements">
+                <li>Supported records management and ensured compliance standards.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <strong >Graphic Designer</strong>
+            <div class="entry-subtitle">Osmium Lesotho | 2021 - 2022</div>
+            <ul class="achievements">
+                <li>Created graphics for digital/print campaigns and enhanced brand visibility.</li>
+            </ul>
+        </div>
     </div>
+
+    <!-- Key Projects -->
+    <div class="section">
+        <h3>Key Projects</h3>
+        <div class="entry">
+            <strong >Government & Public Sector Websites</strong>
+            <div class="entry-subtitle">Role: Lead Website Designer | 2022 - Present</div>
+            <ul class="achievements">
+                <li>Government of Lesotho official website</li>
+                <li>Lesotho Embassy (USA) website</li>
+                <li>WASCO, MOFPMU, NUL website support & maintenance</li>
+                <li>CAFI Grant Management System</li>
+
+            </ul>
+        </div>
+
+        <div class="entry">
+            <strong >Corporate Websites & Platforms</strong>
+            <div class="entry-subtitle">Role: Lead Developer/Designer | 2022 - Present</div>
+            <ul class="achievements">
+                <li>Metropolitan Lesotho corporate website</li>
+                <li>Lesotho Flour Mills website</li>
+                <li>Computer Business Solutions website & HR Recruitment System</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Skills & Competencies -->
+    <div class="section">
+        <h3>Technical Skills & Competencies</h3>
+        <div class="two-columns">
+            <div class="column">
+                <strong>Programming & Frameworks:</strong>
+                <ul class="skills-list">
+                    <li>JavaScript (ES6+), PHP, Java, HTML5, CSS3</li>
+                    <li>React.js, Node.js, Laravel, WordPress</li>
+                </ul>
+            </div>
+            <div class="column">
+                <strong>Databases & Tools:</strong>
+                <ul class="skills-list">
+                    <li>MySQL, MongoDB</li>
+                    <li>REST APIs, Android App Development, Joget Workflow, Adobe Photoshop</li>
+                    <li>Full-Stack Development, System Architecture, Project Management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education -->
+    <div class="section">
+        <h3>Education</h3>
+        <div class="entry">
+            <div class="entry-title">Bachelor of Computer & Information Sciences</div>
+            <div class="entry-subtitle">Monash University | 2018 - 2020</div>
+        </div>
+        <div class="entry">
+            <div class="entry-title">Foundation Programme, IT</div>
+            <div class="entry-subtitle">Monash South Africa | 2017 - 2018</div>
+        </div>
+        <div class="entry">
+            <div class="entry-title">IGCSE</div>
+            <div class="entry-subtitle">Machabeng College | 2014 - 2016</div>
+        </div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="section">
+        <h3>Certifications</h3>
+        <div class="entry">
+            <div class="entry-title">Microsoft Certified: Dynamics 365 Fundamentals (CRM)</div>
+            <div class="entry-subtitle">Issued March 2024 | Credential ID: 2C0ABCDCFEE1FCA9</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Tokelo Foso
+    </div>
+
 </div>
 
 </body>

@@ -1,218 +1,160 @@
 @extends('layouts.app')
 @php
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
 @endphp
+
 @section('content')
 @section('title', 'Portfolio - Tokelo Foso')
 
-    @include('partials.page-header', [
-        'title' => 'Portfolio',
-        'breadcrumbs' => [
-            ['name' => 'Portfolio', 'url' => route('portfolio')],
-        ]
-    ])
+@include('partials.page-header', [
+    'title' => 'Portfolio',
+    'breadcrumbs' => [
+        ['name' => 'Portfolio', 'url' => route('portfolio')],
+    ]
+])
 
-    <!-- Portfolio Categories Section -->
-    <section id="categories" class="categories-section py-5 bg-dark text-light">
-        <div class="container">
-            <!-- Section Heading -->
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <div class="section-heading" data-aos="fade-up">
-                        <h6 class="text-warning fw-bold text-uppercase mb-2">Expertise</h6>
-                        <h2 class="display-5 fw-bold mb-3">Areas of <span class="text-warning">Specialization</span></h2>
-                        <div class="section-line mx-auto bg-warning my-3" style="width: 80px; height: 3px;"></div>
-                        <p class="lead">Browse through my different areas of expertise and specialization.</p>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Category Pills -->
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8">
-                    <div class="category-filter d-flex flex-wrap justify-content-center gap-2" data-aos="fade-up">
-                        <button class="btn btn-warning rounded-pill active" data-filter="all">All Projects</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="web-app-design">Web App Design</button>
-                        <button class="btn btn-outline-light rounded-pill" data-filter="poster-design">Poster Design</button>
-                    </div>
-                </div>
-            </div>
-          
+<!-- Hero Section -->
+<section class="section-padding text-center">
+    <div class="container">
+        <h6 class="text-gradient text-uppercase fw-bold mb-3 text-glow scroll-animate">Expertise</h6>
+        <h1 class="display-3 fw-bold mb-4 typewriter-heading scroll-animate" data-speed="80">
+            Areas of <span class="text-gradient">Specialization</span>
+        </h1>
+        <p class="lead text-secondary mb-5 scroll-animate">Browse through my different areas of expertise and creative work.</p>
+    </div>
+</section>
 
-            <!-- Portfolio Grid -->
-            <div class="row g-4 portfolio-grid" id="filtered-projects">
-                @foreach ($projects as $project)
-                    <div class="col-md-6 col-lg-4 d-flex">
-                        <div class="portfolio-item d-flex flex-column w-100 h-100" data-category="{{ strtolower(str_replace(' ', '-', $project->category)) }}">
-                            <div class="portfolio-card bg-secondary h-100 rounded-lg overflow-hidden d-flex flex-column">
-                                <div class="portfolio-image position-relative">
-                                    {{-- Correct image path for cPanel hosting --}}
-                                    <img src="{{  $project->image ? asset( 'storage/' . $project->image) : asset('images/default-portfolio.jpg') }}" 
-                                         alt="{{ $project->title }}" 
-                                         class="img-fluid w-100"
-                                         style="height: 250px; object-fit: cover;">
-                                    
-                                    <div class="portfolio-overlay d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100">
-                                        <div class="portfolio-actions">
-                                            {{-- View image in new tab --}}
-                                            <a href="{{ $project->image ? asset($project->image) : asset('images/default-portfolio.jpg') }}" 
-                                               class="btn btn-sm btn-light rounded-circle me-2" 
-                                               target="_blank"
-                                               title="View Image">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            
-                                            {{-- Project link if available --}}
-                                            @if ($project->link)
-                                                <a href="{{ $project->link }}" 
-                                                   class="btn btn-sm btn-primary rounded-circle" 
-                                                   target="_blank"
-                                                   title="Visit Project">
-                                                    <i class="fas fa-link"></i>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="portfolio-content p-4">
-                                    <div class="portfolio-category mb-2">
-                                        <span class="badge bg-warning rounded-pill">{{ $project->category }}</span>
-                                    </div>
-                                    <h4 class="portfolio-title mb-2">{{ $project->title }}</h4>
-                                    <p class="portfolio-description text-muted mb-0">
-                                        {{ Str::limit($project->description, 100) }}
-                                    </p>
-                                </div>
+<!-- Portfolio Section -->
+<div class="container">
+    <!-- Filters -->
+    <div class="filter-buttons scroll-animate mb-4">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="web-app-design">Web App Design</button>
+        <button class="filter-btn" data-filter="poster-design">Poster Design</button>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <section class="section-padding">
+    <div class="portfolio-grid" id="filtered-projects">
+        @foreach ($projects as $project)
+            <div class="portfolio-item scroll-animate" data-category="{{ strtolower(str_replace(' ', '-', $project->category)) }}">
+                <div class="modern-card p-0 overflow-hidden">
+                    <div class="portfolio-image-container position-relative">
+                        <img src="{{ $project->image ? asset('storage/' . $project->image) : asset('images/default-portfolio.jpg') }}" 
+                             alt="{{ $project->title }}" 
+                             class="portfolio-image">
+                        
+                        <div class="portfolio-overlay">
+                            <div class="d-flex gap-3">
+                                <a href="{{ $project->image ? asset('storage/' . $project->image) : asset('images/default-portfolio.jpg') }}" 
+                                   class="btn-modern btn-sm" target="_blank" title="View Image">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                @if ($project->link)
+                                    <a href="{{ $project->link }}" class="btn-primary-modern btn-sm" target="_blank" title="Visit Project">
+                                        <i class="fas fa-link"></i>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    <div class="p-4">
+                        <span class="badge bg-primary rounded-pill px-3 py-2">{{ $project->category }}</span>
+                        <h4 class="mb-3 text-gradient">{{ $project->title }}</h4>
+                        <p class="text-secondary">{{ Str::limit($project->description, 120) }}</p>
+                    </div>
+                </div>
             </div>
+        @endforeach
+    </div>
 
-            {{-- Handle empty state --}}
-            @if($projects->isEmpty())
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <div class="py-5">
-                            <i class="fas fa-folder-open fa-3x text-warning mb-3"></i>
-                            <h4 class="text-white">No Projects Yet</h4>
-                            <p class="text-muted">Portfolio projects will appear here once they are added.</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Pagination -->
-            @if($projects->hasPages())
-                <div class="row justify-content-center mt-5">
-                    <div class="col-12 text-center">
-                        {{ $projects->links('pagination::bootstrap-4') }}
-                    </div>
-                </div>
-            @endif
+    <!-- Empty State -->
+    @if($projects->isEmpty())
+        <div class="text-center py-5 scroll-animate">
+            <i class="fas fa-folder-open text-primary" style="font-size:4rem;opacity:0.5;"></i>
+            <h3 class="mt-4 mb-3">No Projects Yet</h3>
+            <p class="text-secondary">Portfolio projects will appear here once they are added.</p>
         </div>
-    </section>
+    @endif
 
-@endsection
+    <!-- Pagination -->
+    @if($projects->hasPages())
+        <div class="text-center mt-5 scroll-animate">
+            <div class="pagination-wrapper">
+                {{ $projects->links('pagination::bootstrap-4') }}
+            </div>
+        </div>
+    @endif
+</div>
+</section>
 
-<style>
-    section {
-        background: radial-gradient(
-            circle at 50% 50%,
-            rgba(12, 10, 21, 0.3),
-            #0f0f1d 50%,
-            #0a0a23 100%
-        );
-    }
 
-    section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed; /* Parallax effect */
-        filter: brightness(50%); /* Darkens only the background */
-        z-index: -1; /* Places it behind content */
-        padding-bottom: 100px !important;
-    }
 
-    .portfolio-overlay {
-        background: rgba(0, 0, 0, 0.8);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .portfolio-item:hover .portfolio-overlay {
-        opacity: 1;
-    }
-
-    .portfolio-actions .btn {
-        transition: transform 0.2s ease;
-    }
-
-    .portfolio-actions .btn:hover {
-        transform: scale(1.1);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .portfolio-image img {
-            height: 200px !important;
-        }
-    }
-</style>
-
+<!-- Scripts -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filterButtons = document.querySelectorAll(".category-filter button");
-        const items = document.querySelectorAll(".portfolio-item");
+document.addEventListener('DOMContentLoaded', function() {
+    // Portfolio Filter
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-        filterButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                const filter = this.getAttribute("data-filter").toLowerCase();
+    filterButtons.forEach(button => button.addEventListener('click', function() {
+        const filter = this.dataset.filter;
 
-                // Update button styling
-                filterButtons.forEach(btn => {
-                    btn.classList.remove("btn-warning", "active");
-                    btn.classList.add("btn-outline-light");
-                });
-                this.classList.remove("btn-outline-light");
-                this.classList.add("btn-warning", "active");
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
 
-                // Show/hide items with animation
-                items.forEach(item => {
-                    const category = item.getAttribute("data-category");
-                    const parentCol = item.parentElement;
-                    
-                    if (filter === "all" || category === filter) {
-                        parentCol.style.display = "flex";
-                        // Add fade-in animation
-                        item.style.opacity = "0";
-                        setTimeout(() => {
-                            item.style.opacity = "1";
-                            item.style.transition = "opacity 0.3s ease";
-                        }, 100);
-                    } else {
-                        parentCol.style.display = "none";
-                    }
-                });
-            });
+        portfolioItems.forEach(item => {
+            const category = item.dataset.category;
+            if(filter==='all'||category===filter){ 
+                item.style.display='block';
+                setTimeout(()=>{ item.style.opacity='1'; item.style.transform='translateY(0)'; },100);
+            } else {
+                item.style.opacity='0';
+                item.style.transform='translateY(20px)';
+                setTimeout(()=>{ item.style.display='none'; },300);
+            }
         });
+    }));
+});
 
-        // Image loading error handling
-        document.querySelectorAll('.portfolio-image img').forEach(img => {
-            img.addEventListener('error', function() {
-                this.src = '{{ asset("images/default-portfolio.jpg") }}';
-                this.alt = 'Image not available';
-            });
+// Animate numbers on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.stat-item .stat-number');
+    const speed = 50; // lower = faster
+
+    function animateCounter(counter) {
+        const updateCount = () => {
+            const target = +counter.parentElement.dataset.count;
+            const suffix = counter.parentElement.dataset.suffix || '';
+            const count = +counter.innerText.replace(/\D/g,'');
+            const increment = Math.ceil(target / speed);
+
+            if(count < target) {
+                counter.innerText = count + increment + suffix;
+                setTimeout(updateCount, 30);
+            } else {
+                counter.innerText = target + suffix;
+            }
+        };
+        updateCount();
+    }
+
+    function isInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom >= 0;
+    }
+
+    function runCounters() {
+        counters.forEach(counter => {
+            if(isInViewport(counter) && !counter.classList.contains('counted')) {
+                counter.classList.add('counted');
+                animateCounter(counter);
+            }
         });
-    });
+    }
+
+    window.addEventListener('scroll', runCounters);
+    runCounters(); // run on load
+});
 </script>
+@endsection

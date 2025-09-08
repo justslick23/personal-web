@@ -1,17 +1,32 @@
+{{-- Modern Page Header Component --}}
 <section class="page-header">
+    <div class="header-overlay"></div> <!-- Neon glow overlay -->
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
-                <h1 class="page-title">{{ $title ?? 'Page Title' }}</h1>
-                <nav aria-label="breadcrumb">
+                <h1 class="page-title scroll-animate typewriter-heading" data-speed="80">
+                    {{ $title ?? 'Page Title' }}
+                </h1>
+                <nav aria-label="breadcrumb" class="scroll-animate">
                     <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="/" class="breadcrumb-link">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
                         @isset($breadcrumbs)
                             @foreach ($breadcrumbs as $breadcrumb)
                                 @if (!$loop->last)
-                                    <li class="breadcrumb-item"><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['name'] }}</a></li>
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ $breadcrumb['url'] }}" class="breadcrumb-link">
+                                            {{ $breadcrumb['name'] }}
+                                        </a>
+                                    </li>
                                 @else
-                                    <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb['name'] }}</li>
+                                    <li class="breadcrumb-item active text-gradient" aria-current="page">
+                                        {{ $breadcrumb['name'] }}
+                                    </li>
                                 @endif
                             @endforeach
                         @endisset
@@ -24,90 +39,94 @@
 
 <style>
 .page-header {
-    background: radial-gradient(
-        circle at 50% 50%,
-        rgba(12, 10, 21, 0.83),
-        #0f0f1d 50%,
-        #0a0a23 100%
-    );
-    background-size: 200% 200%;
-    background-position: center;
-    animation: animateGradient 20s ease-in-out infinite;
-
     position: relative;
     text-align: center;
-
-    /* Increased padding for more height */
     padding: 220px 0 140px;
-
     color: white;
     margin-top: -80px;
-    z-index: 1;
     overflow: hidden;
+    background: linear-gradient(135deg, #05010a 0%, #0f0a1a 50%, #1a0f2a 100%);
 }
 
-
-.page-header::before {
-    content: "";
+/* Neon glow overlay */
+.page-header .header-overlay {
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-    z-index: 0;
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 0.15), transparent 60%);
+    z-index: 1;
+    pointer-events: none;
 }
 
+/* Ensure container content is above overlay */
 .page-header .container {
     position: relative;
     z-index: 2;
 }
 
-/* 🌌 Animation keyframes */
-@keyframes animateGradient {
-    0% {
-        background-position: 50% 50%;
-    }
-    25% {
-        background-position: 60% 40%;
-    }
-    50% {
-        background-position: 40% 60%;
-    }
-    75% {
-        background-position: 45% 45%;
-    }
-    100% {
-        background-position: 50% 50%;
-    }
-}
-
-
-  .page-title {
+.page-title {
     font-size: 3rem;
     font-weight: 700;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-  }
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #00e5ff;
+    animation: blinkCursor 1s step-end infinite, glowTitle 2s ease-in-out infinite alternate;
+}
 
-  .breadcrumb {
+@keyframes blinkCursor {
+    0%, 50% { border-color: #00e5ff; }
+    51%, 100% { border-color: transparent; }
+}
+
+@keyframes glowTitle {
+    0% { text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff; }
+    50% { text-shadow: 0 0 15px #00e5ff, 0 0 25px #00e5ff, 0 0 35px #00e5ff; }
+    100% { text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff; }
+}
+
+.breadcrumb {
     background: transparent;
     padding: 0;
     margin-top: 10px;
-  }
+}
 
-  .breadcrumb-item a {
+.breadcrumb-item a {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: color 0.3s ease;
-  }
-
-  .breadcrumb-item a:hover {
-    color: white;
-  }
-
-  .breadcrumb-item.active {
-    color: white;
-    font-weight: 600;
-  }
-
-  body {
-    padding-top: 0; /* remove extra space */
 }
+
+.breadcrumb-item a:hover {
+    color: #00e5ff;
+}
+
+.breadcrumb-item.active {
+    color: #00e5ff;
+    font-weight: 600;
+}
+
+body { padding-top: 0; }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const typewriterElements = document.querySelectorAll('.typewriter-heading');
+
+    typewriterElements.forEach(el => {
+        const text = el.textContent;
+        el.textContent = '';
+        const speed = parseInt(el.dataset.speed) || 100;
+
+        let index = 0;
+
+        function type() {
+            if (index < text.length) {
+                el.textContent += text.charAt(index);
+                index++;
+                setTimeout(type, speed);
+            }
+        }
+
+        type();
+    });
+});
+</script>

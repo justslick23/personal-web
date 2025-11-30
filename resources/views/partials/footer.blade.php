@@ -44,17 +44,7 @@
                 </ul>
             </div>
 
-            <!-- Services -->
-            <div class="footer-section scroll-reveal" style="animation-delay: 0.2s;">
-                <h5>Services</h5>
-                <ul class="footer-links">
-                    <li><a href="{{ route('portfolio') }}">Web Design</a></li>
-                    <li><a href="{{ route('portfolio') }}">Web Development</a></li>
-                    <li><a href="{{ route('portfolio') }}">Graphic Design</a></li>
-                    <li><a href="{{ route('portfolio') }}">UI/UX Design</a></li>
-                    <li><a href="{{ route('portfolio') }}">Branding</a></li>
-                </ul>
-            </div>
+        
 
             <!-- Contact Info -->
             <div class="footer-section scroll-reveal" style="animation-delay: 0.3s;">

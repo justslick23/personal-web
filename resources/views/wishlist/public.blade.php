@@ -3,7 +3,6 @@
 
 @section('content')
 
-{{-- ✅ Page Header --}}
 @include('partials.page-header', [
     'title' => 'Slicksters List',
     'breadcrumbs' => [
@@ -11,59 +10,60 @@
     ]
 ])
 
-<section class="wishlist-showcase">
-    <div class="container py-5">
+<section class="section-padding">
+    <div class="container">
 
         @if($items->isEmpty())
             <!-- Empty State -->
-            <div class="empty-wishlist text-center py-5">
-                <div class="empty-illustration mb-4">
-                    <i class="fas fa-heart-broken fa-4x text-muted opacity-50"></i>
+            <div class="text-center py-5 scroll-animate">
+                <div class="mb-4">
+                    <i class="fas fa-heart-broken fa-5x" style="color: var(--accent-primary); opacity: 0.3;"></i>
                 </div>
-                <h3 class="text-muted mb-3">Wishlist is currently empty</h3>
-                <p class="text-muted">Check back soon for new items!</p>
+                <h3 class="mb-3">Wishlist is currently empty</h3>
+                <p class="text-secondary">Check back soon for new items!</p>
             </div>
         @else
             <!-- Filter and Sort Controls -->
-            <div class="row mb-4">
-                <div class="col-lg-8 col-md-7">
-                    <div class="filter-controls">
-                        <h6 class="text-muted mb-3">Filter Items</h6>
-                        <div class="btn-group" role="group" aria-label="Filter options">
-                            <input type="radio" class="btn-check" name="statusFilter" id="filterAll" value="all" checked>
-                            <label class="btn btn-outline-primary" for="filterAll">
+            <div class="row mb-5 g-4">
+                <div class="col-lg-8">
+                    <div class="modern-card scroll-animate">
+                        <h6 class="fw-semibold mb-3">Filter Items</h6>
+                        <div class="filter-buttons mb-4">
+                            <button class="filter-btn active" data-status="all">
                                 <i class="fas fa-list me-1"></i> All Items
-                            </label>
-                            
-                            <input type="radio" class="btn-check" name="statusFilter" id="filterAvailable" value="available">
-                            <label class="btn btn-outline-primary" for="filterAvailable">
+                            </button>
+                            <button class="filter-btn" data-status="available">
                                 <i class="fas fa-heart me-1"></i> Available
-                            </label>
-                            
-                            <input type="radio" class="btn-check" name="statusFilter" id="filterFulfilled" value="fulfilled">
-                            <label class="btn btn-outline-success" for="filterFulfilled">
+                            </button>
+                            <button class="filter-btn" data-status="fulfilled">
                                 <i class="fas fa-check-circle me-1"></i> Fulfilled
-                            </label>
+                            </button>
                         </div>
                         
                         <!-- Price Range Filter -->
-                        <div class="mt-3">
-                            <label for="priceRange" class="form-label text-muted">Price Range</label>
-                            <select class="form-select" id="priceRange" style="max-width: 200px;">
-                                <option value="all">All Prices</option>
-                                <option value="0-100">M0 - M100</option>
-                                <option value="100-500">M100 - M500</option>
-                                <option value="500-1000">M500 - M1,000</option>
-                                <option value="1000+">M1,000+</option>
-                            </select>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="priceRange" class="form-label small text-secondary">Price Range</label>
+                                <select class="form-select" id="priceRange">
+                                    <option value="all">All Prices</option>
+                                    <option value="0-100">M0 - M100</option>
+                                    <option value="100-500">M100 - M500</option>
+                                    <option value="500-1000">M500 - M1,000</option>
+                                    <option value="1000+">M1,000+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="searchInput" class="form-label small text-secondary">Search</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-4 col-md-5">
-                    <div class="sort-controls">
-                        <h6 class="text-muted mb-3">Sort By</h6>
-                        <select class="form-select" id="sortBy">
+                <div class="col-lg-4">
+                    <div class="modern-card scroll-animate" style="animation-delay: 0.1s;">
+                        <h6 class="fw-semibold mb-3">Sort By</h6>
+                        <select class="form-select mb-3" id="sortBy">
                             <option value="default">Default Order</option>
                             <option value="name-asc">Name (A-Z)</option>
                             <option value="name-desc">Name (Z-A)</option>
@@ -71,91 +71,80 @@
                             <option value="price-desc">Price (High to Low)</option>
                             <option value="status">Status (Available First)</option>
                         </select>
-                    </div>
-                    
-                    <!-- Items Count -->
-                    <div class="mt-3">
-                        <small class="text-muted">
-                            Showing <span id="itemCount">{{ $items->count() }}</span> of {{ $items->count() }} items
-                        </small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <div class="search-box">
-                        <div class="input-group">
-                            <span class="input-group-text bg-light">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Search wishlist items...">
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">
+                                Showing <span class="fw-bold" style="color: var(--accent-primary);" id="itemCount">{{ $items->count() }}</span> of {{ $items->count() }}
+                            </small>
+                            <button class="btn-modern py-2 px-3" id="clearFilters" style="font-size: 0.875rem;">
+                                <i class="fas fa-times me-1"></i> Clear
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <button class="btn btn-outline-secondary btn-sm" id="clearFilters">
-                        <i class="fas fa-times me-1"></i> Clear All Filters
-                    </button>
                 </div>
             </div>
 
             <!-- Wishlist Grid -->
-            <div class="row g-4" id="wishlistGrid">
-                @foreach($items as $item)
-                    <div class="col-lg-4 col-md-6 wishlist-item" 
+            <div class="portfolio-grid" id="wishlistGrid">
+                @foreach($items as $index => $item)
+                    <div class="wishlist-item scroll-animate" 
                          data-status="{{ $item->is_received ? 'fulfilled' : 'available' }}"
                          data-price="{{ $item->price ?? 0 }}"
                          data-name="{{ strtolower($item->title) }}"
-                         data-description="{{ strtolower($item->description ?? '') }}">
-                        <div class="card h-100 shadow-sm">
+                         data-description="{{ strtolower($item->description ?? '') }}"
+                         style="animation-delay: {{ $index * 0.1 }}s;">
+                        <div class="modern-card p-0 overflow-hidden h-100">
                             {{-- Fulfilled Badge --}}
                             @if($item->is_received)
-                                <div class="position-absolute top-0 end-0 m-2 badge bg-success px-3 py-2 shadow-sm">
+                                <div class="position-absolute top-0 end-0 m-3 badge px-3 py-2" style="background: #22c55e; color: white; z-index: 10;">
                                     <i class="fas fa-heart me-1"></i> Fulfilled
                                 </div>
                             @endif
 
                             {{-- Image --}}
-                            <img src="{{ $item->image ? asset('public/' . $item->image) : 'https://via.placeholder.com/400x400?text=No+Image' }}"
-                                 alt="{{ $item->title }}"
-                                 class="wishlist-image">
+                            <div class="position-relative overflow-hidden">
+                                <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-portfolio.jpg') }}"
+                                     alt="{{ $item->title }}"
+                                     class="portfolio-image"
+                                     onerror="this.src='{{ asset('images/default-portfolio.jpg') }}'">
+                            </div>
 
                             {{-- Details --}}
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title mb-2">{{ $item->title }}</h5>
+                            <div class="p-4">
+                                <h5 class="fw-bold mb-2">{{ $item->title }}</h5>
 
                                 @if($item->description)
-                                    <p class="card-text text-muted small mb-3">{{ $item->description }}</p>
+                                    <p class="text-secondary small mb-3">{{ Str::limit($item->description, 100) }}</p>
                                 @endif
 
                                 @if($item->price)
-                                    <p class="fw-bold mb-3 text-primary fs-5">M{{ number_format($item->price, 2) }}</p>
+                                    <p class="fw-bold mb-4" style="color: var(--accent-primary); font-size: 1.25rem;">
+                                        M{{ number_format($item->price, 2) }}
+                                    </p>
                                 @endif
 
-                                <div class="mt-auto d-flex flex-column gap-2">
-                                    @if(!$item->is_received)
-                                        {{-- Contribute --}}
+                                @if(!$item->is_received)
+                                    <div class="d-flex flex-column gap-2">
+                                        {{-- Contribute Dropdown --}}
                                         @if($item->contribution_link)
                                             <div class="dropdown">
-                                                <button class="btn btn-primary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                <button class="btn-modern btn-primary-modern w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                                     <i class="fas fa-heart me-1"></i> Contribute
                                                 </button>
-                                                <ul class="dropdown-menu w-100 shadow">
+                                                <ul class="dropdown-menu w-100">
                                                     <li>
                                                         <a class="dropdown-item" target="_blank" href="https://paypal.me/JustSlick?country.x=LS&locale.x=en_US">
-                                                            <i class="fab fa-paypal me-2 text-primary"></i> PayPal
+                                                            <i class="fab fa-paypal me-2" style="color: var(--accent-primary);"></i> PayPal
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#mpesaModal">
-                                                            <i class="fas fa-mobile-alt me-2 text-success"></i> M-Pesa / EcoCash
+                                                            <i class="fas fa-mobile-alt me-2" style="color: #22c55e;"></i> M-Pesa / EcoCash
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#eftModal">
-                                                            <i class="fas fa-university me-2 text-info"></i> EFT / Bank Transfer
+                                                            <i class="fas fa-university me-2" style="color: var(--accent-primary);"></i> EFT / Bank Transfer
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -164,17 +153,17 @@
 
                                         {{-- Buy Direct --}}
                                         @if($item->url)
-                                            <a href="{{ $item->url }}" target="_blank" class="btn btn-outline-primary w-100">
+                                            <a href="{{ $item->url }}" target="_blank" class="btn-modern w-100">
                                                 <i class="fas fa-external-link-alt me-1"></i> Buy This
                                             </a>
                                         @endif
-                                    @else
-                                        <div class="fulfilled-message text-center py-2 bg-light rounded">
-                                            <i class="fas fa-check-circle text-success me-1"></i> 
-                                            <span class="text-success fw-medium">Dream fulfilled! 🎉</span>
-                                        </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="text-center py-3 rounded" style="background: rgba(34, 197, 94, 0.1);">
+                                        <i class="fas fa-check-circle me-1" style="color: #22c55e;"></i> 
+                                        <span style="color: #22c55e;" class="fw-medium">Dream fulfilled! 🎉</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -184,16 +173,16 @@
             <!-- No Results Message -->
             <div id="noResults" class="text-center py-5" style="display: none;">
                 <div class="mb-4">
-                    <i class="fas fa-search fa-3x text-muted opacity-50"></i>
+                    <i class="fas fa-search fa-4x" style="color: var(--accent-primary); opacity: 0.3;"></i>
                 </div>
-                <h4 class="text-muted mb-3">No items found</h4>
-                <p class="text-muted">Try adjusting your filters or search terms.</p>
+                <h4 class="mb-3">No items found</h4>
+                <p class="text-secondary">Try adjusting your filters or search terms.</p>
             </div>
 
             <!-- Footer Message -->
-            <div class="wishlist-footer text-center mt-5 pt-4 border-top">
-                <p class="text-muted mb-2">
-                    <i class="fas fa-heart text-danger me-2"></i>
+            <div class="text-center mt-5 pt-5 scroll-animate">
+                <p class="text-secondary mb-2">
+                    <i class="fas fa-heart me-2" style="color: var(--accent-primary);"></i>
                     Thank you for helping make dreams come true!
                 </p>
                 <small class="text-muted">
@@ -207,43 +196,35 @@
 <!-- M-Pesa/EcoCash Modal -->
 <div class="modal fade" id="mpesaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
+        <div class="modal-content" style="background: var(--bg-card); border: 1px solid var(--border-color);">
+            <div class="modal-header border-bottom" style="border-color: var(--border-color) !important;">
                 <h5 class="modal-title">
-                    <i class="fas fa-mobile-alt me-2"></i>M-Pesa / EcoCash
+                    <i class="fas fa-mobile-alt me-2" style="color: #22c55e;"></i>M-Pesa / EcoCash
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
             </div>
-            <div class="modal-body bg-light">
+            <div class="modal-body">
                 <div class="text-center mb-4">
-                    <i class="fas fa-mobile-alt fa-3x text-success mb-3"></i>
-                    <h6 class="text-success">Mobile Money Transfer</h6>
+                    <i class="fas fa-mobile-alt fa-3x mb-3" style="color: #22c55e;"></i>
+                    <h6 style="color: #22c55e;">Mobile Money Transfer</h6>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="card border-success">
-                            <div class="card-header bg-success text-white text-center">
-                                <strong>M-Pesa</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <h5 class="text-success mb-0">+266 5676 9106</h5>
-                            </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="modern-card text-center">
+                            <div class="mb-2 fw-bold">M-Pesa</div>
+                            <h5 class="mb-0" style="color: var(--accent-primary);">+266 5676 9106</h5>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card border-success">
-                            <div class="card-header bg-success text-white text-center">
-                                <strong>EcoCash</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <h5 class="text-success mb-0">+266 6823 1628</h5>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="modern-card text-center">
+                            <div class="mb-2 fw-bold">EcoCash</div>
+                            <h5 class="mb-0" style="color: var(--accent-primary);">+266 6823 1628</h5>
                         </div>
                     </div>
                 </div>
                 
-                <div class="alert alert-info">
+                <div class="alert alert-info mt-3" style="background: rgba(168, 85, 247, 0.1); border-color: var(--accent-primary); color: var(--text-secondary);">
                     <i class="fas fa-info-circle me-2"></i>
                     <strong>Reference:</strong> Please include your name or the item name in the reference field.
                 </div>
@@ -255,44 +236,36 @@
 <!-- EFT Modal -->
 <div class="modal fade" id="eftModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+        <div class="modal-content" style="background: var(--bg-card); border: 1px solid var(--border-color);">
+            <div class="modal-header border-bottom" style="border-color: var(--border-color) !important;">
                 <h5 class="modal-title">
-                    <i class="fas fa-university me-2"></i>EFT / Bank Transfer
+                    <i class="fas fa-university me-2" style="color: var(--accent-primary);"></i>EFT / Bank Transfer
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
             </div>
-            <div class="modal-body bg-light">
+            <div class="modal-body">
                 <div class="text-center mb-4">
-                    <i class="fas fa-university fa-3x text-primary mb-3"></i>
-                    <h6 class="text-primary">Bank Transfer Details</h6>
+                    <i class="fas fa-university fa-3x mb-3" style="color: var(--accent-primary);"></i>
+                    <h6 style="color: var(--accent-primary);">Bank Transfer Details</h6>
                 </div>
                 
-                <div class="card border-primary">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-4 fw-bold text-primary">Bank:</div>
-                            <div class="col-sm-8">First National Bank</div>
-                        </div>
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="col-sm-4 fw-bold text-primary">Account Name:</div>
-                            <div class="col-sm-8">Tokelo Foso</div>
-                        </div>
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="col-sm-4 fw-bold text-primary">Account Number:</div>
-                            <div class="col-sm-8"><strong>62512324782</strong></div>
-                        </div>
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="col-sm-4 fw-bold text-primary">Branch Code:</div>
-                            <div class="col-sm-8">280061</div>
-                        </div>
+                <div class="modern-card">
+                    <div class="row g-2">
+                        <div class="col-5 fw-bold" style="color: var(--accent-primary);">Bank:</div>
+                        <div class="col-7 text-secondary">First National Bank</div>
+                        <div class="col-12"><hr style="border-color: var(--border-color);"></div>
+                        <div class="col-5 fw-bold" style="color: var(--accent-primary);">Account Name:</div>
+                        <div class="col-7 text-secondary">Tokelo Foso</div>
+                        <div class="col-12"><hr style="border-color: var(--border-color);"></div>
+                        <div class="col-5 fw-bold" style="color: var(--accent-primary);">Account Number:</div>
+                        <div class="col-7"><strong style="color: var(--accent-primary);">62512324782</strong></div>
+                        <div class="col-12"><hr style="border-color: var(--border-color);"></div>
+                        <div class="col-5 fw-bold" style="color: var(--accent-primary);">Branch Code:</div>
+                        <div class="col-7 text-secondary">280061</div>
                     </div>
                 </div>
                 
-                <div class="alert alert-warning mt-3">
+                <div class="alert alert-warning mt-3" style="background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: var(--text-secondary);">
                     <i class="fas fa-bell me-2"></i>
                     <strong>Important:</strong> Use your name or item name as reference. Please notify me once the transfer is complete.
                 </div>
@@ -301,55 +274,13 @@
     </div>
 </div>
 
-<style>
-.wishlist-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
+@endsection
 
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-}
-
-.filter-controls .btn-group {
-    flex-wrap: wrap;
-}
-
-.search-box .input-group-text {
-    border-right: none;
-}
-
-.search-box .form-control {
-    border-left: none;
-}
-
-.search-box .form-control:focus {
-    border-left: none;
-    box-shadow: none;
-}
-
-@media (max-width: 768px) {
-    .filter-controls .btn-group {
-        width: 100%;
-    }
-    
-    .filter-controls .btn-group label {
-        flex: 1;
-        text-align: center;
-    }
-}
-</style>
-
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const items = document.querySelectorAll('.wishlist-item');
-    const statusFilters = document.querySelectorAll('input[name="statusFilter"]');
+    const statusFilters = document.querySelectorAll('.filter-btn');
     const priceFilter = document.getElementById('priceRange');
     const sortSelect = document.getElementById('sortBy');
     const searchInput = document.getElementById('searchInput');
@@ -362,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let visibleItems = Array.from(items);
         
         // Status Filter
-        const activeStatusFilter = document.querySelector('input[name="statusFilter"]:checked').value;
+        const activeStatusFilter = document.querySelector('.filter-btn.active').dataset.status;
         if (activeStatusFilter !== 'all') {
             visibleItems = visibleItems.filter(item => item.dataset.status === activeStatusFilter);
         }
@@ -417,9 +348,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show filtered items
         if (visibleItems.length > 0) {
-            visibleItems.forEach((item, index) => {
+            visibleItems.forEach(item => {
                 item.style.display = 'block';
-                // Re-append to maintain sort order
                 wishlistGrid.appendChild(item);
             });
             noResults.style.display = 'none';
@@ -432,23 +362,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listeners
-    statusFilters.forEach(filter => filter.addEventListener('change', filterAndSort));
+    statusFilters.forEach(filter => filter.addEventListener('click', function() {
+        statusFilters.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        filterAndSort();
+    }));
+    
     priceFilter.addEventListener('change', filterAndSort);
     sortSelect.addEventListener('change', filterAndSort);
     searchInput.addEventListener('input', filterAndSort);
 
     // Clear filters
     clearFiltersBtn.addEventListener('click', function() {
-        document.getElementById('filterAll').checked = true;
+        document.querySelector('.filter-btn[data-status="all"]').click();
         priceFilter.value = 'all';
         sortSelect.value = 'default';
         searchInput.value = '';
         filterAndSort();
     });
 
-    // Initial load
-    filterAndSort();
+    // Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
 });
 </script>
-
-@endsection
+@endpush

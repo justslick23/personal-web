@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class PortfolioController extends Controller
 {
@@ -37,7 +37,7 @@ class PortfolioController extends Controller
     public function portfolioPage()
     {
         try {
-            $portfolioItems = Portfolio::where('is_active', true)
+            $projects = Portfolio::where('is_active', true)
                 ->latest()
                 ->paginate(12);
             
@@ -47,7 +47,7 @@ class PortfolioController extends Controller
                 ->filter()
                 ->values();
             
-            return view('portfolio', compact('portfolioItems', 'categories'));
+            return view('pages.portfolio', compact('projects', 'categories'));
         } catch (Exception $e) {
             Log::error('Error fetching portfolio page: ' . $e->getMessage());
             return redirect()->route('home')->with('error', 'Unable to load portfolio.');
@@ -103,7 +103,7 @@ class PortfolioController extends Controller
                 'link.url' => 'Please provide a valid URL.',
             ]);
     
-            // Handle image upload to storage
+            // Handle image upload - USING PUBLIC/IMAGES FOLDER
             $imagePath = $this->handleImageUpload($request->file('image'));
     
             // Create portfolio item
@@ -131,8 +131,8 @@ class PortfolioController extends Controller
             Log::error('Error creating portfolio item: ' . $e->getMessage());
     
             // Clean up uploaded file on error
-            if (isset($imagePath) && Storage::disk('public')->exists($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
+            if (isset($imagePath)) {
+                $this->deleteImage($imagePath);
             }
     
             return redirect()->back()
@@ -174,8 +174,8 @@ class PortfolioController extends Controller
                 'featured' => 'boolean',
             ]);
 
-            $imagePath = $portfolio->image; // Keep existing image
-            $oldImagePath = $portfolio->image; // Store for potential cleanup
+            $imagePath = $portfolio->image;
+            $oldImagePath = $portfolio->image;
 
             // Handle new image upload
             if ($request->hasFile('image')) {
@@ -261,7 +261,7 @@ class PortfolioController extends Controller
     }
 
     /**
-     * Handle image upload with optimization using Laravel Storage
+     * Handle image upload to public/images/portfolio folder
      */
     private function handleImageUpload($file)
     {
@@ -270,25 +270,24 @@ class PortfolioController extends Controller
         }
 
         try {
-            // Generate unique filename
-            $filename = 'portfolio/' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            
-            // Check if Intervention Image is available for optimization
-            if (class_exists('\Intervention\Image\Facades\Image')) {
-                $optimizedImage = $this->optimizeImage($file);
-                
-                // Store optimized image using Laravel Storage
-                $path = Storage::disk('public')->put($filename, $optimizedImage);
-                
-                Log::info('Optimized image uploaded successfully', ['filename' => $filename]);
-            } else {
-                // Fallback to regular storage
-                $path = $file->storeAs('portfolio', basename($filename), 'public');
-                
-                Log::info('Image uploaded successfully', ['filename' => $filename]);
+            // Create portfolio directory if it doesn't exist
+            $uploadPath = public_path('images/portfolio');
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0755, true);
             }
+
+            // Generate unique filename
+            $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             
-            return $path;
+            // Move file to public/images/portfolio
+            $file->move($uploadPath, $filename);
+            
+            // Return relative path for database storage
+            $relativePath = 'images/portfolio/' . $filename;
+            
+            Log::info('Image uploaded successfully', ['path' => $relativePath]);
+            
+            return $relativePath;
             
         } catch (Exception $e) {
             Log::error('Image upload failed: ' . $e->getMessage());
@@ -297,140 +296,20 @@ class PortfolioController extends Controller
     }
 
     /**
-     * Optimize image using Intervention Image
-     */
-    private function optimizeImage($file)
-    {
-        $image = Image::make($file->getRealPath());
-        
-        // Auto-orient image based on EXIF data
-        $image->orientate();
-        
-        // Resize if too large (maintain aspect ratio)
-        if ($image->width() > 1920 || $image->height() > 1080) {
-            $image->resize(1920, 1080, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-        }
-        
-        // Optimize quality based on file size
-        $quality = $image->filesize() > 1000000 ? 75 : 85;
-        
-        // Return optimized image data
-        return $image->encode($file->getClientOriginalExtension(), $quality)->__toString();
-    }
-
-    /**
-     * Delete image from storage
+     * Delete image from public/images/portfolio folder
      */
     private function deleteImage($imagePath)
     {
         try {
-            if ($imagePath && Storage::disk('public')->exists($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
-                Log::info('Image deleted successfully', ['path' => $imagePath]);
+            if ($imagePath) {
+                $fullPath = public_path($imagePath);
+                if (File::exists($fullPath)) {
+                    File::delete($fullPath);
+                    Log::info('Image deleted successfully', ['path' => $imagePath]);
+                }
             }
         } catch (Exception $e) {
             Log::warning('Failed to delete image: ' . $e->getMessage(), ['path' => $imagePath]);
-        }
-    }
-
-    /**
-     * Get optimized image URL with fallback
-     */
-    public static function getImageUrl($portfolio, $default = 'images/default-portfolio.jpg')
-    {
-        if (!$portfolio || !$portfolio->image) {
-            return asset($default);
-        }
-
-        // Check if image exists in storage
-        if (Storage::disk('public')->exists($portfolio->image)) {
-            return Storage::url($portfolio->image);
-        }
-
-        return asset($default);
-    }
-
-    /**
-     * Get portfolio statistics for dashboard
-     */
-    public function getStats()
-    {
-        try {
-            return [
-                'total' => Portfolio::count(),
-                'active' => Portfolio::where('is_active', true)->count(),
-                'featured' => Portfolio::where('featured', true)->count(),
-                'categories' => Portfolio::distinct()->count('category'),
-                'recent' => Portfolio::where('created_at', '>=', now()->subDays(7))->count(),
-            ];
-        } catch (Exception $e) {
-            Log::error('Error getting portfolio stats: ' . $e->getMessage());
-            return [
-                'total' => 0,
-                'active' => 0, 
-                'featured' => 0,
-                'categories' => 0,
-                'recent' => 0,
-            ];
-        }
-    }
-
-    /**
-     * Test storage setup and permissions
-     */
-    public function testStorage()
-    {
-        try {
-            // Test if we can create and delete files in public storage
-            $testFilename = 'portfolio/storage_test_' . time() . '.txt';
-            $testContent = 'Storage test: ' . now();
-            
-            // Try to store file
-            $stored = Storage::disk('public')->put($testFilename, $testContent);
-            
-            if (!$stored) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Cannot store files in public disk'
-                ], 500);
-            }
-            
-            // Check if file exists
-            if (!Storage::disk('public')->exists($testFilename)) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'File was not created successfully'
-                ], 500);
-            }
-            
-            // Get file info
-            $size = Storage::disk('public')->size($testFilename);
-            $url = Storage::url($testFilename);
-            
-            // Cleanup
-            Storage::disk('public')->delete($testFilename);
-            
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Storage is working correctly!',
-                'details' => [
-                    'disk' => 'public',
-                    'path' => Storage::disk('public')->path(''),
-                    'url_base' => Storage::url(''),
-                    'test_file_size' => $size . ' bytes',
-                    'test_url' => $url,
-                    'storage_link_exists' => is_link(public_path('storage'))
-                ]
-            ]);
-            
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Storage test failed: ' . $e->getMessage()
-            ], 500);
         }
     }
 }

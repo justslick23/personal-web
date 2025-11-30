@@ -1,277 +1,206 @@
 @extends('layouts.app')
 
-@section('content')
 @section('title', 'Contact - Tokelo Foso')
 
-    @include('partials.page-header', [
-        'title' => 'Contact Me',
-        'breadcrumbs' => [
-            ['name' => 'Contact', 'url' => route('contact')],
-        ]
-    ])
-
-  
-    <!-- Contact Form & Info Section -->
-    <section id="contact-main" class="section-padding">
-        <div class="container">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8" data-aos="fade-up">
-                    <div class="section-heading">
-                        <h6 class="text-primary fw-bold text-uppercase mb-2">Get In Touch</h6>
-                        <h2 class="display-4 fw-bold mb-4 text-gradient">Let's Work <span class="text-glow">Together</span></h2>
-                        <div class="section-line mx-auto bg-primary my-4" style="width: 80px; height: 3px;"></div>
-                        <p class="lead">Ready to bring your ideas to life? I'd love to hear about your project and discuss how we can create something amazing together.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row g-5">
-                <!-- Contact Form -->
-                <div class="col-lg-8" data-aos="fade-right">
-                    <div class="modern-card">
-                        <div class="contact-form-header mb-4">
-                            <h3 class="text-gradient mb-3">Send Me a Message</h3>
-                            <p class="text-secondary">Fill out the form below and I'll get back to you within 24 hours.</p>
+@section('content')
+@include('partials.page-header', [
+    'title' => 'Contact Me',
+    'breadcrumbs' => [['name' => 'Contact', 'url' => route('contact')]]
+])
+<!-- Full Screen Split Contact -->
+<section class="section-padding" style="min-height: calc(100vh - 80px);">
+    <div class="container-fluid h-100 p-0">
+        <div class="row g-0 h-100">
+            <!-- Left Side - Contact Info -->
+            <div class="col-lg-5 d-flex align-items-center" style="background: var(--bg-secondary); min-height: 600px;">
+                <div class="p-5 w-100 scroll-animate">
+                    <span class="badge px-4 py-2 mb-4" style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--accent-primary);">
+                        <i class="fas fa-envelope me-2"></i>Get In Touch
+                    </span>
+                    
+                    <h1 class="display-3 fw-black mb-4">
+                        Let's<br>
+                        <span class="text-gradient">Connect</span>
+                    </h1>
+                    
+                    <p class="lead text-secondary mb-5">
+                        Have a project in mind? Let's discuss how we can bring your vision to life.
+                    </p>
+                    
+                    <!-- Contact Cards -->
+                    <div class="mb-4">
+                        <div class="modern-card mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="contact-icon me-3">
+                                    <i class="fas fa-phone" style="color: var(--accent-primary);"></i>
+                                </div>
+                                <div>
+                                    <small class="text-secondary d-block mb-1">Phone</small>
+                                    <a href="tel:+26668231628" class="text-decoration-none" style="color: var(--text-primary);">
+                                        <strong>(+266) 6823 1628</strong>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-
-                        <form action="{{ route('contact.submit') }}" method="POST" class="contact-form">
-                            @csrf
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" 
-                                               class="form-control" 
-                                               id="name" 
-                                               name="name" 
-                                               placeholder="Your Name"
-                                               required>
-                                        <label for="name">
-                                            <i class="fas fa-user me-2 text-primary"></i>Full Name
-                                        </label>
-                                    </div>
+                        
+                        <div class="modern-card mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="contact-icon me-3">
+                                    <i class="fas fa-envelope" style="color: var(--accent-primary);"></i>
                                 </div>
-                                
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" 
-                                               class="form-control" 
-                                               id="email" 
-                                               name="email" 
-                                               placeholder="your@email.com"
-                                               required>
-                                        <label for="email">
-                                            <i class="fas fa-envelope me-2 text-primary"></i>Email Address
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" 
-                                               class="form-control" 
-                                               id="subject" 
-                                               name="subject" 
-                                               placeholder="Project Subject"
-                                               required>
-                                        <label for="subject">
-                                            <i class="fas fa-tag me-2 text-primary"></i>Subject
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" 
-                                                  id="message" 
-                                                  name="message" 
-                                                  placeholder="Tell me about your project..."
-                                                  style="height: 150px"
-                                                  required></textarea>
-                                        <label for="message">
-                                            <i class="fas fa-comment-dots me-2 text-primary"></i>Your Message
-                                        </label>
-                                    </div>
+                                <div>
+                                    <small class="text-secondary d-block mb-1">Email</small>
+                                    <a href="mailto:hello@tokelofoso.online" class="text-decoration-none" style="color: var(--text-primary);">
+                                        <strong>hello@tokelofoso.online</strong>
+                                    </a>
                                 </div>
                             </div>
-
-                            <input type="hidden" name="g-recaptcha-response" id="recaptcha">
-
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn-primary-modern btn-modern">
-                                    <i class="fas fa-paper-plane me-2"></i>
-                                    Send Message
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="col-lg-4" data-aos="fade-left">
-                    <!-- Contact Details Card -->
-                    <div class="modern-card mb-4">
-                        <div class="contact-info-header mb-4">
-                            <h3 class="text-gradient mb-3">Contact Information</h3>
-                            <p class="text-secondary">Feel free to reach out through any of these channels.</p>
                         </div>
-
-                        <div class="contact-details">
-                            <div class="contact-item d-flex align-items-center mb-4">
+                        
+                        <div class="modern-card mb-3">
+                            <div class="d-flex align-items-center">
                                 <div class="contact-icon me-3">
-                                    <div class="icon-circle bg-primary-soft rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                        <i class="fas fa-phone text-primary"></i>
-                                    </div>
+                                    <i class="fas fa-map-marker-alt" style="color: var(--accent-primary);"></i>
                                 </div>
-                                <div class="contact-text">
-                                    <h5 class="mb-1">Phone</h5>
-                                    <p class="text-secondary mb-0">(+266) 6823 1628</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-item d-flex align-items-center mb-4">
-                                <div class="contact-icon me-3">
-                                    <div class="icon-circle bg-primary-soft rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                        <i class="fas fa-envelope text-primary"></i>
-                                    </div>
-                                </div>
-                                <div class="contact-text">
-                                    <h5 class="mb-1">Email</h5>
-                                    <p class="text-secondary mb-0">hello@tokelofoso.online</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-item d-flex align-items-center mb-4">
-                                <div class="contact-icon me-3">
-                                    <div class="icon-circle bg-primary-soft rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                        <i class="fas fa-map-marker-alt text-primary"></i>
-                                    </div>
-                                </div>
-                                <div class="contact-text">
-                                    <h5 class="mb-1">Location</h5>
-                                    <p class="text-secondary mb-0">Ha Matala Phase 2<br>Maseru, Lesotho</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-item d-flex align-items-center">
-                                <div class="contact-icon me-3">
-                                    <div class="icon-circle bg-primary-soft rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                        <i class="fas fa-clock text-primary"></i>
-                                    </div>
-                                </div>
-                                <div class="contact-text">
-                                    <h5 class="mb-1">Response Time</h5>
-                                    <p class="text-secondary mb-0">Within 24 hours</p>
+                                <div>
+                                    <small class="text-secondary d-block mb-1">Location</small>
+                                    <strong>Ha Matala, Maseru, Lesotho</strong>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Social Links Card -->
-                    <div class="modern-card">
-                        <h4 class="text-gradient mb-3">Connect With Me</h4>
-                        <div class="social-connect d-flex gap-3">
-                            <a href="#" class="social-icon">
+                    
+                    <!-- Social Links -->
+                    <div class="mb-4">
+                        <p class="text-secondary small mb-3">FOLLOW ME</p>
+                        <div class="d-flex gap-2">
+                            <a href="https://www.linkedin.com/in/tokelo-foso/" class="social-link" target="_blank">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="social-icon">
-                                <i class="fab fa-github"></i>
+                            <a href="https://www.facebook.com/tokelo.foso/" class="social-link" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="social-icon">
+                            <a href="https://x.com/slkstr_" class="social-link" target="_blank">
                                 <i class="fab fa-twitter"></i>
                             </a>
-                            <a href="#" class="social-icon">
+                            <a href="https://www.instagram.com/slkstrgrm/" class="social-link" target="_blank">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Location Map Section -->
-    <section id="location-map" class="section-padding bg-dark">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10" data-aos="fade-up">
-                    <div class="modern-card">
-                        <div class="map-header text-center mb-4">
-                            <h3 class="text-gradient mb-3">Find Me Here</h3>
-                            <p class="text-secondary">Located in the heart of Maseru, Lesotho</p>
-                        </div>
-                        
-                        <div class="map-container position-relative overflow-hidden rounded-lg">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3476.750137157566!2d27.550330300000002!3d-29.3776044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e8c4b84d8424af3%3A0xdc887001ca323b8d!2sGraphics%20by%20Slkstr.!5e0!3m2!1sen!2sls!4v1745340306415!5m2!1sen!2sls" 
-                                    width="100%" 
-                                    height="400" 
-                                    style="border:0; filter: grayscale(1) contrast(1.2) opacity(0.8);" 
-                                    allowfullscreen="" 
-                                    loading="lazy" 
-                                    referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                            
-                            <!-- Map overlay for styling -->
-                            <div class="map-overlay position-absolute top-0 start-0 w-100 h-100 pointer-events-none" 
-                                 style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 102, 255, 0.1) 100%);"></div>
-                        </div>
+                    
+                    <!-- Response Badge -->
+                    <div class="badge px-4 py-3" style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--accent-primary);">
+                        <i class="fas fa-clock me-2" style="color: var(--accent-primary);"></i>
+                        <span class="text-secondary">Response within 24 hours</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section id="contact-cta" class="section-padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center" data-aos="fade-up">
-                    <div class="cta-content">
-                        <h2 class="display-5 fw-bold mb-4 text-gradient">Ready to Start Your Project?</h2>
-                        <p class="lead mb-4">Whether you need a stunning website, eye-catching graphics, or a complete digital solution, I'm here to help bring your vision to life.</p>
-                        <div class="cta-buttons d-flex flex-wrap gap-3 justify-content-center">
-                            <a href="#contact-main" class="btn-primary-modern btn-modern">
-                                <i class="fas fa-comment-dots me-2"></i>
-                                Start a Conversation
-                            </a>
-                            <a href="{{ route('portfolio') }}" class="btn-modern">
-                                <i class="fas fa-eye me-2"></i>
-                                View My Work
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Initialize AOS Animation -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize AOS if available
-            if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 800,
-                    easing: 'ease-out',
-                    once: true,
-                    offset: 100
-                });
-            }
             
-            // Smooth scrolling for internal links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+            <!-- Right Side - Contact Form -->
+            <div class="col-lg-7 d-flex align-items-center" style="min-height: 600px;">
+                <div class="p-5 w-100 scroll-animate" style="animation-delay: 0.2s; max-width: 700px; margin: 0 auto;">
+                    <h2 class="display-5 fw-bold mb-4">Send a Message</h2>
+                    
+                    @if(session('success'))
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    
+                    <form action="{{ route('contact.submit') }}" method="POST">
+                        @csrf
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                    <label for="name">Your Name</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <label for="email">Your Email</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+                                    <label for="subject">Subject</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="message" name="message" placeholder="Message" style="height: 200px;" required></textarea>
+                                    <label for="message">Your Message</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn-modern btn-primary-modern w-100" style="padding: 1.25rem;">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="section-padding" style="background: var(--bg-secondary); padding: 0;">
+    <div class="container-fluid p-0">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3476.750137157566!2d27.550330300000002!3d-29.3776044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e8c4b84d8424af3%3A0xdc887001ca323b8d!2sGraphics%20by%20Slkstr.!5e0!3m2!1sen!2sls!4v1745340306415!5m2!1sen!2sls" 
+                width="100%" 
+                height="500" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</section>
+
+<!-- Quick CTA Bar -->
+<section class="section-padding" style="padding: 3rem 0;">
+    <div class="container">
+        <div class="modern-card py-4 px-5 scroll-animate">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h4 class="fw-bold mb-2">Ready to start your project?</h4>
+                    <p class="text-secondary mb-0">Let's collaborate and create something extraordinary together.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ route('portfolio') }}" class="btn-modern">
+                        <i class="fas fa-briefcase me-2"></i>View Portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+</script>
+@endpush

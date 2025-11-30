@@ -1,260 +1,158 @@
 @extends('layouts.app')
 
 @section('title', 'About Me - Tokelo Foso')
+
 @section('content')
 
-@include('partials.page-header', [
-    'title' => 'About Me',
-    'breadcrumbs' => [
-        ['name' => 'About', 'url' => route('about')],
-    ]
-])
-
-<!-- Hero Section -->
-<section class="section-padding dark-bg text-light">
+<!-- Compact Hero -->
+<section class="hero-section" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="container">
-        <div class="row align-items-center ">
-            <div class="col-lg-6 text-center mb-5 mb-lg-0 scroll-animate">
-                <div class="profile-container animate-float">
-                    <img src="{{ asset('images/me.jpg') }}" alt="Tokelo Foso" class="profile-image rounded-circle shadow-lg">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8 scroll-animate">
+                <div class="profile-container mx-auto mb-4" style="max-width: 200px;">
+                    <img src="{{ asset('images/me.jpg') }}" 
+                         alt="Tokelo Foso" 
+                         class="profile-image" 
+                         style="border-radius: 50%;"
+                         onerror="this.src='{{ asset('images/default-profile.jpg') }}'">
                 </div>
-            </div>
-            <div class="col-lg-6 scroll-animate">
-                <h6 class="text-gradient text-uppercase fw-bold mb-2">Hi, I'm Tokelo</h6>
-                <h1 class="display-4 fw-bold mb-3 typewriter-heading" data-speed="100">
-                    Creative Designer & Developer
+                <h1 class="display-2 fw-black mb-3">
+                    <span class="text-gradient">Tokelo Foso</span>
                 </h1>
-                <p class="lead text-secondary mb-4">
-                    I craft meaningful digital experiences by blending technology and creativity. Based in Lesotho, I specialize in web development, design, and music production.
-                </p>
-                <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-                    <a href="{{ route('contact') }}" class="btn-modern btn-primary-modern">
-                        <i class="fas fa-envelope me-2"></i> Contact Me
+                <p class="lead text-secondary mb-4">Creative Designer • Web Developer • Problem Solver</p>
+                
+                <!-- Quick Nav -->
+                <div class="d-flex gap-3 justify-content-center flex-wrap mb-4">
+                    <a href="#expertise" class="btn-modern">
+                        <i class="fas fa-code me-2"></i>Expertise
                     </a>
-                    <a href="{{ route('download.cv') }}" class="btn-modern btn-outline-light" target="_blank">
-                        <i class="fas fa-download me-2"></i> Download CV
+                    <a href="#journey" class="btn-modern">
+                        <i class="fas fa-route me-2"></i>Journey
+                    </a>
+                    <a href="#interests" class="btn-modern">
+                        <i class="fas fa-heart me-2"></i>Interests
+                    </a>
+                </div>
+                
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{{ route('download.cv') }}" class="btn-modern btn-primary-modern" target="_blank">
+                        <i class="fas fa-download me-2"></i>Download CV
+                    </a>
+                    <a href="{{ route('contact') }}" class="btn-modern">
+                        <i class="fas fa-paper-plane me-2"></i>Get In Touch
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Skills Section with FontAwesome Icons -->
-<section class="section-padding dark-bg text-light">
-  <div class="container">
-      <div class="row justify-content-center text-center mb-5 scroll-animate">
-          <div class="col-lg-8">
-              <h6 class="text-gradient text-uppercase fw-bold mb-3">My Expertise</h6>
-              <h2 class="display-4 fw-bold mb-4">Technologies I Use</h2>
-              <p class="lead text-secondary mb-5">
-                  Tools, frameworks, and creative skills I work with regularly.
-              </p>
-          </div>
-      </div>
 
-      <div class="row g-3 masonry-scroll scroll-animate justify-content-center">
-          @foreach ([
-              ['HTML5', 'fab fa-html5', 'text-orange', 1],
-              ['CSS3', 'fab fa-css3-alt', 'text-blue', 1.1],
-              ['JavaScript', 'fab fa-js-square', 'text-yellow', 1.2],
-              ['React', 'fab fa-react', 'text-cyan', 0.9],
-              ['PHP', 'fab fa-php', 'text-purple', 1],
-              ['Laravel', 'fas fa-fire', 'text-red', 1.1],
-              ['Node.js', 'fab fa-node', 'text-green', 0.95],
-              ['Java', 'fab fa-java', 'text-red', 1],
-              ['Photoshop', 'fas fa-image', 'text-blue', 1],
-              ['Illustrator', 'fas fa-pencil-alt', 'text-orange', 1],
-              ['UI/UX', 'fas fa-object-group', 'text-cyan', 0.9],
-              ['Branding', 'fas fa-bullhorn', 'text-yellow', 1],
-              ['Music Production', 'fas fa-music', 'text-pink', 1.2],
-              ['MySQL', 'fas fa-database', 'text-blue', 1],
-              ['WordPress', 'fab fa-wordpress', 'text-blue', 1],
-              ['Joget', 'fas fa-project-diagram', 'text-purple', 1],
-              ['Android', 'fab fa-android', 'text-green', 1],
-          ] as $skill)
-              <div class="col-4 col-sm-3 col-md-2">
-                  <div class="skill-icon-card scroll-animate" style="transform: rotate({{ rand(-5,5) }}deg) scale({{ $skill[3] }});">
-                      <i class="{{ $skill[1] }} fa-3x {{ $skill[2] }}"></i>
-                      <div class="skill-name mt-2">{{ $skill[0] }}</div>
-                  </div>
-              </div>
-          @endforeach
-      </div>
-  </div>
-</section>
-
-<style>
-.masonry-scroll {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.skill-icon-card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
-}
-
-.skill-icon-card i {
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
-}
-
-.skill-icon-card:hover {
-  transform: translateY(-8px) scale(1.1);
-  box-shadow: 0 0 30px rgba(0, 255, 133, 0.8);
-}
-
-.skill-icon-card:hover i {
-  transform: rotate(10deg) scale(1.2);
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
-}
-
-.skill-name {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  text-align: center;
-}
-
-.text-orange { color: #f06529; }
-.text-blue { color: #2965f1; }
-.text-yellow { color: #f7df1e; }
-.text-cyan { color: #61dafb; }
-.text-purple { color: #6e5494; }
-.text-red { color: #ff3c28; }
-.text-green { color: #68a063; }
-.text-pink { color: #ff69b4; }
-
-@media (max-width: 768px) {
-  .skill-icon-card i { font-size: 2.5rem !important; }
-}
-</style>
-
-<!-- Journey Section as Modern Horizontal Timeline -->
-<section class="section-padding dark-bg text-light">
-  <div class="container">
-      <div class="row justify-content-center text-center mb-5 scroll-animate">
-          <div class="col-lg-8">
-              <h6 class="text-gradient text-uppercase fw-bold mb-3">My Journey</h6>
-              <h2 class="display-4 fw-bold mb-4">Career Timeline</h2>
-              <p class="lead text-secondary">A snapshot of my growth from early learning to professional achievements.</p>
-          </div>
-      </div>
-
-      <div class="timeline-container position-relative scroll-animate">
-          <div class="timeline-line position-absolute top-50 start-0 w-100 translate-middle-y"></div>
-
-          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center">
-              @foreach ([ 
-                  ['2014-2016', 'Early Beginnings', 'Discovered passion for digital creation at Machabeng College.'],
-                  ['2018-2020', 'Academic Foundation', 'Studied Computer & Information Sciences at Monash University.'],
-                  ['2021-Present', 'Professional Growth', 'Freelance and professional work blending technical skills and creativity.']
-              ] as $period)
-              <div class="timeline-item text-center mb-5 mb-lg-0">
-                  <div class="timeline-dot bg-gradient shadow-sm mb-3"></div>
-                  <div class="timeline-card p-4 shadow-sm rounded bg-light">
-                      <div class="text-gradient fs-5 fw-bold mb-2">{{ $period[0] }}</div>
-                      <h5 class="mb-2 text-dark">{{ $period[1] }}</h5>
-                      <p class="text-secondary mb-0">{{ $period[2] }}</p>
-                  </div>
-              </div>
-              @endforeach
-          </div>
-      </div>
-  </div>
-</section>
-
-<style>
-/* Timeline line */
-.timeline-container {
-  position: relative;
-  padding: 4rem 0;
-}
-.timeline-line {
-  height: 4px;
-  background: linear-gradient(90deg, #00f, #0ff);
-  z-index: 1;
-}
-
-/* Timeline dots */
-.timeline-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #00f;
-  border: 4px solid #fff;
-  z-index: 2;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline-dot:hover {
-  transform: scale(1.3);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
-}
-
-/* Timeline cards */
-.timeline-card {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-}
-
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .timeline-line {
-      top: auto !important;
-      left: 50%;
-      height: 100%;
-      width: 4px;
-      transform: translateX(-50%);
-  }
-  .d-flex.flex-lg-row {
-      flex-direction: column !important;
-      align-items: center;
-  }
-  .timeline-item {
-      margin-bottom: 3rem;
-  }
-}
-</style>
-
-
-<!-- Personal / Interests Section as Card Grid -->
-<section class="section-padding">
+<!-- About Story -->
+<section class="section-padding" style="background: var(--bg-secondary);">
     <div class="container">
-        <div class="row justify-content-center text-center mb-5 scroll-animate">
-            <div class="col-lg-8">
-                <h6 class="text-gradient text-uppercase fw-bold mb-3">Beyond Work</h6>
-                <h2 class="display-4 fw-bold mb-4">Personal Interests & Goals</h2>
-                <p class="lead text-secondary">Things I love, my learning journey, and what I aim for in the future.</p>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center scroll-animate">
+                <span class="section-label mb-3 d-block">About Me</span>
+                <h2 class="display-4 fw-bold mb-4">
+                    Crafting Digital <span class="text-gradient">Experiences</span>
+                </h2>
+                <p class="lead text-secondary mb-4">
+                    I'm Tokelo, a versatile creative with a flair for design, a knack for coding, and a love for music. 
+                    Based in Maseru, Lesotho, I thrive on turning concepts into captivating visuals and seamless digital experiences.
+                </p>
+                
+                <!-- Stats Row -->
+                <div class="row g-3 mt-5">
+                    <div class="col-md-3 col-6">
+                        <div class="modern-card py-4">
+                            <h3 class="h1 fw-bold mb-1 text-gradient" data-count="50">0</h3>
+                            <p class="text-secondary small mb-0">Projects Done</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="modern-card py-4">
+                            <h3 class="h1 fw-bold mb-1 text-gradient" data-count="25">0</h3>
+                            <p class="text-secondary small mb-0">Happy Clients</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="modern-card py-4">
+                            <h3 class="h1 fw-bold mb-1 text-gradient" data-count="3">0</h3>
+                            <p class="text-secondary small mb-0">Years Exp</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="modern-card py-4">
+                            <h3 class="h1 fw-bold mb-1 text-gradient">12</h3>
+                            <p class="text-secondary small mb-0">Skills</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row g-4 scroll-animate">
-            @foreach ([ 
-                ['Things I Love', 'fas fa-heart', ['Music Production & DJing','Exploring Tech','Travel & Culture','Gaming']],
-                ['Education & Learning', 'fas fa-user-graduate', ['Bachelor of Computer & Info Sciences','Online Web Dev Courses','Self-taught in Creative Software']],
-                ['Future Goals', 'fas fa-flag', ['Launch a Creative Studio','Collaborate Internationally','Contribute to Open Source']]
-            ] as $personal)
-            <div class="col-md-6 col-lg-4">
-                <div class="modern-card h-100 p-4 shadow-sm rounded text-center hover-scale">
-                    <div class="text-primary fs-1 mb-3"><i class="{{ $personal[1] }}"></i></div>
-                    <h4 class="mb-3">{{ $personal[0] }}</h4>
-                    <ul class="list-unstyled text-secondary">
-                        @foreach($personal[2] as $item)
-                        <li class="mb-2">{{ $item }}</li>
-                        @endforeach
-                    </ul>
+    </div>
+</section>
+
+<!-- Skills Grid - Expertise Section -->
+<section id="expertise" class="section-padding">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <span class="section-label">Expertise</span>
+            <h2 class="section-title">Tech <span class="text-gradient">Stack</span></h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="row g-4">
+            @php
+            $skillCategories = [
+                [
+                    'category' => 'Frontend',
+                    'skills' => [
+                        ['name' => 'HTML5', 'icon' => 'fab fa-html5', 'level' => 95],
+                        ['name' => 'CSS3', 'icon' => 'fab fa-css3-alt', 'level' => 90],
+                        ['name' => 'JavaScript', 'icon' => 'fab fa-js-square', 'level' => 85],
+                        ['name' => 'React', 'icon' => 'fab fa-react', 'level' => 80]
+                    ]
+                ],
+                [
+                    'category' => 'Backend',
+                    'skills' => [
+                        ['name' => 'PHP', 'icon' => 'fab fa-php', 'level' => 88],
+                        ['name' => 'Laravel', 'icon' => 'fas fa-fire', 'level' => 85],
+                        ['name' => 'Node.js', 'icon' => 'fab fa-node', 'level' => 75]
+                    ]
+                ],
+                [
+                    'category' => 'Design',
+                    'skills' => [
+                        ['name' => 'Figma', 'icon' => 'fas fa-pen-nib', 'level' => 90],
+                        ['name' => 'Photoshop', 'icon' => 'fas fa-image', 'level' => 92],
+                        ['name' => 'Illustrator', 'icon' => 'fas fa-paintbrush', 'level' => 88],
+                        ['name' => 'UI/UX', 'icon' => 'fas fa-object-group', 'level' => 85],
+                        ['name' => 'Branding', 'icon' => 'fas fa-bullhorn', 'level' => 80]
+                    ]
+                ]
+            ];
+            @endphp
+            
+            @foreach($skillCategories as $catIndex => $category)
+            <div class="col-lg-4 scroll-animate" style="animation-delay: {{ $catIndex * 0.1 }}s;">
+                <div class="modern-card h-100">
+                    <h5 class="fw-bold mb-4 text-gradient">{{ $category['category'] }}</h5>
+                    @foreach($category['skills'] as $skill)
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="{{ $skill['icon'] }} text-gradient"></i>
+                                <span class="fw-semibold small">{{ $skill['name'] }}</span>
+                            </div>
+                            <span class="text-secondary small">{{ $skill['level'] }}%</span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar" style="width: {{ $skill['level'] }}%; background: var(--accent-gradient);"></div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
             @endforeach
@@ -262,4 +160,173 @@
     </div>
 </section>
 
+<!-- Experience Section - Journey -->
+<section id="journey" class="section-padding" style="background: var(--bg-secondary);">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <span class="section-label">Journey</span>
+            <h2 class="section-title">My <span class="text-gradient">Path</span></h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                @php
+                $experiences = [
+                    ['type' => 'work', 'year' => '2022-Present', 'title' => 'Web Designer', 'org' => 'Computer Business Solutions', 'desc' => 'Led design projects for multiple clients, creating responsive websites and improving user experience.'],
+                    ['type' => 'work', 'year' => '2021-2022', 'title' => 'Graphic Designer', 'org' => 'Osmium Lesotho', 'desc' => 'Created visual content for marketing campaigns and social media.'],
+                    ['type' => 'education', 'year' => '2018-2020', 'title' => 'Bachelor of Computer Science', 'org' => 'Monash University', 'desc' => 'Majored in Mobile Systems & Software Development.'],
+                    ['type' => 'education', 'year' => '2014-2016', 'title' => 'IGCSE', 'org' => 'Machabeng College', 'desc' => 'Completed with distinction in Mathematics and Computer Science.']
+                ];
+                @endphp
+
+                @foreach($experiences as $index => $exp)
+                <div class="row align-items-start mb-4 scroll-animate" style="animation-delay: {{ $index * 0.1 }}s;">
+                    <div class="col-md-2 text-md-center mb-3 mb-md-0">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                             style="width: 60px; height: 60px; background: var(--accent-gradient);">
+                            <i class="fas fa-{{ $exp['type'] == 'work' ? 'briefcase' : 'graduation-cap' }} fa-lg" 
+                               style="color: var(--bg-primary);"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="modern-card">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                                <div>
+                                    <h5 class="fw-bold mb-1">{{ $exp['title'] }}</h5>
+                                    <p class="text-gradient mb-0">{{ $exp['org'] }}</p>
+                                </div>
+                                <span class="badge px-3 py-2" style="background: var(--accent-primary); color: var(--bg-primary);">
+                                    {{ $exp['year'] }}
+                                </span>
+                            </div>
+                            <p class="text-secondary small mb-0">{{ $exp['desc'] }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interests Section -->
+<section id="interests" class="section-padding">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <span class="section-label">Interests</span>
+            <h2 class="section-title">Beyond <span class="text-gradient">Code</span></h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            @php
+            $interests = [
+                ['icon' => 'fas fa-music', 'title' => 'Music Production', 'desc' => 'Creating beats and exploring sound design'],
+                ['icon' => 'fas fa-rocket', 'title' => 'Tech Exploration', 'desc' => 'Always learning new frameworks and tools'],
+                ['icon' => 'fas fa-plane-departure', 'title' => 'Travel & Culture', 'desc' => 'Experiencing different perspectives'],
+                ['icon' => 'fas fa-gamepad', 'title' => 'Gaming', 'desc' => 'Strategic thinking and relaxation'],
+                ['icon' => 'fas fa-book-reader', 'title' => 'Continuous Learning', 'desc' => 'Never stop growing and improving'],
+                ['icon' => 'fas fa-users', 'title' => 'Mentorship', 'desc' => 'Helping others grow in their journey']
+            ];
+            @endphp
+            
+            @foreach($interests as $index => $interest)
+            <div class="col-lg-4 col-md-6 scroll-animate" style="animation-delay: {{ $index * 0.08 }}s;">
+                <div class="modern-card h-100 text-center py-4">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                             style="width: 80px; height: 80px; background: rgba(168, 85, 247, 0.1);">
+                            <i class="{{ $interest['icon'] }} fa-2x text-gradient"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">{{ $interest['title'] }}</h5>
+                    <p class="text-secondary small mb-0">{{ $interest['desc'] }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-padding" style="background: var(--bg-secondary);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="modern-card text-center py-5 scroll-animate">
+                    <h2 class="display-5 fw-bold mb-3">
+                        Ready to <span class="text-gradient">Collaborate?</span>
+                    </h2>
+                    <p class="lead text-secondary mb-4">
+                        Let's create something amazing together
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="{{ route('contact') }}" class="btn-modern btn-primary-modern">
+                            <i class="fas fa-rocket me-2"></i>Start a Project
+                        </a>
+                        <a href="{{ route('portfolio') }}" class="btn-modern">
+                            <i class="fas fa-briefcase me-2"></i>View My Work
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+    
+    // Counter animation
+    function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 50);
+    }
+    
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.dataset.count);
+                animateCounter(entry.target, target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    });
+    
+    document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+});
+</script>
+@endpush

@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tokelo Foso - Resume</title>
+    <title>Tokelo Foso - CV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
+        /* CLEAN PDF CV - NO BACKGROUNDS */
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,331 +21,402 @@
         }
 
         body {
-            font-family: 'Lato', sans-serif;
-            font-size: 10.5pt;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f0f2f5;
-            padding: 30px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #000000;
+            background: white;
         }
 
-        a {
-            color: #003366;
-            text-decoration: none;
+        .cv-page {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 15mm;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Main Container for A4 formatting */
-        .resume-container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 40px 50px;
-        }
-
-        /* Header Section */
+        /* HEADER */
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1e40af;
         }
 
         .header h1 {
-            font-family: 'Merriweather', serif;
-            font-size: 26pt;
+            font-size: 24pt;
             font-weight: 700;
-            color: #003366;
+            color: #1e40af;
             margin-bottom: 5px;
         }
 
-        .header p.subtitle {
-            font-size: 14pt;
-            font-weight: 400;
-            color: #555;
-            margin-bottom: 15px;
+        .header .title {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
         }
 
-        .header .contact-info {
-            font-size: 10pt;
-            color: #777;
+        .header .contact {
+            font-size: 9pt;
+            color: #4b5563;
+            line-height: 1.6;
         }
 
-        .header .contact-info a {
-            color: #003366;
-        }
-        
-        /* Main Sections */
-        .main-section {
-            margin-bottom: 30px;
+        .header .contact a {
+            color: #1e40af;
+            text-decoration: none;
         }
 
-        .main-section h2 {
-            font-family: 'Merriweather', serif;
-            font-size: 14pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            color: #003366;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .entry {
+        /* SECTIONS */
+        .section {
             margin-bottom: 20px;
         }
 
-        .entry-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 5px;
+        .section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #1e40af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #1e40af;
+        }
+
+        /* SUMMARY */
+        .summary {
+            font-size: 10pt;
+            line-height: 1.6;
+            text-align: justify;
+            color: #374151;
+        }
+
+        /* SKILLS */
+        .skills-list {
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .skill-item {
+            display: inline;
+            font-size: 9.5pt;
+        }
+
+        .skill-item::after {
+            content: " • ";
+            margin: 0 3px;
+        }
+
+        .skill-item:last-child::after {
+            content: "";
+        }
+
+        /* TECHNICAL SKILLS */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .tech-item {
+            margin-bottom: 8px;
+        }
+
+        .tech-item strong {
+            font-size: 10pt;
+            font-weight: 700;
+            color: #111827;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tech-item span {
+            font-size: 9.5pt;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        /* ENTRIES */
+        .entry {
+            margin-bottom: 16px;
         }
 
         .entry-title {
-            font-size: 12pt;
+            font-size: 10.5pt;
             font-weight: 700;
-            color: #000;
+            color: #111827;
+            margin-bottom: 2px;
         }
 
-        .entry-subtitle {
-            font-style: italic;
-            font-size: 11pt;
-            color: #555;
+        .entry-company {
+            font-size: 10pt;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 2px;
         }
 
         .entry-date {
-            font-size: 10pt;
-            color: #777;
-            white-space: nowrap;
+            font-size: 9pt;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 6px;
         }
 
-        ul.achievements {
-            list-style-type: disc;
-            margin-left: 20px;
-            margin-top: 8px;
-        }
-
-        ul.achievements li {
-            margin-bottom: 4px;
-        }
-        
-        /* Skills List - Horizontal Display */
-        .skills-list {
-            list-style: none;
+        .entry ul {
+            margin: 6px 0 0 18px;
             padding: 0;
-            display: flex;
-            flex-wrap: wrap; /* Allows skills to wrap to the next line */
-            gap: 10px; /* Space between each skill tag */
         }
 
-        .skills-list li {
-            background-color: #e6f0ff;
-            color: #003366;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 10pt;
+        .entry li {
+            margin-bottom: 4px;
+            font-size: 9.5pt;
+            line-height: 1.55;
+            color: #374151;
+        }
+
+        .specialization {
+            font-size: 9.5pt;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+
+        .specialization strong {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* CERTIFICATIONS */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .cert-item {
+            border-left: 3px solid #1e40af;
+            padding-left: 10px;
+        }
+
+        .cert-title {
+            font-size: 9.5pt;
             font-weight: 700;
-            white-space: nowrap; /* Prevents skills from breaking in the middle */
+            color: #111827;
+            line-height: 1.3;
+            margin-bottom: 2px;
         }
 
-        /* Print Styles for A4 */
+        .cert-issuer {
+            font-size: 9pt;
+            color: #4b5563;
+            font-weight: 600;
+        }
+
+        .cert-date {
+            font-size: 8.5pt;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        /* PRINT STYLES */
         @media print {
-            @page {
-                size: A4;
-                margin: 1.5cm;
-            }
             body {
-                background-color: #fff;
-                color: #000;
+                margin: 0;
                 padding: 0;
             }
-            .resume-container {
-                box-shadow: none;
-                border-radius: 0;
+
+            .cv-page {
                 padding: 0;
+                margin: 0;
             }
-            .header h1, .header p.subtitle, .header .contact-info,
-            .main-section h2, .entry-title, .entry-subtitle, .entry-date,
-            .entry-details, ul.achievements li, p {
-                color: #000 !important;
+
+            .section {
+                page-break-inside: avoid;
             }
-            .skills-list li {
-                background-color: #f0f2f5 !important;
-                border: 1px solid #ccc;
+
+            .entry {
+                page-break-inside: avoid;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="resume-container">
+<div class="cv-page">
 
-    <div class="header">
-        <h1>Tokelo Foso</h1>
-        <p class="subtitle">Software Developer</p>
-        <div class="contact-info">
-            +266 6823 1628 | <a href="mailto:tokelo.foso23@gmail.com">tokelo.foso23@gmail.com</a> |
-            <a href="https://linkedin.com/in/tokelo-foso" target="_blank">linkedin.com/in/tokelo-foso</a> |
-            <a href="https://tokelofoso.online" target="_blank">tokelofoso.online</a>
+    <!-- HEADER -->
+    <header class="header">
+        <h1>TOKELO FOSO</h1>
+        <div class="title">Software Developer</div>
+        <div class="contact">
+            +266 6823 1628 | tokelo.foso23@gmail.com<br>
+            <a href="https://linkedin.com/in/tokelo-foso">linkedin.com/in/tokelo-foso</a> | 
+            <a href="https://tokelofoso.online">tokelofoso.online</a>
         </div>
-    </div>
+    </header>
 
-    <div class="main-section">
-        <h2>Professional Summary</h2>
-        <p>
-            Full-Stack Software Developer with over 3 years of experience specializing in PHP/Laravel, JavaScript/React, and Node.js. Proven ability to architect, develop, and launch scalable web applications for government, corporate, and non-profit clients. A strong problem-solver with a focus on delivering end-to-end solutions that improve efficiency, streamline processes, and enhance user experience.
+    <!-- PROFESSIONAL SUMMARY -->
+    <section class="section">
+        <h2 class="section-title">Professional Summary</h2>
+        <p class="summary">
+            Full-Stack Software Developer with over 3 years of experience specializing in PHP/Laravel, JavaScript/React, and Node.js. Proven ability to architect, develop, and launch scalable web applications for government, corporate, and non-profit clients. Strong problem-solver with a focus on delivering end-to-end solutions that improve efficiency, streamline processes, and enhance user experience. Bachelor's degree in Computer & Information Sciences with certifications in Microsoft Dynamics 365 and Oracle Cloud Infrastructure.
         </p>
-    </div>
+    </section>
 
-    <div class="main-section">
-        <h2>Skills</h2>
-        <ul class="skills-list">
-            <li>JavaScript (ES6+)</li>
-            <li>PHP</li>
-            <li>Java</li>
-            <li>HTML5</li>
-            <li>CSS3</li>
-            <li>React.js</li>
-            <li>Node.js</li>
-            <li>Laravel</li>
-            <li>WordPress</li>
-            <li>MySQL</li>
-            <li>MongoDB</li>
-            <li>REST APIs</li>
-            <li>Android App Development</li>
-            <li>Joget Workflow</li>
-            <li>Full-Stack Development</li>
-            <li>System Architecture</li>
-            <li>Project Management</li>
-        </ul>
-    </div>
+    <!-- CORE COMPETENCIES -->
+    <section class="section">
+        <h2 class="section-title">Core Competencies</h2>
+        <div class="skills-list">
+            <span class="skill-item">Full-Stack Development</span>
+            <span class="skill-item">PHP/Laravel</span>
+            <span class="skill-item">JavaScript/React.js</span>
+            <span class="skill-item">Node.js</span>
+            <span class="skill-item">MySQL/MongoDB</span>
+            <span class="skill-item">REST APIs</span>
+            <span class="skill-item">WordPress Development</span>
+            <span class="skill-item">Android Development</span>
+            <span class="skill-item">System Architecture</span>
+            <span class="skill-item">Cloud Infrastructure</span>
+            <span class="skill-item">AI Foundations</span>
+            <span class="skill-item">Database Design</span>
+            <span class="skill-item">Project Management</span>
+            <span class="skill-item">Version Control (Git)</span>
+            <span class="skill-item">Responsive Design</span>
+        </div>
+    </section>
 
-    <div class="main-section">
-        <h2>Work Experience</h2>
-        
-        <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Website Designer</div>
-                    <div class="entry-subtitle">Computer Business Solutions | Maseru, Lesotho</div>
-                </div>
-                <span class="entry-date">2022 – Present</span>
+    <!-- TECHNICAL SKILLS -->
+    <section class="section">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <strong>Programming Languages</strong>
+                <span>JavaScript (ES6+), PHP, Java, HTML5, CSS3, SQL</span>
             </div>
-            <ul class="achievements">
-                <li>Led the full project lifecycle from concept to deployment for custom web solutions, portals, and internal systems using PHP, Laravel, React, and WordPress.</li>
-                <li>Designed and developed high-impact corporate and government websites for key clients, including Metropolitan Lesotho and the Government of Lesotho.</li>
-                <li>Engineered the CAFI Grant Management System, a custom web solution designed to streamline the application and evaluation process for a non-profit client.</li>
-                <li>Provided ongoing maintenance, updates, and technical support for a portfolio of client systems, ensuring high performance and uptime.</li>
-            </ul>
-        </div>
-        
-        <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Temporary Records Assistant</div>
-                    <div class="entry-subtitle">Elizabeth Glaser Pediatric AIDS Foundation</div>
-                </div>
-                <span class="entry-date">2021 – 2022</span>
+            <div class="tech-item">
+                <strong>Frameworks & Libraries</strong>
+                <span>React.js, Node.js, Laravel, WordPress, Bootstrap, jQuery</span>
             </div>
-            <ul class="achievements">
-                <li>Supported comprehensive records management, ensuring compliance with organizational and regulatory standards.</li>
-            </ul>
-        </div>
-        
-        <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Graphic Designer</div>
-                    <div class="entry-subtitle">Osmium Lesotho</div>
-                </div>
-                <span class="entry-date">2021 – 2022</span>
+            <div class="tech-item">
+                <strong>Databases & Cloud</strong>
+                <span>MySQL, MongoDB, Oracle Cloud Infrastructure (OCI)</span>
             </div>
-            <ul class="achievements">
-                <li>Created engaging digital and print graphics for marketing campaigns, contributing to enhanced brand visibility.</li>
-            </ul>
+            <div class="tech-item">
+                <strong>Tools & Platforms</strong>
+                <span>Git, GitHub, Android Studio, Joget Workflow, Adobe Photoshop</span>
+            </div>
         </div>
-        
-    </div>
-    
-    <div class="main-section">
-        <h2>Key Projects</h2>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE -->
+    <section class="section">
+        <h2 class="section-title">Professional Experience</h2>
 
         <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Government & Public Sector Websites</div>
-                    <div class="entry-subtitle">Role: Lead Website Designer | 2022 - Present</div>
-                </div>
-            </div>
-            <ul class="achievements">
-                <li>Government of Lesotho official website</li>
-                <li>Lesotho Embassy (USA) website</li>
-                <li>WASCO, MOFPMU, NUL website support & maintenance</li>
-                <li>CAFI Grant Management System</li>
+            <div class="entry-title">Website Designer</div>
+            <div class="entry-company">Computer Business Solutions, Maseru, Lesotho</div>
+            <div class="entry-date">May 2022 – Present</div>
+            <ul>
+                <li>Led full project lifecycle from concept to deployment for custom web solutions, portals, and internal systems using PHP, Laravel, React, and WordPress</li>
+                <li>Designed and developed high-impact corporate and government websites for key clients including Metropolitan Lesotho and the Government of Lesotho</li>
+                <li>Engineered the CAFI Grant Management System, a custom web solution to streamline application and evaluation processes</li>
+                <li>Developed and maintained websites for WASCO, MOFPMU, National University of Lesotho, and Lesotho Embassy (USA)</li>
+                <li>Provided ongoing maintenance, updates, and technical support ensuring high performance and uptime</li>
             </ul>
         </div>
 
         <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Corporate Websites & Platforms</div>
-                    <div class="entry-subtitle">Role: Lead Developer/Designer | 2022 - Present</div>
-                </div>
-            </div>
-            <ul class="achievements">
-                <li>Metropolitan Lesotho corporate website</li>
-                <li>Lesotho Flour Mills website</li>
-                <li>Computer Business Solutions website & HR Recruitment System</li>
+            <div class="entry-title">Temporary Records Assistant</div>
+            <div class="entry-company">Elizabeth Glaser Pediatric AIDS Foundation, Maseru, Lesotho</div>
+            <div class="entry-date">December 2021 – April 2022</div>
+            <ul>
+                <li>Supported comprehensive records management using database systems, ensuring compliance with organizational standards</li>
+                <li>Performed accurate data entry and maintained high standards of data integrity</li>
             </ul>
         </div>
-    </div>
 
-    <div class="main-section">
-        <h2>Education</h2>
-        
         <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Bachelor of Computer & Information Sciences</div>
-                    <div class="entry-subtitle">Monash University</div>
-                </div>
-                <span class="entry-date">2018 - 2020</span>
+            <div class="entry-title">Freelance Graphic Designer</div>
+            <div class="entry-company">Osmium Lesotho, Maseru, Lesotho</div>
+            <div class="entry-date">June 2021 – April 2022</div>
+            <ul>
+                <li>Created engaging digital and print graphics for marketing campaigns, enhancing brand visibility</li>
+                <li>Developed brand identity solutions including logos and marketing materials using Adobe Photoshop</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- KEY PROJECTS -->
+    <section class="section">
+        <h2 class="section-title">Key Projects</h2>
+
+        <div class="entry">
+            <div class="entry-title">Government & Public Sector Websites</div>
+            <div class="entry-date">2022 – Present</div>
+            <ul>
+                <li>Government of Lesotho official website – Full design and development</li>
+                <li>Lesotho Embassy (USA) website – Complete redesign and implementation</li>
+                <li>CAFI Grant Management System – Custom Laravel application for grant processing</li>
+                <li>WASCO, MOFPMU, National University of Lesotho – Website support and maintenance</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Corporate Websites & Platforms</div>
+            <div class="entry-date">2022 – Present</div>
+            <ul>
+                <li>Metropolitan Lesotho corporate website – Full-stack development and deployment</li>
+                <li>Lesotho Flour Mills website – Design and implementation</li>
+                <li>Computer Business Solutions website and HR Recruitment System – Custom portal development</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section">
+        <h2 class="section-title">Education</h2>
+
+        <div class="entry">
+            <div class="entry-title">Bachelor of Computer & Information Sciences</div>
+            <div class="entry-company">Monash University</div>
+            <div class="entry-date">2018 – 2020</div>
+            <div class="specialization"><strong>Specialization:</strong> Mobile Systems & Software Development</div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Foundation Programme, Information Technology</div>
+            <div class="entry-company">Monash South Africa</div>
+            <div class="entry-date">2017 – 2018</div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">International General Certificate of Secondary Education (IGCSE)</div>
+            <div class="entry-company">Machabeng College</div>
+            <div class="entry-date">2014 – 2016</div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="section">
+        <h2 class="section-title">Certifications</h2>
+        <div class="cert-grid">
+            <div class="cert-item">
+                <div class="cert-title">Oracle Cloud Infrastructure Foundations</div>
+                <div class="cert-issuer">Oracle (OCI)</div>
+                <div class="cert-date">September 2025</div>
+            </div>
+            <div class="cert-item">
+                <div class="cert-title">Oracle Cloud Infrastructure AI Foundations</div>
+                <div class="cert-issuer">Oracle (OCI)</div>
+                <div class="cert-date">October 2025</div>
+            </div>
+            <div class="cert-item">
+                <div class="cert-title">Microsoft Dynamics 365 Fundamentals (CRM)</div>
+                <div class="cert-issuer">Microsoft</div>
+                <div class="cert-date">March 2024</div>
             </div>
         </div>
-        
-        <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">Foundation Programme, IT</div>
-                    <div class="entry-subtitle">Monash South Africa</div>
-                </div>
-                <span class="entry-date">2017 - 2018</span>
-            </div>
-        </div>
-        
-        <div class="entry">
-            <div class="entry-header">
-                <div class="entry-details">
-                    <div class="entry-title">IGCSE</div>
-                    <div class="entry-subtitle">Machabeng College</div>
-                </div>
-                <span class="entry-date">2014 - 2016</span>
-            </div>
-        </div>
-        
-    </div>
-    
-    <div class="main-section">
-        <h2>Certifications</h2>
-        <p>
-            <strong style="font-size: 11pt;">Microsoft Certified:</strong> Dynamics 365 Fundamentals (CRM) | Issued March 2024
-        </p>
-    </div>
+    </section>
 
 </div>
 

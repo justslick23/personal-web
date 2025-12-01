@@ -221,7 +221,83 @@ public function submit(Request $request)
 }
 
 
+public function getToKnowMe()
+{
+    $data = [
+        'name' => 'Tokelo Foso',
+        'alias' => 'Slickster',
+        'age' => 26,
+        'occupation' => 'Software Developer & Web Designer',
+        'company' => 'Computer Business Solutions',
+        'education' => 'Computer Science',
+        
+        'skills' => [
+            'Software Development',
+            'Web Design',
+            'Music Production (Hip Hop & Amapiano)',
+            'Graphic Design'
+        ],
+        
+        'personality_traits' => [
+            'Introverted but sociable',
+            'Calm but confident',
+            'Funny when comfortable',
+            'Observant',
+            'Emotionally aware'
+        ],
+        
+        'core_values' => [
+            'Respect',
+            'Consistency',
+            'Honesty',
+            'Kindness',
+            'Peace over chaos',
+            'Effort',
+            'Being real'
+        ],
+        
+        'interests' => [
+            'Building tech projects',
+            'Producing music',
+            'Exploring new ideas',
+            'Slow mornings with good music',
+            'Learning new skills',
+            'Discovering new restaurants',
+            'Self-improvement'
+        ],
+        
+        'relationship_qualities' => [
+            'Loyal',
+            'Present',
+            'Affectionate',
+            'Supportive',
+            'Communicative',
+            'Respectful'
+        ],
+        
+        'looking_for' => [
+            'Someone soft and kind',
+            'Great communicator',
+            'Knows what she wants',
+            'Brings peace',
+            'Emotionally aware',
+            'Genuine and honest'
+        ],
+        
+        'random_facts' => [
+            'I\'m sarcastic in a funny way',
+            'I like late-night conversations',
+            'I overthink sometimes',
+            'I analyze things deeply',
+            'I can be very romantic when I feel safe',
+            'I love taking care of someone I\'m with',
+            'I\'m very observant — maybe too observant',
+            'I like women who are expressive and open'
+        ]
+    ];
     
+    return view('pages.get-to-know-me', $data);
+}
     
 
 }

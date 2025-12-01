@@ -70,6 +70,9 @@ Route::middleware('auth')->prefix('admin/portfolio')->name('portfolio.')->group(
 
 });
 
+Route::get('/get-to-know-me', [HomeController::class, 'getToKnowMe'])->name('get-to-know-me');
+
+
 // Public wishlist
 Route::get('/wishlist', [WishlistController::class, 'showPublic'])->name('wishlist.public');
 

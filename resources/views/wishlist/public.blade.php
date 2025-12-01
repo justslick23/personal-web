@@ -23,6 +23,26 @@
                 <p class="text-secondary">Check back soon for new items!</p>
             </div>
         @else
+            <!-- Disclaimer Banner -->
+            <div class="modern-card mb-4 scroll-animate" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%); border-left: 4px solid var(--accent-primary);">
+                <div class="p-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-info-circle fa-2x" style="color: var(--accent-primary); flex-shrink: 0;"></i>
+                        <div>
+                            <h6 class="fw-bold mb-2" style="color: var(--accent-primary);">
+                                <i class="fas fa-lightbulb me-1"></i> Shopping Flexibility
+                            </h6>
+                            <p class="mb-0 text-secondary" style="line-height: 1.6;">
+                                The "Buy This" links are just suggestions to give you an idea of what I'm looking for. 
+                                <strong>You're welcome to shop around and find better deals or similar items elsewhere!</strong> 
+                                What matters most is the thoughtfulness, not the specific store or exact product. 
+                                Feel free to get creative! 🎁✨
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Filter and Sort Controls -->
             <div class="row mb-5 g-4">
                 <div class="col-lg-8">
@@ -88,25 +108,29 @@
             <div class="portfolio-grid" id="wishlistGrid">
                 @foreach($items as $index => $item)
                     <div class="wishlist-item scroll-animate" 
-                         data-status="{{ $item->is_received ? 'fulfilled' : 'available' }}"
+                         data-status="{{ $item->is_received == 1 ? 'fulfilled' : 'available' }}"
                          data-price="{{ $item->price ?? 0 }}"
                          data-name="{{ strtolower($item->title) }}"
                          data-description="{{ strtolower($item->description ?? '') }}"
                          style="animation-delay: {{ $index * 0.1 }}s;">
                         <div class="modern-card p-0 overflow-hidden h-100">
                             {{-- Fulfilled Badge --}}
-                            @if($item->is_received)
+                            @if($item->is_received == 1)
                                 <div class="position-absolute top-0 end-0 m-3 badge px-3 py-2" style="background: #22c55e; color: white; z-index: 10;">
                                     <i class="fas fa-heart me-1"></i> Fulfilled
                                 </div>
                             @endif
 
                             {{-- Image --}}
-                            <div class="position-relative overflow-hidden">
-                                <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-portfolio.jpg') }}"
+                            <div class="position-relative overflow-hidden" style="background: #f8f9fa;">
+                                @php
+                                    $imagePath = $item->image ? url($item->image) : asset('images/default-portfolio.jpg');
+                                @endphp
+                                <img src="{{ $imagePath }}"
                                      alt="{{ $item->title }}"
                                      class="portfolio-image"
-                                     onerror="this.src='{{ asset('images/default-portfolio.jpg') }}'">
+                                     style="object-fit: cover; width: 100%; height: 250px;"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/default-portfolio.jpg') }}'; this.style.objectFit='contain'; this.style.padding='20px';">
                             </div>
 
                             {{-- Details --}}
@@ -118,12 +142,15 @@
                                 @endif
 
                                 @if($item->price)
-                                    <p class="fw-bold mb-4" style="color: var(--accent-primary); font-size: 1.25rem;">
+                                    <p class="fw-bold mb-2" style="color: var(--accent-primary); font-size: 1.25rem;">
                                         M{{ number_format($item->price, 2) }}
+                                    </p>
+                                    <p class="text-muted small mb-4" style="font-size: 0.75rem;">
+                                        <i class="fas fa-tag me-1"></i> Approximate price - feel free to find better deals!
                                     </p>
                                 @endif
 
-                                @if(!$item->is_received)
+                                @if(!$item->is_received || $item->is_received == 0)
                                     <div class="d-flex flex-column gap-2">
                                         {{-- Contribute Dropdown --}}
                                         @if($item->contribution_link)
@@ -154,7 +181,7 @@
                                         {{-- Buy Direct --}}
                                         @if($item->url)
                                             <a href="{{ $item->url }}" target="_blank" class="btn-modern w-100">
-                                                <i class="fas fa-external-link-alt me-1"></i> Buy This
+                                                <i class="fas fa-external-link-alt me-1"></i> View Example
                                             </a>
                                         @endif
                                     </div>

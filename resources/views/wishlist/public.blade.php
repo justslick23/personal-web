@@ -122,26 +122,25 @@
                             @endif
 
                         {{-- Image --}}
-                        <div class="position-relative overflow-hidden" style="background: #f8f9fa;">
-                            @php
-                                use Illuminate\Support\Facades\Storage;
-                                
-                                // Images stored in storage/app/public/wishlist_images/
-                                // Accessible via storage link: public/storage/wishlist_images/
-                                if ($item->image) {
-                                    // Use Storage::url() to get the correct URL
-                                    $imagePath = Storage::url($item->image);
-                                } else {
-                                    $imagePath = asset('images/default-portfolio.jpg');
-                                }
-                            @endphp
-                            <img src="{{ $imagePath }}"
-                                alt="{{ $item->title }}"
-                                class="portfolio-image"
-                                style="object-fit: cover; width: 100%; height: 250px;">
-                            
-                            <!-- DB: {{ $item->image ?? 'NULL' }} | URL: {{ $imagePath }} -->
-                        </div>
+                       {{-- Image --}}
+<div class="position-relative overflow-hidden" style="background: #f8f9fa;">
+    @php
+        // Images stored in storage/app/public/wishlist_images/
+        // Accessible via storage link: public/storage/wishlist_images/
+        if ($item->image) {
+            // Use Storage::url() with full namespace
+            $imagePath = \Illuminate\Support\Facades\Storage::url($item->image);
+        } else {
+            $imagePath = asset('images/default-portfolio.jpg');
+        }
+    @endphp
+    <img src="{{ $imagePath }}"
+         alt="{{ $item->title }}"
+         class="portfolio-image"
+         style="object-fit: cover; width: 100%; height: 250px;">
+    
+    <!-- DB: {{ $item->image ?? 'NULL' }} | URL: {{ $imagePath }} -->
+</div>
                             {{-- Details --}}
                             <div class="p-4">
                                 <h5 class="fw-bold mb-2">{{ $item->title }}</h5>

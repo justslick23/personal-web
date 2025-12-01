@@ -129,7 +129,7 @@
         // Accessible via storage link: public/storage/wishlist_images/
         if ($item->image) {
             // Use Storage::url() with full namespace
-            $imagePath = \Illuminate\Support\Facades\Storage::url($item->image);
+            $imagePath = asset('public/' . $item->image);
         } else {
             $imagePath = asset('images/default-portfolio.jpg');
         }

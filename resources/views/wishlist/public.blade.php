@@ -122,25 +122,52 @@
                             @endif
 
                             {{-- Image --}}
-                          {{-- Image --}}
-<div class="position-relative overflow-hidden" style="background: #f8f9fa;">
-    @php
-        // For cPanel hosting - images stored in public folder
-        if ($item->image) {
-            // Remove 'public/' prefix if it exists in database
-            $cleanPath = str_replace('public/', '', $item->image);
-            // Ensure path starts with / for absolute URL
-            $imagePath = asset(ltrim($cleanPath, '/'));
-        } else {
-            $imagePath = asset('images/default-portfolio.jpg');
-        }
-    @endphp
-    <img src="{{ $imagePath }}"
-         alt="{{ $item->title }}"
-         class="portfolio-image"
-         style="object-fit: cover; width: 100%; height: 250px;"
-         onerror="this.onerror=null; this.src='{{ asset('images/default-portfolio.jpg') }}'; this.style.objectFit='contain'; this.style.padding='20px';">
-</div>
+                        {{-- Image --}}
+                <div class="position-relative overflow-hidden" style="background: #f8f9fa;">
+                    @php
+                        // For cPanel hosting - images stored in public/wishlist_images folder
+                        if ($item->image) {
+                            // The controller already stores as 'wishlist_images/filename.jpg'
+                            // No need to remove 'public/' prefix as it's not added
+                            $cleanPath = $item->image;
+                            
+                            // Check if file exists using public_path
+                            $serverPath = public_path($cleanPath);
+                            $fileExists = file_exists($serverPath);
+                            
+                            // Generate URL for browser using asset()
+                            $imagePath = asset($cleanPath);
+                            
+                            // Log the paths for debugging
+                            \Log::info('Image Debug', [
+                                'item_id' => $item->id,
+                                'raw_db_path' => $item->image,
+                                'server_path' => $serverPath,
+                                'file_exists' => $fileExists,
+                                'browser_url' => $imagePath
+                            ]);
+                        } else {
+                            $imagePath = asset('images/default-portfolio.jpg');
+                            $fileExists = false;
+                            $serverPath = 'N/A';
+                        }
+                    @endphp
+                    <img src="{{ $imagePath }}"
+                        alt="{{ $item->title }}"
+                        class="portfolio-image"
+                        style="object-fit: cover; width: 100%; height: 250px;"
+                        onerror="this.onerror=null; this.src='{{ asset('images/default-portfolio.jpg') }}'; this.style.objectFit='contain'; this.style.padding='20px'; console.error('Failed to load image:', this.src);"
+                        onload="console.log('Image loaded successfully:', this.src);">
+                    
+                    {{-- Debug info in HTML comment --}}
+                    <!-- 
+                        Item ID: {{ $item->id }}
+                        Raw DB Path: {{ $item->image ?? 'NULL' }}
+                        Server Path: {{ $serverPath ?? 'N/A' }}
+                        File Exists: {{ $fileExists ? 'YES' : 'NO' }}
+                        Browser URL: {{ $imagePath }}
+                    -->
+                </div>
                             {{-- Details --}}
                             <div class="p-4">
                                 <h5 class="fw-bold mb-2">{{ $item->title }}</h5>

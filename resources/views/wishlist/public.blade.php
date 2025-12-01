@@ -122,17 +122,25 @@
                             @endif
 
                             {{-- Image --}}
-                            <div class="position-relative overflow-hidden" style="background: #f8f9fa;">
-                                @php
-                                    $imagePath = $item->image ? url($item->image) : asset('images/default-portfolio.jpg');
-                                @endphp
-                                <img src="{{ $imagePath }}"
-                                     alt="{{ $item->title }}"
-                                     class="portfolio-image"
-                                     style="object-fit: cover; width: 100%; height: 250px;"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/default-portfolio.jpg') }}'; this.style.objectFit='contain'; this.style.padding='20px';">
-                            </div>
-
+                          {{-- Image --}}
+<div class="position-relative overflow-hidden" style="background: #f8f9fa;">
+    @php
+        // For cPanel hosting - images stored in public folder
+        if ($item->image) {
+            // Remove 'public/' prefix if it exists in database
+            $cleanPath = str_replace('public/', '', $item->image);
+            // Ensure path starts with / for absolute URL
+            $imagePath = asset(ltrim($cleanPath, '/'));
+        } else {
+            $imagePath = asset('images/default-portfolio.jpg');
+        }
+    @endphp
+    <img src="{{ $imagePath }}"
+         alt="{{ $item->title }}"
+         class="portfolio-image"
+         style="object-fit: cover; width: 100%; height: 250px;"
+         onerror="this.onerror=null; this.src='{{ asset('images/default-portfolio.jpg') }}'; this.style.objectFit='contain'; this.style.padding='20px';">
+</div>
                             {{-- Details --}}
                             <div class="p-4">
                                 <h5 class="fw-bold mb-2">{{ $item->title }}</h5>

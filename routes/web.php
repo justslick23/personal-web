@@ -19,10 +19,16 @@ Route::get('/about',    [AboutController::class, 'index'])->name('about');
 Route::get('/portfolio',[PortfolioController::class, 'index'])->name('portfolio');
 Route::get('/music',    [AdminController::class, 'musicPublic'])->name('music');
 Route::get('/cv',       [HomeController::class, 'downloadCv'])->name('download.cv');
-
+Route::post('/ask-tokelo', [HomeController::class, 'askTokelo'])
+    ->name('ask.tokelo')
+    ->middleware('throttle:20,1'); // 20 requests per minute per IP
 /* ── Contact ── */
 Route::get('/contact',  [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+Route::get('/music/{musicRelease:slug}', [AdminController::class, 'musicShow'])->name('music.show');
+Route::post('/music/{musicRelease}/download', [AdminController::class, 'trackDownload'])
+    ->name('music.download')
+    ->middleware('throttle:30,1');
 
 /* ── Auth (Laravel built-in) ── */
 Auth::routes(['register' => false]); // disable registration if you don't need it

@@ -658,9 +658,8 @@
                     Hard without being hollow. Every beat has a point.
                 </p>
                 <p>
-                    The <strong>Dirt Deeds</strong> compilation earned Best Compilation Album
-                    at the Ultimate Music Awards — recognition that the sound translates
-                    well beyond Lesotho.
+                    Recognised as <strong>Best Producer</strong> at the Ultimate Music Awards —
+                    proof that the sound translates well beyond Lesotho.
                 </p>
 
                 <div class="js-award">
@@ -668,7 +667,7 @@
                     <div>
                         <div class="js-award__label">Ultimate Music Awards</div>
                         <div class="js-award__body">
-                            Best Compilation Album — Dirt Deeds<br>
+                            Best Producer — Just Slick<br><br>
                             Recognising excellence in Lesotho music.
                         </div>
                     </div>
@@ -732,8 +731,15 @@
                 </div>
 
                 <div class="js-record__body">
-                    <div class="js-record__title">{{ $release->title }}</div>
-                    <div class="js-record__meta">
+{{-- WITH this: --}}
+<a href="{{ route('music.show', ['musicRelease' => $release->slug]) }}"
+    style="text-decoration:none;" onclick="event.stopPropagation()">
+    <div class="js-record__title" style="transition:color .2s;"
+         onmouseover="this.style.color='var(--js-red)'"
+         onmouseout="this.style.color='var(--js-text)'">
+        {{ $release->title }}
+    </div>
+</a>                    <div class="js-record__meta">
                         @if($release->year)<em>{{ $release->year }}</em> &nbsp;·&nbsp; @endif
                         {{ $release->note ?: $release->type }}
                     </div>
@@ -783,11 +789,11 @@
     @elseif($release->tracks->count() === 1)
         @php $singleTrack = $release->tracks->first(); @endphp
         <a href="{{ asset('storage/' . $singleTrack->audio_file) }}" download
-           title="Download track"
+   title="Download track"
            style="color:var(--js-text-dim);margin-left:auto;
                   display:inline-flex;align-items:center;gap:.35rem;
                   font-family:var(--js-mono);font-size:.58rem;letter-spacing:.06em;"
-           onclick="event.stopPropagation()">
+              onclick="event.stopPropagation(); trackDownload('{{ $release->slug }}', 'track', {{ $singleTrack->id }})">
             <i class="fas fa-download"></i> MP3
         </a>
     @elseif($release->tracks->count() > 1 && !$release->zip_url)
@@ -811,11 +817,11 @@
                             @if($track->duration_formatted !== '—')
                                 <span class="js-track-row__dur">{{ $track->duration_formatted }}</span>
                             @endif
-                            <a href="{{ asset('storage/' . $track->audio_file) }}" download
-                               title="Download {{ $track->title }}"
+                           <a href="{{ asset('storage/' . $track->audio_file) }}" download
+                            title="Download {{ $track->title }}"
                                style="color:var(--js-text-dim);display:flex;align-items:center;flex-shrink:0;
                                       transition:color .15s;padding:2px 4px;"
-                               onclick="event.stopPropagation()"
+                                  onclick="event.stopPropagation(); trackDownload('{{ $release->slug }}', 'track', {{ $track->id }})"
                                onmouseover="this.style.color='var(--js-red)'"
                                onmouseout="this.style.color='var(--js-text-dim)'">
                                 <i class="fas fa-download" style="font-size:.6rem;"></i>

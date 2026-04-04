@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PortfolioItem;
 use App\Models\MusicRelease;
+use App\Models\DownloadLog;
+
 use App\Models\MusicTrack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +31,8 @@ class AdminController extends Controller
             'music_total'      => MusicRelease::count(),
             'music_recent'     => MusicRelease::orderBy('created_at', 'desc')->first(),
             'portfolio_recent' => PortfolioItem::orderBy('created_at', 'desc')->first(),
+            'total_downloads' => DownloadLog::count(),
+            'downloads_today' => DownloadLog::whereDate('created_at', today())->count(),
         ];
 
         return view('admin.dashboard', compact('stats'));
@@ -132,8 +136,8 @@ class AdminController extends Controller
 
     public function musicIndex()
     {
-        $releases = MusicRelease::withCount('tracks')
-            ->orderBy('sort_order')
+        $releases = MusicRelease::withCount(['tracks', 'downloadLogs'])
+        ->orderBy('sort_order')
             ->orderBy('year', 'desc')
             ->get();
         return view('admin.music.index', compact('releases'));
@@ -186,8 +190,8 @@ class AdminController extends Controller
 
         $data['is_featured']   = $request->boolean('is_featured');
         $data['is_uma_winner'] = $request->boolean('is_uma_winner');
-        $data['initials']      = $this->makeInitials($data['title']);
-
+        $data['initials'] = $this->makeInitials($data['title']);
+        $data['slug']     = MusicRelease::generateSlug($data['title']);
         $release = MusicRelease::create($data);
         $this->saveTracks($request, $release);
 
@@ -417,4 +421,46 @@ class AdminController extends Controller
         }
         return $initials ?: 'XX';
     }
+
+    public function musicShow(MusicRelease $musicRelease)
+{
+    $musicRelease->load('tracks');
+
+    $playerData = [[
+        'title'    => $musicRelease->title,
+        'release'  => $musicRelease->type . ($musicRelease->year ? ' · ' . $musicRelease->year : ''),
+        'art'      => $musicRelease->cover_art ? asset('storage/' . $musicRelease->cover_art) : null,
+        'initials' => $musicRelease->initials,
+        'zip_url'  => $musicRelease->zip_file ? asset('storage/' . $musicRelease->zip_file) : null,
+        'tracks'   => $musicRelease->tracks->sortBy('track_number')->map(function ($t) use ($musicRelease) {
+            return [
+                'src'      => asset('storage/' . $t->audio_file),
+                'title'    => $t->title,
+                'release'  => $musicRelease->title,
+                'art'      => $musicRelease->cover_art ? asset('storage/' . $musicRelease->cover_art) : null,
+                'initials' => $musicRelease->initials,
+                'download' => asset('storage/' . $t->audio_file),
+            ];
+        })->values(),
+    ]];
+
+    return view('music-show', compact('musicRelease', 'playerData'));
+}
+
+public function trackDownload(Request $request, MusicRelease $musicRelease)
+{
+    $data = $request->validate([
+        'type'     => 'required|in:track,zip',
+        'track_id' => 'nullable|integer|exists:music_tracks,id',
+    ]);
+
+    DownloadLog::create([
+        'music_release_id' => $musicRelease->id,
+        'music_track_id'   => $data['track_id'] ?? null,
+        'type'             => $data['type'],
+        'ip'               => $request->ip(),
+    ]);
+
+    return response()->json(['ok' => true]);
+}
 }

@@ -241,7 +241,16 @@
                 });
             }
         });
-    
+        window.trackDownload = function (releaseSlug, type, trackId) {
+            fetch('/music/' + releaseSlug + '/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ type: type, track_id: trackId || null })
+            }).catch(function () {});
+        };
     })();
     </script>
     

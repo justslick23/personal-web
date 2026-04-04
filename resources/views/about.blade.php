@@ -353,7 +353,6 @@
                         <div>
                             <div class="ab-entry__title">Software Developer — Computer Business Solutions</div>
                             <p class="ab-entry__desc">Building full-stack web applications for clients across multiple sectors. Mostly Laravel on the backend, React or vanilla JS on the front, with MySQL underneath. I handle everything from database design to deployment.</p>
-                            <span class="ab-entry__badge"><i class="fas fa-arrow-trend-up"></i> Standardised our Laravel scaffolding — cut project setup time significantly.</span>
                         </div>
                     </div>
                     <div class="ab-entry" data-id="cbs-design">
@@ -364,7 +363,7 @@
                         <div>
                             <div class="ab-entry__title">Web Designer — Computer Business Solutions</div>
                             <p class="ab-entry__desc">Designed web interfaces and brand assets for clients in various industries. Focused on keeping things consistent, responsive, and actually pleasant to look at.</p>
-                            <span class="ab-entry__badge"><i class="fas fa-arrow-trend-up"></i> Led design on 20+ client web projects end to end.</span>
+                            <span class="ab-entry__badge"><i class="fas fa-arrow-trend-up"></i> Led design and support on 12+ client web projects end to end.</span>
                         </div>
                     </div>
                     <div class="ab-entry" data-id="osmium">
@@ -375,7 +374,6 @@
                         <div>
                             <div class="ab-entry__title">Graphic Designer — Osmium Lesotho</div>
                             <p class="ab-entry__desc">Created logos, marketing materials, and social content for local and regional clients. Print and digital, mostly working with small businesses that needed a proper visual identity.</p>
-                            <span class="ab-entry__badge"><i class="fas fa-arrow-trend-up"></i> Delivered brand identity packages for 30+ SME clients.</span>
                         </div>
                     </div>
                 </div>
@@ -388,7 +386,7 @@
                         </div>
                         <div>
                             <div class="ab-entry__title">BSc Computer Science — Monash University</div>
-                            <p class="ab-entry__desc">Specialised in Mobile Systems and Software Development. Final-year project was a cross-platform task management app in React Native — got a distinction for it.</p>
+                            <p class="ab-entry__desc">Specialised in Mobile Systems and Software Development. Final-year project was a meeting cost application developed in Android for a local business.</p>
                             <span class="ab-entry__badge"><i class="fas fa-medal"></i> Graduated 2020 · Mobile Systems specialisation.</span>
                         </div>
                     </div>
@@ -399,8 +397,6 @@
                         </div>
                         <div>
                             <div class="ab-entry__title">IGCSE — Machabeng College</div>
-                            <p class="ab-entry__desc">Finished with distinctions in Maths and Computer Science. Also ran the school's IT club and put together the first inter-house coding challenge.</p>
-                            <span class="ab-entry__badge"><i class="fas fa-medal"></i> Distinction in Mathematics &amp; Computer Science.</span>
                         </div>
                     </div>
                 </div>
@@ -432,11 +428,14 @@
                 <ul class="ab-expertise__list">
                     <li class="ab-expertise__item">Full-Stack Web Development</li>
                     <li class="ab-expertise__item">Laravel API Architecture</li>
-                    <li class="ab-expertise__item">Database Design &amp; Optimisation</li>
-                    <li class="ab-expertise__item">RESTful APIs &amp; Microservices</li>
-                    <li class="ab-expertise__item">Server Management &amp; Linux</li>
+                    <li class="ab-expertise__item">PHP & Node.js</li>
+                    <li class="ab-expertise__item">Java Development</li>
+                    <li class="ab-expertise__item">Database Design & Optimisation</li>
+                    <li class="ab-expertise__item">RESTful APIs & Microservices</li>
+                    <li class="ab-expertise__item">MySQL & Oracle DB</li>
+                    <li class="ab-expertise__item">Server Management & Linux</li>
                     <li class="ab-expertise__item">Oracle Cloud Infrastructure</li>
-                    <li class="ab-expertise__item">Auth Systems &amp; Secure Coding</li>
+                    <li class="ab-expertise__item">Auth Systems & Secure Coding</li>
                 </ul>
             </div>
             <div class="ab-expertise__col">
@@ -445,11 +444,13 @@
                     <div class="ab-expertise__col-icon"><i class="fas fa-plus"></i></div>
                 </div>
                 <ul class="ab-expertise__list">
-                    <li class="ab-expertise__item">React &amp; Vue 3</li>
+                    <li class="ab-expertise__item">React & Vue 3</li>
                     <li class="ab-expertise__item">Responsive HTML5 / CSS3</li>
-                    <li class="ab-expertise__item">JavaScript &amp; Node.js</li>
+                    <li class="ab-expertise__item">JavaScript & MEAN Stack</li>
+                    <li class="ab-expertise__item">Node.js</li>
                     <li class="ab-expertise__item">WordPress Theme Development</li>
                     <li class="ab-expertise__item">Android App Development</li>
+                    <li class="ab-expertise__item">React Native</li>
                     <li class="ab-expertise__item">Performance Optimisation</li>
                     <li class="ab-expertise__item">Accessible UI</li>
                 </ul>
@@ -463,10 +464,12 @@
                     <li class="ab-expertise__item">UI/UX Design — Figma</li>
                     <li class="ab-expertise__item">Brand Identity</li>
                     <li class="ab-expertise__item">High-Fidelity Prototyping</li>
-                    <li class="ab-expertise__item">Photoshop &amp; Illustrator</li>
-                    <li class="ab-expertise__item">Grid &amp; Layout Systems</li>
-                    <li class="ab-expertise__item">Motion &amp; Interaction Design</li>
-                    <li class="ab-expertise__item">Print &amp; Digital Collateral</li>
+                    <li class="ab-expertise__item">Adobe Photoshop</li>
+                    <li class="ab-expertise__item">Adobe Illustrator</li>
+                    <li class="ab-expertise__item">Microsoft Office Suite</li>
+                    <li class="ab-expertise__item">Grid & Layout Systems</li>
+                    <li class="ab-expertise__item">Motion & Interaction Design</li>
+                    <li class="ab-expertise__item">Print & Digital Collateral</li>
                 </ul>
             </div>
         </div>
@@ -497,20 +500,25 @@
                 </p>
             </div>
 
-            @php
-            $tools = [
-                ['name'=>'Figma',       'cat'=>'UI Design',         'icon'=>'fab fa-figma',    'color'=>'figma'],
-                ['name'=>'Photoshop',   'cat'=>'Image Editing',     'icon'=>'fas fa-image',    'color'=>'ps'],
-                ['name'=>'Illustrator', 'cat'=>'Vector Design',     'icon'=>'fas fa-pen-nib',  'color'=>'ai'],
-                ['name'=>'GitHub',      'cat'=>'Version Control',   'icon'=>'fab fa-github',   'color'=>'github'],
-                ['name'=>'Laravel',     'cat'=>'PHP Framework',     'icon'=>'fab fa-laravel',  'color'=>'laravel'],
-                ['name'=>'React',       'cat'=>'Frontend Library',  'icon'=>'fab fa-react',    'color'=>'react'],
-                ['name'=>'VS Code',     'cat'=>'Code Editor',       'icon'=>'fas fa-code',     'color'=>'vscode'],
-                ['name'=>'MySQL',       'cat'=>'Database',          'icon'=>'fas fa-database', 'color'=>'mysql'],
-                ['name'=>'Linux',       'cat'=>'Server OS',         'icon'=>'fab fa-linux',    'color'=>'linux'],
-            ];
-            @endphp
-
+           @php
+$tools = [
+    ['name' => 'Figma',        'cat' => 'UI Design',          'icon' => 'fab fa-figma',    'color' => 'figma'],
+    ['name' => 'Photoshop',    'cat' => 'Image Editing',      'icon' => 'fas fa-image',    'color' => 'ps'],
+    ['name' => 'Illustrator',  'cat' => 'Vector Design',      'icon' => 'fas fa-pen-nib',  'color' => 'ai'],
+    ['name' => 'GitHub',       'cat' => 'Version Control',    'icon' => 'fab fa-github',   'color' => 'github'],
+    ['name' => 'Laravel',      'cat' => 'PHP Framework',      'icon' => 'fab fa-laravel',  'color' => 'laravel'],
+    ['name' => 'React',        'cat' => 'Frontend Library',   'icon' => 'fab fa-react',    'color' => 'react'],
+    ['name' => 'VS Code',      'cat' => 'Code Editor',        'icon' => 'fas fa-code',     'color' => 'vscode'],
+    ['name' => 'MySQL',        'cat' => 'Database',           'icon' => 'fas fa-database', 'color' => 'mysql'],
+    ['name' => 'Linux',        'cat' => 'Server OS',          'icon' => 'fab fa-linux',    'color' => 'linux'],
+    ['name' => 'Vue 3',        'cat' => 'Frontend Framework', 'icon' => 'fab fa-vuejs',    'color' => 'vue'],
+    ['name' => 'Node.js',      'cat' => 'JS Runtime',         'icon' => 'fab fa-node-js',  'color' => 'node'],
+    ['name' => 'WordPress',    'cat' => 'CMS',                'icon' => 'fab fa-wordpress','color' => 'wp'],
+    ['name' => 'Android',      'cat' => 'Mobile Dev',         'icon' => 'fab fa-android',  'color' => 'android'],
+    ['name' => 'Java',         'cat' => 'Programming',        'icon' => 'fab fa-java',     'color' => 'java'],
+    ['name' => 'MS Office',    'cat' => 'Productivity',       'icon' => 'fas fa-file-word', 'color' => 'office'],
+];
+@endphp
             <div class="ab-tools__grid">
                 @foreach($tools as $tool)
                 <div class="ab-tool">

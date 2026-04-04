@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MusicRelease extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
         'type',
         'year',
         'note',
@@ -26,10 +28,10 @@ class MusicRelease extends Model
     ];
 
     protected $casts = [
-        'year'         => 'integer',
-        'sort_order'   => 'integer',
-        'is_featured'  => 'boolean',
-        'is_uma_winner'=> 'boolean',
+        'year'          => 'integer',
+        'sort_order'    => 'integer',
+        'is_featured'   => 'boolean',
+        'is_uma_winner' => 'boolean',
     ];
 
     // ── Relationships ───────────────────────────────
@@ -37,6 +39,13 @@ class MusicRelease extends Model
     public function tracks(): HasMany
     {
         return $this->hasMany(MusicTrack::class)->orderBy('track_number');
+    }
+
+    // ── Routing ─────────────────────────────────────
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     // ── Accessors ───────────────────────────────────
@@ -54,11 +63,20 @@ class MusicRelease extends Model
         return asset('storage/' . $this->zip_file);
     }
 
-    /**
-     * Types that can have multiple tracks (tracklist UI).
-     */
     public function getIsMultiTrackAttribute(): bool
     {
         return in_array($this->type, ['EP', 'Album', 'Compilation', 'Beat Tape', 'Mixtape']);
     }
+
+    // ── Helpers ─────────────────────────────────────
+
+    public static function generateSlug(string $title): string
+    {
+        return Str::slug($title) . '-' . substr(md5(uniqid()), 0, 6);
+    }
+
+    public function downloadLogs(): HasMany
+{
+    return $this->hasMany(DownloadLog::class);
+}
 }

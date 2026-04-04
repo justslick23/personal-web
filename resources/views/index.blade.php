@@ -1,7 +1,236 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+/* ═══════════════════════════════════════
+   HERO AI WIDGET
+═══════════════════════════════════════ */
+.hero-ai {
+    margin-bottom: 2.5rem;
+    max-width: 580px;
+}
 
+.hero-ai__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.6rem;
+}
+
+.hero-ai__avatar {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--clr-accent);
+    display: flex; align-items: center; justify-content: center;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.hero-ai__label {
+    font-family: var(--font-sans);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clr-text-muted);
+}
+
+.hero-ai__pulse {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--clr-accent);
+    animation: aiPulse 2s ease-in-out infinite;
+}
+
+@keyframes aiPulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.3; transform: scale(0.6); }
+}
+
+@keyframes aiSpin {
+    to { transform: rotate(360deg); }
+}
+
+.hero-ai__input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-pill);
+    padding: 0.2rem 0.2rem 0.2rem 1.1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.hero-ai__input-wrap:focus-within {
+    border-color: var(--clr-accent);
+    box-shadow: 0 0 0 3px var(--clr-accent-dim);
+}
+
+.hero-ai__input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--clr-text);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding: 0.55rem 0;
+    min-width: 0;
+}
+
+.hero-ai__input::placeholder { color: var(--clr-text-dim); }
+
+.hero-ai__send {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--clr-accent);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    color: #000;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.hero-ai__send:hover:not(:disabled) {
+    background: #fff;
+    transform: scale(1.08);
+}
+
+.hero-ai__send:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Suggestion chips */
+.hero-ai__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.65rem;
+}
+
+.hero-ai__chip {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--clr-text-muted);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-pill);
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+
+.hero-ai__chip:hover {
+    color: var(--clr-accent);
+    border-color: var(--clr-accent);
+    background: var(--clr-accent-dim);
+}
+
+/* Answer box */
+.hero-ai__answer {
+    margin-top: 0.85rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    animation: aiFadeIn 0.3s ease;
+}
+
+@keyframes aiFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-ai__answer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+}
+
+.hero-ai__answer-who {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--clr-accent);
+}
+
+.hero-ai__answer-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--clr-accent);
+}
+
+.hero-ai__answer-close {
+    background: none;
+    border: none;
+    color: var(--clr-text-dim);
+    cursor: pointer;
+    padding: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s;
+    border-radius: 4px;
+}
+.hero-ai__answer-close:hover { color: var(--clr-text); }
+
+.hero-ai__answer-text {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--clr-text-muted);
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Search used badge */
+.hero-ai__search-tag {
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--clr-text-dim);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 0.65rem;
+}
+
+.hero-ai__search-tag svg { color: var(--clr-text-dim); }
+
+/* Light mode */
+[data-theme="light"] .hero-ai__input-wrap {
+    background: rgba(0,0,0,0.03);
+    border-color: rgba(0,0,0,0.1);
+}
+[data-theme="light"] .hero-ai__input-wrap:focus-within {
+    border-color: var(--clr-accent);
+}
+[data-theme="light"] .hero-ai__input { color: var(--clr-text); }
+[data-theme="light"] .hero-ai__input::placeholder { color: var(--clr-text-dim); }
+[data-theme="light"] .hero-ai__chip {
+    border-color: rgba(0,0,0,0.1);
+}
+[data-theme="light"] .hero-ai__answer {
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .hero-ai__send {
+    background: var(--clr-accent);
+    color: #fff;
+}
+    </style>
 {{-- =============================================
      HERO SECTION
 ============================================== --}}
@@ -23,14 +252,71 @@
             <span class="t-eyebrow">Developer &amp; Graphic Designer</span>
         </div>
 
+       
+
         <h1 class="mn-hero__headline">
             I build things<br>
             for the <em>web</em> and<br>
             make them <span class="outline">look good</span>
         </h1>
 
+         {{-- ── AI Ask Widget ── --}}
+         <div class="hero-ai" id="hero-ai">
+
+            <div class="hero-ai__bar">
+                <div class="hero-ai__avatar">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                    </svg>
+                </div>
+                <span class="hero-ai__label">Ask about Tokelo</span>
+                <span class="hero-ai__pulse"></span>
+            </div>
+
+            <div class="hero-ai__input-wrap">
+                <input type="text" class="hero-ai__input" id="hero-ai-input"
+                       placeholder="e.g. What tech does Tokelo use? What music has he released?"
+                       maxlength="300" autocomplete="off">
+                <button class="hero-ai__send" id="hero-ai-send" aria-label="Ask">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="hero-ai__chips">
+                <button class="hero-ai__chip" data-q="What does Tokelo do?">What does Tokelo do?</button>
+                <button class="hero-ai__chip" data-q="What tech stack does he use?">Tech stack?</button>
+                <button class="hero-ai__chip" data-q="Tell me about Just Slick">Just Slick?</button>
+                <button class="hero-ai__chip" data-q="What projects has he worked on?">Projects?</button>
+                <button class="hero-ai__chip" data-q="How can I contact Tokelo?">Contact?</button>
+            </div>
+
+            <div class="hero-ai__answer" id="hero-ai-answer" style="display:none;">
+                <div class="hero-ai__answer-header">
+                    <div class="hero-ai__answer-who">
+                        <span class="hero-ai__answer-dot"></span>
+                        Tokelo AI
+                    </div>
+                    <button class="hero-ai__answer-close" id="hero-ai-close" aria-label="Close">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="hero-ai__answer-text" id="hero-ai-text"></p>
+                <div class="hero-ai__search-tag" id="hero-ai-search-tag">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    Includes web search results
+                </div>
+            </div>
+
+        </div>
+        {{-- ── End AI Widget ── --}}
+
         <div class="mn-hero__bottom">
-         
 
             <div class="mn-hero__meta">
                 <a href="#portfolio" class="mn-btn mn-btn--primary">
@@ -162,17 +448,25 @@
         </div>
 
         @php
-        $skills = [
-            ['name' => 'HTML5',      'icon' => 'fab fa-html5'],
-            ['name' => 'CSS3',       'icon' => 'fab fa-css3-alt'],
-            ['name' => 'JavaScript', 'icon' => 'fab fa-js-square'],
-            ['name' => 'React',      'icon' => 'fab fa-react'],
-            ['name' => 'PHP',        'icon' => 'fab fa-php'],
-            ['name' => 'Laravel',    'icon' => 'fab fa-laravel'],
-            ['name' => 'Adobe CC',   'icon' => 'fas fa-palette'],
-            ['name' => 'Figma',      'icon' => 'fas fa-pen-nib'],
-        ];
-        @endphp
+$skills = [
+    ['name' => 'HTML5',       'icon' => 'fab fa-html5'],
+    ['name' => 'CSS3',        'icon' => 'fab fa-css3-alt'],
+    ['name' => 'JavaScript',  'icon' => 'fab fa-js-square'],
+    ['name' => 'React',       'icon' => 'fab fa-react'],
+    ['name' => 'Vue 3',       'icon' => 'fab fa-vuejs'],
+    ['name' => 'PHP',         'icon' => 'fab fa-php'],
+    ['name' => 'Laravel',     'icon' => 'fab fa-laravel'],
+    ['name' => 'Node.js',     'icon' => 'fab fa-node-js'],
+    ['name' => 'Java',        'icon' => 'fab fa-java'],
+    ['name' => 'Android',     'icon' => 'fab fa-android'],
+    ['name' => 'WordPress',   'icon' => 'fab fa-wordpress'],
+    ['name' => 'MySQL',       'icon' => 'fas fa-database'],
+    ['name' => 'Linux',       'icon' => 'fab fa-linux'],
+    ['name' => 'GitHub',      'icon' => 'fab fa-github'],
+    ['name' => 'Adobe CC',    'icon' => 'fas fa-palette'],
+    ['name' => 'Figma',       'icon' => 'fas fa-pen-nib'],
+];
+@endphp
 
         <div class="mn-skills-grid" data-aos="fade-up" data-aos-delay="100">
             @foreach($skills as $skill)
@@ -396,13 +690,14 @@
         initPortfolioFilter();
         initCounters();
         initScrollReveal();
+        initAI();
     }
 
+    // ── Existing functions (unchanged) ──────────────────────
     function initPortfolioFilter() {
         const btns  = document.querySelectorAll('.mn-filter-btn');
         const cards = document.querySelectorAll('.mn-portfolio-card');
         if (!btns.length || !cards.length) return;
-
         btns.forEach(btn => {
             btn.addEventListener('click', function () {
                 btns.forEach(b => b.classList.remove('active'));
@@ -465,6 +760,91 @@
             const delay = el.dataset.aosDelay ? parseInt(el.dataset.aosDelay) : 0;
             el.style.transitionDelay = delay + 'ms';
             observer.observe(el);
+        });
+    }
+
+    // ── AI Widget ───────────────────────────────────────────
+    function initAI() {
+        const input     = document.getElementById('hero-ai-input');
+        const sendBtn   = document.getElementById('hero-ai-send');
+        const answerBox = document.getElementById('hero-ai-answer');
+        const answerTxt = document.getElementById('hero-ai-text');
+        const closeBtn  = document.getElementById('hero-ai-close');
+        const searchTag = document.getElementById('hero-ai-search-tag');
+        const chips     = document.querySelectorAll('.hero-ai__chip');
+
+        if (!input) return;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+        function setLoading(on) {
+            sendBtn.disabled = on;
+            sendBtn.innerHTML = on
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="animation:aiSpin 0.8s linear infinite"><path d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8V2z"/></svg>'
+                : '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>';
+        }
+
+        function typewrite(text, el, speed) {
+            el.textContent = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                el.textContent += text[i];
+                i++;
+                if (i >= text.length) clearInterval(timer);
+            }, speed || 18);
+        }
+
+        function ask(question) {
+            if (!question.trim()) return;
+
+            input.value = question;
+            setLoading(true);
+            answerBox.style.display = 'none';
+
+            fetch('{{ route("ask.tokelo") }}', {
+                method:  'POST',
+                headers: {
+                    'Content-Type':     'application/json',
+                    'X-CSRF-TOKEN':     csrfToken,
+                    'Accept':           'application/json',
+                },
+                body: JSON.stringify({ question: question.trim() }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                answerBox.style.display = 'block';
+                // Typewriter effect for real-time feel
+                typewrite(data.answer || 'No answer returned.', answerTxt, 16);
+                // Show search badge if Gemini used web search
+                if (searchTag) {
+                    searchTag.style.display = data.search_used ? 'inline-flex' : 'none';
+                }
+                answerBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            })
+            .catch(() => {
+                answerBox.style.display = 'block';
+                answerTxt.textContent = 'Something went wrong. Please try again.';
+            })
+            .finally(() => setLoading(false));
+        }
+
+        // Send on button click
+        sendBtn.addEventListener('click', () => ask(input.value));
+
+        // Send on Enter
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') ask(input.value);
+        });
+
+        // Close answer
+        closeBtn?.addEventListener('click', () => {
+            answerBox.style.display = 'none';
+            input.value = '';
+        });
+
+        // Suggestion chips
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => ask(chip.dataset.q));
         });
     }
 

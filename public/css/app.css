@@ -3936,3 +3936,11 @@ a.mn-mega__item:hover {
 .mn-portfolio-card__ext-link:hover {
     color: var(--clr-accent);
 }
+
+/* ── Just Slick pages: bridge bar always dark ── */
+.js-world .js-bridge {
+    background: #121212;
+    border-bottom-color: rgba(255,255,255,0.07);
+}
+.js-world .js-bridge__label,
+.js-world .js-bridge__sep { color: #3e3e3c; background: rgba(255,255,255,0.13); }
